@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidad de Nariño - Sede Regional Túquerres</title>
+    <style>
+        :root {
+            --primary-dark: #00563B;
+            --primary-header: #00422d;
+            --bg-light: #F4F6F5;
+            --card-bg: #FFFFFF;
+            --text-color: #2D3748;
+            --border-color: #CBD5E0;
+            --info-bg: #EBF8FF;
+            --info-border: #3182CE;
+            --info-text: #2B6CB0;
+            --badge-bg: #E8F5E9;
+            --badge-text: #1B5E20;
+            --link-color: #00875A;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* Encabezado */
+        header {
+            background-color: var(--primary-header);
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #A3E635;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        /* Tarjetas de contenido */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border-top: 4px solid var(--primary-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 6px;
+        }
+
+        .info-box {
+            background-color: var(--info-bg);
+            border-left: 4px solid var(--info-border);
+            color: var(--info-text);
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin: 12px 0;
+            font-weight: 500;
+        }
+
+        /* Estilo para Hipervínculos */
+        a {
+            color: var(--link-color);
+            font-weight: 600;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        a:hover {
+            color: var(--primary-header);
+        }
+
+        .info-box a {
+            color: var(--info-text);
+            font-weight: bold;
+        }
+
+        /* Tablas mejor estructuradas */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #F8FAF9;
+        }
+
+        /* Estilos de fechas/procesos */
+        .date-badge {
+            display: inline-block;
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #C8E6C9;
+            white-space: nowrap;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 10px;
+            font-style: italic;
+            background: #FAFAFA;
+            padding: 10px;
+            border-left: 3px solid #CBD5E0;
+            border-radius: 4px;
+        }
+
+        .text-block {
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Universidad de Nariño Sede Regional Túquerres</h1>
+        <p>Página no oficial solo de carácter informativo</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Módulo de Lenguaje e Informática -->
+        <div class="card">
+            <h2>Prueba Homologación Diagnóstica - Módulo de Lenguaje y Herramientas Informáticas</h2>
+            
+            <div class="text-block">
+                <p><strong>PRUEBA DIAGNÓSTICA:</strong> Los estudiantes admitidos a primer semestre serán inscritos automáticamente a la prueba diagnóstica. Más información: <a href="https://setic.udenar.edu.co/pruebas-diagnosticas/" target="_blank">https://setic.udenar.edu.co/pruebas-diagnosticas/</a></p>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 60%;">Proceso / Evento</th>
+                            <th style="width: 40%;">Fecha / Plazo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Aplicación de la Prueba diagnóstica</strong><br><small>(Para todos los estudiantes de primer semestre hasta primer corte)</small></td>
+                            <td><span class="date-badge">Del 28 al 31 de julio de 2026</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Registro de notas de la prueba diagnóstica</strong></td>
+                            <td><span class="date-badge">4 de agosto de 2026</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note">
+                <p><strong>NOTA:</strong> El estudiante deberá acreditar el curso de lenguaje y Herramientas Informáticas hasta el tercer semestre de la carrera, ya sea por la realización y aprobación del mismo o mediante su validación. (Acuerdo 057 de 2003 del Consejo Académico).</p>
+                <br>
+                <p>"Se aplicará una prueba diagnóstica sobre Lenguaje y Herramientas Informáticas a los estudiantes que ingresan a primer semestre de los distintos programas académicos de pregrado de la Universidad de Nariño, con el fin de determinar el nivel de conocimiento en esta área. Se exime del curso de Lenguaje y Herramientas Informáticas a los estudiantes que obtengan una calificación de 3.0 o más en dicha prueba, en una escala de 0.0 a 5.0 y esta nota se registrará ante la Oficina de Admisiones como calificación del curso." (Acuerdo 057 de 2017 del Consejo Académico).</p>
+            </div>
+        </div>
+
+        <!-- Lectura y Producción de Textos + Tabla de Matrículas -->
+        <div class="card">
+            <h2>Lectura y Producción de Textos & Matrícula de Asignaturas</h2>
+            
+            <p class="text-block">Los estudiantes deberán matricular el nivel correspondiente a Lectura y producción de textos, en las fechas establecidas para el programa en el Calendario para Estudiantes de II Semestre en adelante el cual se lo puede consultar en la página de la Universidad de Nariño <a href="https://www.udenar.edu.co/calendarios/" target="_blank">https://www.udenar.edu.co/calendarios/</a>. El estudiante deberá cursar dos niveles de Lectura y Producción de textos. Deberá acreditar los dos (2) niveles hasta el III Semestre de la carrera (Acuerdo 057 de 2003 del Consejo Académico). El curso se desarrollará durante el semestre junto con los estudiantes antiguos de segundo semestre en adelante.</p>
+            
+            <div class="info-box">
+                El enlace a la plataforma de matrícula es: <a href="http://matriculas.udenar.edu.co" target="_blank">matriculas.udenar.edu.co</a>
+            </div>
+
+            <p style="margin-top: 15px;"><strong>MATRÍCULA DE ASIGNATURAS DEL PLAN DE ESTUDIOS, COMPETENCIAS BÁSICAS, IDIOMA EXTRANJERO, LECTURA Y PRODUCCIÓN DE TEXTOS I Y II, FORMACIÓN HUMANÍSTICA, LENGUAJE Y HERRAMIENTAS INFORMÁTICAS:</strong></p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Programa Académico</th>
+                            <th>Fecha y Hora Límite</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ingeniería Agronómica, Ingeniería Ambiental.</td>
+                            <td><span class="date-badge">28 de julio de 2026</span> (Hasta las 06:00 p.m.)</td>
+                        </tr>
+                        <tr>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="date-badge">29 de julio de 2026</span> (Hasta las 06:00 p.m.)</td>
+                        </tr>
+                        <tr>
+                            <td>Administración de empresas. Contaduría Pública</td>
+                            <td><span class="date-badge">30 de julio de 2026</span> (Hasta las 06:00 p.m.)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Homologaciones -->
+        <div class="card">
+            <h2>Homologaciones</h2>
+            <p class="text-block">De requerirlo, presente la solicitud de homologación de asignaturas para primer semestre con sus respectivos soportes. Ingrese a la página web <a href="https://www.udenar.edu.co/" target="_blank">https://www.udenar.edu.co/</a> en el menú seleccioné OCARA - Admisiones, haga clic en el ícono "Solicitudes estudiantiles" - "Homologaciones" y verifique la información correspondiente y los documentos que debe ingresar al sistema SAPIENS.</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trámite</th>
+                            <th>Fechas de Solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Presentación de Solicitudes de Homologación</strong></td>
+                            <td><span class="date-badge">03 al 05 de agosto de 2026</span> (Hasta las 06:00 p.m.)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>Nota:</strong> para las solicitudes de homologaciones aprobadas, y que el estudiante requiera matricular materias deberá realizarlo en las fechas de matrícula extraordinaria en el calendario de estudiantes de II Semestre en adelante.
+            </div>
+        </div>
+
+        <!-- Matemáticas e Inglés -->
+        <div class="card">
+            <h2>PRUEBA DIAGNÓSTICA EN MATEMÁTICAS E INGLÉS</h2>
+            <p class="text-block">Prueba diagnóstica en matemáticas e inglés (Duración: 3 horas) Más información: <a href="https://setic.udenar.edu.co/pruebas-diagnosticas/" target="_blank">https://setic.udenar.edu.co/pruebas-diagnosticas/</a></p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Etapa</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Fechas de aplicación</strong></td>
+                            <td><span class="date-badge">28 y 29 de julio de 2026</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Realización de los cursos de nivelación virtual</strong></td>
+                            <td><span class="date-badge">28 de julio de 2026</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Biología y Física -->
+        <div class="card">
+            <h2>CURSOS DE NIVELACIÓN EN CONOCIMIENTOS BÁSICOS DE BIOLOGÍA Y FÍSICA</h2>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fase del Curso</th>
+                            <th>Fechas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Inscripción a los cursos de nivelación</strong></td>
+                            <td><span class="date-badge">Del 23 al 27 de julio de 2026</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Desarrollo de cursos de Nivelación</strong></td>
+                            <td><span class="date-badge">Del 28 de julio al 14 de agosto de 2026</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>Nota:</strong> Estos cursos de nivelación son voluntarios y no se inscriben automáticamente, por lo cual, los interesados se deben inscribir en las fechas estipuladas en la página <a href="https://aulavirtual.udenar.edu.co" target="_blank">https://aulavirtual.udenar.edu.co</a> Una vez inscrito puede realizar los cursos del 28 de julio al 14 de agosto de 2026; posterior a esta fecha los cursos estarán disponibles solo para descarga de material de estudio hasta la finalización del periodo 2026 B.
+            </div>
+        </div>
+
+        <!-- Química -->
+        <div class="card">
+            <h2>CURSOS DE NIVELACIÓN EN CONOCIMIENTOS BÁSICOS DE QUÍMICA</h2>
+            <p class="text-block"><em>Programas: Ingeniería Ambiental, Licenciatura en Ciencias Naturales y Educación Ambiental.</em></p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fase del Curso</th>
+                            <th>Fechas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Inscripción a los cursos de nivelación</strong></td>
+                            <td><span class="date-badge">23 al 27 de julio de 2026</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Desarrollo de cursos de Nivelación</strong></td>
+                            <td><span class="date-badge">Del 28 de julio al 14 de agosto de 2026</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>Nota:</strong> Estos cursos de nivelación son voluntarios y no se inscriben automáticamente, por lo cual, los interesados se deben inscribir en las fechas estipuladas en la página <a href="https://aulavirtual.udenar.edu.co" target="_blank">https://aulavirtual.udenar.edu.co</a> Una vez inscrito puede realizar los cursos del 28 de julio al 14 de agosto de 2026; posterior a esta fecha los cursos estarán disponibles solo para descarga de material de estudio hasta la finalización del periodo 2026 B.
+            </div>
+        </div>
+
+        <!-- Fechas Generales -->
+        <div class="card">
+            <h2>INICIO Y FINALIZACIÓN DE ACTIVIDADES ACADÉMICAS</h2>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Evento Académico</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>INICIO DE ACTIVIDADES ACADÉMICAS (TODOS LOS PROGRAMAS)</strong></td>
+                            <td><span class="date-badge">03 de agosto de 2026</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>FINALIZACIÓN DE ACTIVIDADES ACADÉMICAS</strong><br><small>(Finalización de clases en todos los programas y asignaturas semestrales de Derecho)</small></td>
+                            <td><span class="date-badge" style="background-color: #FFEBEE; color: #C62828; border-color: #FFCDD2;">29 de noviembre de 2026</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
