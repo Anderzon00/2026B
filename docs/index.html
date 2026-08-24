@@ -12,70 +12,83 @@
     
     <div class="app-container" style="padding-top: 1rem;">
         
-        <!-- HEADER TRANSPARENTE: Los botones y métricas flotan sobre el fondo -->
-        <header class="sys-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.15); flex-wrap: wrap; gap: 1rem;">
+       <!-- HEADER TRANSPARENTE: Solo Marca, Buscador y Navegación -->
+        <header class="sys-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.15); flex-wrap: wrap; gap: 1.5rem;">
             
             <div class="brand">
-                <span class="brand-eyebrow" style="margin-bottom: 0.1rem; font-size: 0.6rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Plataforma transmedia de investigación</span>
-                <h1 style="font-size: 1.5rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">EL ARCHIVO <em>DEL MAÑANA</em></h1>
-                <span class="subtitle" id="estado-red-sub" style="display:none;">ESTADO: INICIANDO RED NEURONAL</span>
+                <span class="brand-eyebrow" style="margin-bottom: 0.2rem; display: block; font-size: 0.65rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Plataforma transmedia de investigación</span>
+                <h1 style="font-size: 1.6rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 800;">EL ARCHIVO <em>DEL MAÑANA</em></h1>
+                <span class="subtitle" id="estado-red-sub" style="display:none; font-size: 0.75rem; margin-top: 0.4rem;">ESTADO: INICIANDO RED NEURONAL</span>
             </div>
             
-            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                <!-- Panel de métricas con efecto cristal -->
-                <div style="display: flex; gap: 1rem; background: rgba(20, 34, 56, 0.5); backdrop-filter: blur(6px); padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-                    <div style="display:flex; gap:0.4rem; align-items:center;" title="Desbloquean la tercera tarjeta">
-                        <span style="color: rgba(255,255,255,0.7); font-size: 0.7rem; text-transform: uppercase;">Audios:</span> 
-                        <strong id="contador-aportes" style="color: #ffffff; font-size: 0.85rem;">0/10</strong>
-                    </div>
-                    <div style="display:flex; gap:0.4rem; align-items:center;" title="Liberan la creación de ramas">
-                        <span style="color: rgba(255,255,255,0.7); font-size: 0.7rem; text-transform: uppercase;">Videos:</span> 
-                        <strong id="contador-videos" style="color: #ffffff; font-size: 0.85rem;">0/15</strong>
-                    </div>
-                    <div style="display:flex; gap:0.4rem; align-items:center;">
-                        <span style="color: rgba(255,255,255,0.7); font-size: 0.7rem; text-transform: uppercase;">Nodos:</span> 
-                        <strong id="contador-nodos" style="color: #ffffff; font-size: 0.85rem;">3</strong>
-                    </div>
+            <div style="display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap;">
+                
+                <!-- BUSCADOR INDEPENDIENTE -->
+                <div style="display: flex; gap: 0.3rem;">
+                    <input type="text" id="input-buscar-nodo" placeholder="Buscar ID o nombre..." style="padding: 0.45rem 0.8rem; font-size: 0.8rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); color: white; width: 180px;">
+                    <button id="btn-buscar-nodo-nav" class="btn" style="background: var(--primary); color: var(--bg-base); padding: 0.45rem 0.6rem; border-radius: 6px; font-weight: bold; border: none;" title="Buscar nodo">🔍</button>
                 </div>
 
+                <!-- NAVEGACIÓN PRINCIPAL -->
                 <nav class="main-nav" aria-label="Navegación principal" style="display: flex; gap: 0.5rem; margin: 0;">
-                   <a href="#rhizome-canvas" id="btn-ir-a-red" class="btn" style="background: var(--primary); color: var(--bg-base); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">⬇ Explorar nodos</a>
-                   <a href="mapa.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2);">Mapa</a>
-                   <a href="ruta.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2);">Ruta / Ayuda</a>
-                   <!-- Botón de créditos -->
-                   <button id="btn-info-creditos" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;"> Créditos</button>
+                    <a href="#rhizome-canvas" id="btn-ir-a-red" class="btn" style="background: var(--primary); color: var(--bg-base); padding: 0.45rem 0.8rem; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">⬇ Explorar</a>
+                    <a href="mapa.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2);">Mapa</a>
+                    <a href="ruta.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2);">Ayuda</a>
+                    <button id="btn-info-creditos" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;">Créditos</button>
                 </nav>
+
             </div>
         </header>
 
         <main>
-            <!-- DESCRIPCIÓN AMPLIADA EN NUEVA LÍNEA -->
+            <!-- INTRODUCCIÓN Y BARRA DE ESTADO DE LA COMUNIDAD -->
             <section class="index-hero" style="margin-bottom: 2rem;">
                 
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
                     <h2 style="font-size: 1.4rem; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">La historia no está completa</h2>
                     <span style="color: rgba(255,255,255,0.3);">|</span>
-                    <!-- Etiqueta dinámica de Fase -->
                     <span id="fase-red" style="font-size: 0.85rem; margin: 0; color: var(--primary); font-weight: 700; background: rgba(101, 214, 176, 0.15); padding: 0.3rem 0.8rem; border-radius: 4px; border: 1px solid rgba(101, 214, 176, 0.3); backdrop-filter: blur(4px);">Fase 01 · Red iniciando</span>
                 </div>
                 
-                <!-- Párrafo extenso explicando el rizoma -->
-                <p style="font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; max-width: 950px; margin-bottom: 1.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
+                <p style="font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; max-width: 950px; margin-bottom: 2rem; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
                     <strong>El currículo oficial tiene vacíos y nos han entregado una versión procesada de la realidad.</strong> 
                     Este rizoma es una cartografía transmedia viva donde la comunidad reconstruye el conocimiento que el archivo dejó fuera. 
                     Cada aporte sonoro, audiovisual o escrito que sumas al territorio crea nuevas conexiones de pensamiento. 
                     Explora los nodos interactivos, descubre las claves ocultas y ayúdanos a romper la estructura lineal del sistema pedagógico para fundar nuevas raíces libres.
                 </p>
                 
-                <!-- Fases en estilo barra inferior transparente -->
-                <div class="index-steps" style="display: inline-flex; gap: 0.6rem; align-items: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
-                    <span class="active" style="font-size: 0.75rem; color: #10b981; font-weight: 700;">01 El umbral</span>
-                    <span style="color: rgba(255,255,255,0.2); font-size: 0.75rem;">/</span>
-                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">02 Frecuencia sonora</span>
-                    <span style="color: rgba(255,255,255,0.2); font-size: 0.75rem;">/</span>
-                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">03 Pedagogía crítica</span>
+                <!-- NUEVO: BARRA DE CONTROL Y MÚTRICAS UNIFICADA -->
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(13, 23, 38, 0.6); backdrop-filter: blur(10px); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 16px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 1.5rem;">
+                    
+                    <!-- Fases a la izquierda -->
+                    <div class="index-steps" style="display: inline-flex; gap: 0.8rem; align-items: center;">
+                        <span class="active" style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase;">01 El umbral</span>
+                        <span style="color: rgba(255,255,255,0.2); font-size: 0.8rem;">/</span>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500; text-transform: uppercase;">02 Frecuencia sonora</span>
+                        <span style="color: rgba(255,255,255,0.2); font-size: 0.8rem;">/</span>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500; text-transform: uppercase;">03 Pedagogía crítica</span>
+                    </div>
+
+                    <!-- Métricas movidas a la derecha de esta barra -->
+                    <div style="display: flex; gap: 1.5rem; align-items: center;">
+                        <div style="display:flex; flex-direction: column; align-items: center;" title="Desbloquean la tercera tarjeta">
+                            <span style="color: rgba(255,255,255,0.6); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem;">Audios</span> 
+                            <strong id="contador-aportes" style="color: #10b981; font-size: 1.1rem; line-height: 1;">0/10</strong>
+                        </div>
+                        <div style="display:flex; flex-direction: column; align-items: center;" title="Liberan la creación de ramas">
+                            <span style="color: rgba(255,255,255,0.6); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem;">Videos</span> 
+                            <strong id="contador-videos" style="color: #10b981; font-size: 1.1rem; line-height: 1;">0/15</strong>
+                        </div>
+                        <div style="display:flex; flex-direction: column; align-items: center; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+                            <span style="color: rgba(255,255,255,0.6); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem;">Total Nodos</span> 
+                            <strong id="contador-nodos" style="color: #ffffff; font-size: 1.1rem; line-height: 1;">3</strong>
+                        </div>
+                    </div>
+
                 </div>
             </section>
+            
+            <!-- EL RIZOMA QUEDA INTACTO ABAJO... -->
             
             <!-- EL RIZOMA: Con un fondo semitransparente para que la imagen se cuele sutilmente -->
             <div id="rhizome-canvas" class="rhizome-grid" style="height: calc(100vh - 300px); min-height: 550px; width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(13, 23, 38, 0.4); backdrop-filter: blur(2px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>

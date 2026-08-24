@@ -229,6 +229,7 @@ function renderizarNodos() {
         
         const estadoVisual = nodo.estado ? nodo.estado.trim().toLowerCase() : "unlocked";
         const card = document.createElement("article"); card.className = `node-card ${estadoVisual}`; card.style.borderLeftColor = colorParaEtiqueta;
+        card.id = `tarjeta-${nodo.id}`; // Le asignamos el ID (ej: tarjeta-N-001)
         
        let btnHtml = "";
         if (estadoVisual === "locked") {
@@ -663,6 +664,81 @@ function configurarEventos() {
             if (canvas) canvas.scrollIntoView({ behavior: "smooth", block: "start" });
         });
     }
+
+
+ // --- NUEVO: LÓGICA DE BÚSQUEDA POR ID O TÍTULO ---
+    const btnBuscarNav = document.getElementById("btn-buscar-nodo-nav");
+    const inputBuscar = document.getElementById("input-buscar-nodo");
+
+    if (btnBuscarNav && inputBuscar) {
+        const ejecutarBusqueda = () => {
+            const terminoBusqueda = inputBuscar.value.trim().toLowerCase();
+            if (!terminoBusqueda) return; // No hacer nada si está vacío
+
+            let nodoEncontrado = null;
+
+            // 1. Intentar buscar por ID (manejo amigable por si digitan "001" en vez de "N-001")
+            let posibleId = terminoBusqueda.toUpperCase();
+            if (!posibleId.startsWith("N-") && !isNaN(posibleId.charAt(0))) {
+                posibleId = "N-" + posibleId; 
+            }
+
+            // Buscar coincidencia exacta por ID en los datos
+            nodoEncontrado = nodosData.find(n => 
+                String(n.id).toUpperCase() === posibleId || 
+                String(n.id).toUpperCase() === terminoBusqueda.toUpperCase()
+            );
+
+            // 2. Si no es un ID, buscar coincidencia en los Títulos (nombres)
+            if (!nodoEncontrado) {
+                nodoEncontrado = nodosData.find(n => 
+                    String(n.titulo).toLowerCase().includes(terminoBusqueda)
+                );
+            }
+
+            // 3. Evaluar el resultado
+            if (nodoEncontrado) {
+                const tarjetaDestino = document.getElementById(`tarjeta-${nodoEncontrado.id}`);
+
+                if (tarjetaDestino) {
+                    // Hacer scroll suave hacia la tarjeta
+                    tarjetaDestino.scrollIntoView({ behavior: "smooth", block: "center" });
+                    
+                    // Efecto visual: Resaltar la tarjeta temporalmente
+                    const colorOriginal = tarjetaDestino.style.backgroundColor;
+                    const sombraOriginal = tarjetaDestino.style.boxShadow;
+                    
+                    tarjetaDestino.style.transition = "all 0.5s ease";
+                    tarjetaDestino.style.backgroundColor = "rgba(16, 185, 129, 0.2)"; // Verde primary
+                    tarjetaDestino.style.boxShadow = "0 0 20px rgba(16, 185, 129, 0.6)";
+
+                    // Quitar el resalte después de 2 segundos
+                    setTimeout(() => {
+                        tarjetaDestino.style.backgroundColor = colorOriginal;
+                        tarjetaDestino.style.boxShadow = sombraOriginal;
+                    }, 2000);
+
+                } else {
+                    // El nodo existe en la base, pero está oculto por las fases del juego
+                    alert(`El nodo "${nodoEncontrado.titulo}" existe en la red, pero aún está oculto. La comunidad debe avanzar en las fases para revelarlo.`);
+                }
+            } else {
+                alert(`No se encontró ningún nodo que coincida con "${inputBuscar.value}". Revisa la ortografía o intenta con otra palabra.`);
+            }
+        };
+
+        // Escuchar el clic en el botón de la lupa
+        btnBuscarNav.addEventListener("click", ejecutarBusqueda);
+
+        // Escuchar la tecla "Enter" en el campo de texto
+        inputBuscar.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault(); 
+                ejecutarBusqueda();
+            }
+        });
+    }
+
 }
 
 function limpiarFormularioNodo() {
