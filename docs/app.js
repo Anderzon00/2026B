@@ -69,13 +69,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function cargarDatosDesdeDrive() {
     const canvas = document.getElementById("rhizome-canvas");
-    canvas.innerHTML = "<p style='text-align:center; width:100%;'>Sincronizando cartografía de la e-MEV...</p>";
+    canvas.innerHTML = "<p style='text-align:center; width:100%; color:#fff;'>Sincronizando cartografía de la e-MEV...</p>";
     
-    if (GOOGLE_SCRIPT_URL === "") {
-        cargarDatosLocalesDePrueba();
-        return;
-    }
-
     try {
         const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=leerDatos`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -89,8 +84,6 @@ async function cargarDatosDesdeDrive() {
         renderizarNodos();
     } catch (error) {
         console.error("Fallo la conexión con Drive:", error);
-        canvas.innerHTML = "<p style='text-align:center; color:var(--danger); width:100%;'>Error de red. Cargando modo contingencia.</p>";
-        setTimeout(cargarDatosLocalesDePrueba, 1500);
     }
 }
 
@@ -155,43 +148,70 @@ function actualizarGamificacion(totalAportes) {
     const alertaVideoAporte = document.getElementById("alerta-video-aporte");
     const faseRed = document.getElementById("fase-red");
 
+    // 1. Verificamos el progreso de los audios y videos
     const audiosFrecuencia = contarAudiosDeFrecuencia();
     if (audiosFrecuencia >= META_AUDIOS) {
         const nodoApertura = nodosData.find(nodo => String(nodo.id) === NODO_APERTURA_ID);
         if (nodoApertura) nodoApertura.estado = "unlocked";
     }
-    const aperturaDesbloqueada = tercerNodoDesbloqueado();
     const videosRizoma = contarVideosDelRizoma();
     const expansionDesbloqueada = rizomaDesbloqueado();
+
+    // Actualizamos los contadores visuales
     labelAportes.innerText = `${audiosFrecuencia}/${META_AUDIOS}`;
     const contadorVideos = document.getElementById("contador-videos");
     if (contadorVideos) contadorVideos.innerText = `${videosRizoma}/${META_VIDEOS}`;
 
-    if (!aperturaDesbloqueada && audiosFrecuencia < META_AUDIOS) {
-        subHeader.innerText = `MISIÓN SONORA ACTIVA (Faltan ${META_AUDIOS - audiosFrecuencia} audios para abrir el tercer nodo)`;
-        subHeader.classList.remove("liberada");
+    // 2. Verificamos si el usuario ya descifró el candado inicial (Fase 1 completada)
+    const nodoFrecuencia = nodosData.find(nodo => String(nodo.id) === NODO_FRECUENCIA_ID);
+    const frecuenciaDesbloqueada = nodoFrecuencia && String(nodoFrecuencia.estado).toLowerCase() === "unlocked";
+
+    // 3. LÓGICA DE FASES ESTRICTA Y ORDENADA
+    subHeader.style.display = "block"; // Asegurar que el mensaje se ve
+    
+    if (!frecuenciaDesbloqueada) {
+        // --- FASE 1: CANDADO BLOQUEADO ---
+        subHeader.innerText = "SISTEMA BLOQUEADO (FASE 01)";
+        subHeader.style.color = "var(--danger)";
         btnFab.style.display = "none";
-        labelAportes.style.color = "var(--danger)";
-        if (faseRed) faseRed.innerText = "Fase 01 · Reúne audios para abrir Pedagogía crítica virtual.";
-    } else if (!aperturaDesbloqueada) {
-        subHeader.innerText = "TERCER NODO DISPONIBLE: aporta videos para liberar el rizoma";
-        subHeader.classList.remove("liberada");
+        labelAportes.style.color = "var(--text-muted)";
+        if (faseRed) {
+            faseRed.innerText = "Fase 01 · Mira el video y descifra la clave.";
+            faseRed.style.color = "var(--danger)";
+        }
+        
+    } else if (audiosFrecuencia < META_AUDIOS) {
+        // --- FASE 2: REUNIENDO AUDIOS ---
+        subHeader.innerText = `SISTEMA RESTRINGIDO (Faltan ${META_AUDIOS - audiosFrecuencia} audios)`;
+        subHeader.style.color = "#f59e0b"; 
         btnFab.style.display = "none";
-        labelAportes.style.color = "#f59e0b";
-        if (faseRed) faseRed.innerText = "Fase 02 · La tercera tarjeta está disponible.";
-    }
-    else if (!expansionDesbloqueada) {
-        subHeader.innerText = `TERCER NODO ABIERTO (Faltan ${META_VIDEOS - videosRizoma} videos para liberar el rizoma)`;
-        subHeader.classList.remove("liberada");
+        labelAportes.style.color = "#f59e0b"; 
+        if (faseRed) {
+            faseRed.innerText = "Fase 02 · Reúne 10 audios para abrir Pedagogía crítica.";
+            faseRed.style.color = "#f59e0b";
+        }
+        
+    } else if (videosRizoma < META_VIDEOS) {
+        // --- FASE 3: ESTÁ POR LIBERARSE (VIDEOS) ---
+        subHeader.innerText = `EL RIZOMA ESTÁ POR LIBERARSE (Faltan ${META_VIDEOS - videosRizoma} videos)`;
+        subHeader.style.color = "#f59e0b"; 
         btnFab.style.display = "none";
-        labelAportes.style.color = "#f59e0b";
-        if (faseRed) faseRed.innerText = "Fase 03 · Reúne videos para liberar el rizoma.";
+        labelAportes.style.color = "var(--primary)";
+        if (faseRed) {
+            faseRed.innerText = "Fase 03 · El rizoma está por liberarse. Aporta videos.";
+            faseRed.style.color = "#f59e0b";
+        }
+        
     } else {
-        subHeader.innerText = "RIZOMA LIBERADO: puedes crear nodos y subnodos";
-        subHeader.classList.add("liberada");
+        // --- FASE 4: RIZOMA LIBRE ---
+        subHeader.innerText = "EL RIZOMA ESTABA RESTRINGIDO, PERO YA ES TOTALMENTE LIBRE";
+        subHeader.style.color = "var(--primary)";
         btnFab.style.display = "block";
         labelAportes.style.color = "var(--primary)";
-        if (faseRed) faseRed.innerText = "Fase liberada · La comunidad puede crear nuevas ramas.";
+        if (faseRed) {
+            faseRed.innerText = "Fase 04 · Rizoma libre. La comunidad ha roto la estructura oficial.";
+            faseRed.style.color = "var(--primary)";
+        }
 
         if (selectNivel.querySelector("option[value='BASE']")) selectNivel.querySelector("option[value='BASE']").disabled = false;
         if (alertaTema) alertaTema.style.display = "none";
@@ -202,8 +222,15 @@ function actualizarGamificacion(totalAportes) {
         alertaVideoNodo.innerText = "";
         alertaVideoAporte.style.display = "none";
     }
+    
+    // Controles para ocultar/mostrar creación de Tema Base según si la red está libre
     if (selectNivel.querySelector("option[value='BASE']")) selectNivel.querySelector("option[value='BASE']").disabled = !expansionDesbloqueada;
-    if (!expansionDesbloqueada) { selectNivel.value = "SUB"; cajaBase.style.display = "none"; cajaSub.style.display = "block"; if (alertaTema) alertaTema.style.display = "block"; }
+    if (!expansionDesbloqueada) { 
+        selectNivel.value = "SUB"; 
+        cajaBase.style.display = "none"; 
+        cajaSub.style.display = "block"; 
+        if (alertaTema) alertaTema.style.display = "block"; 
+    }
 }
 
 function renderizarNodos() {
@@ -229,19 +256,19 @@ function renderizarNodos() {
         let btnHtml = "";
         if (estadoVisual === "locked") {
             btnHtml = nodo.id === NODO_APERTURA_ID
-                ? `<button class="btn btn-locked" disabled>Bloqueado · Reúne 10 audios</button>`
-                : `<button class="btn btn-locked btn-abrir-desbloqueo" data-id="${nodo.id}">Ingresar clave de Frecuencia</button>`;
+                ? `<button class="btn btn-locked" disabled style="background: rgba(0,0,0,0.5); color: #f59e0b; border-color: #f59e0b;">Restringido · Reúne 10 audios</button>`
+                : `<button class="btn btn-locked btn-abrir-desbloqueo" data-id="${nodo.id}">Ingresar clave secreta</button>`;
         } else {
             btnHtml = `<button class="btn btn-primary btn-abrir-visor" data-id="${nodo.id}">Explorar Material Transmedia</button>`;
         }
 
-        const estiloEtiqueta = `style="color: ${escaparHTML(colorParaEtiqueta)}; border: 1px solid ${escaparHTML(colorParaEtiqueta)}40; background: transparent;"`;
+        const estiloEtiqueta = `style="color: ${escaparHTML(colorParaEtiqueta)}; border: 1px solid ${escaparHTML(colorParaEtiqueta)}40; background: rgba(0,0,0,0.4);"`;
 
         card.innerHTML = `
             <div class="node-header">
                 <div style="display:flex; align-items:center; gap: 0.5rem;">
                     <span class="node-type" ${estiloEtiqueta}>${escaparHTML(textoEtiqueta)}</span>
-                    <span class="node-id-label">ID: ${escaparHTML(nodo.id)}</span>
+                    <span class="node-id-label" style="background:rgba(0,0,0,0.4);">ID: ${escaparHTML(nodo.id)}</span>
                 </div>
                 <span>${estadoVisual === "locked" ? '🔒' : '🌐'}</span>
             </div>
@@ -374,7 +401,7 @@ function renderizarAportes(idNodo) {
 
             let urlCorta = "Archivo adjunto"; try { urlCorta = new URL(aporte.url).hostname.replace('www.', ''); } catch(e){}
             mediaHtml = `
-                <a href="${escaparHTML(obtenerURLSegura(aporte.url))}" target="_blank" rel="noopener noreferrer" class="recurso-link ${claseAporte}" style="margin-top: 1rem; padding: 0.6rem 1rem;">
+                <a href="${escaparHTML(obtenerURLSegura(aporte.url))}" target="_blank" rel="noopener noreferrer" class="recurso-link ${claseAporte}" style="margin-top: 1rem; padding: 0.6rem 1rem; background: rgba(0,0,0,0.2);">
                     <div class="recurso-icono" style="width: 35px; height: 35px; font-size: 1rem;">${iconoAporte}</div>
                     <div class="recurso-info"><span class="recurso-titulo" style="font-size: 0.85rem;">${labelAporte}</span><span class="recurso-url" style="font-size: 0.7rem;">${urlCorta}</span></div>
                     <div class="recurso-flecha" style="font-size: 1rem;">↗</div>
@@ -452,20 +479,39 @@ function configurarEventos() {
         }
     });
 
+    // --- NUEVA LÓGICA DE MODAL DE RESTRICCIÓN AL INTENTAR CREAR NODO ---
     document.getElementById("btn-fab-crear").addEventListener("click", () => {
         const audiosFrecuencia = contarAudiosDeFrecuencia();
         if (!rizomaDesbloqueado()) {
             const avance = tercerNodoDesbloqueado() ? contarVideosDelRizoma() : audiosFrecuencia;
             const meta = tercerNodoDesbloqueado() ? META_VIDEOS : META_AUDIOS;
+            const faltan = meta - avance;
+            
             document.getElementById("restriccion-contador").innerText = avance;
-            document.querySelector("#restriccion-modal p").innerText = tercerNodoDesbloqueado() ? `El rizoma permanece bloqueado hasta reunir ${META_VIDEOS} videos en Pedagogía crítica virtual.` : `La red necesita ${META_AUDIOS} audios en Frecuencia Emancipada para abrir el tercer nodo.`;
             document.getElementById("restriccion-meta").innerText = meta;
+            
+            const modalTitle = document.querySelector("#restriccion-modal h2");
+            const modalDesc = document.querySelector("#restriccion-modal p");
+            
+            if (tercerNodoDesbloqueado()) {
+                // Estamos en FASE 3 (Esperando videos)
+                modalTitle.innerText = "⏳ EL RIZOMA ESTÁ POR LIBERARSE";
+                modalTitle.style.color = "#f59e0b"; // Naranja vibrante
+                modalDesc.innerText = `El rizoma está por liberarse. Faltan ${faltan} videos en Pedagogía crítica virtual para romper la estructura lineal definitivamente.`;
+            } else {
+                // Estamos en FASE 2 o menor
+                modalTitle.innerText = "⚠️ SISTEMA RESTRINGIDO";
+                modalTitle.style.color = "var(--danger)"; // Rojo
+                modalDesc.innerText = `La red necesita ${META_AUDIOS} audios en Frecuencia Emancipada para abrir el tercer nodo.`;
+            }
+            
             document.getElementById("restriccion-modal").classList.remove("hidden");
             return;
         }
+        
+        // Si el rizoma está libre, abre el modal normalmente
         document.getElementById("crear-nodo-modal").classList.remove("hidden");
         actualizarSelectorPadres();
-        
         document.getElementById("nuevo-nivel").value = "BASE";
         document.getElementById("nuevo-nivel").dispatchEvent(new Event('change'));
     });
@@ -613,19 +659,10 @@ function configurarEventos() {
         });
     }
 
-    const btnAbrirMision = document.getElementById("btn-abrir-mision");
-    if (btnAbrirMision) {
-        btnAbrirMision.addEventListener("click", () => document.getElementById("mision-modal").classList.remove("hidden"));
-    }
-    const btnAbrirMisionHero = document.getElementById("btn-abrir-mision-hero");
-    if (btnAbrirMisionHero) {
-        btnAbrirMisionHero.addEventListener("click", () => document.getElementById("mision-modal").classList.remove("hidden"));
-    }
-
     const btnIrARed = document.getElementById("btn-ir-a-red");
     if (btnIrARed) {
         btnIrARed.addEventListener("click", () => {
-            document.getElementById("mision-modal").classList.add("hidden");
+            document.getElementById("mision-modal")?.classList.add("hidden");
             document.getElementById("rhizome-canvas").scrollIntoView({ behavior: "smooth", block: "start" });
         });
     }
@@ -646,18 +683,4 @@ function limpiarFormularioAporte() {
     selectorTipo.value = selectorTipo.querySelector("option[value='texto']") ? "texto" : selectorTipo.options[0]?.value || "";
     document.getElementById("aporte-autor").value = ""; document.getElementById("aporte-ubicacion").value = "";
     document.getElementById("aporte-url").placeholder = selectorTipo.value === "audio" ? "Enlace al podcast o audio (Obligatorio)" : "Enlace web de referencia (Opcional)";
-}
-
-function cargarDatosLocalesDePrueba() {
-    nodosData = [
-        { id: "N-001", titulo: "El umbral del archivo", autor: "Alma, Beto y Gera", descripcion: "Cortometraje inicial: descubre el vacío de información y encuentra la primera coordenada del Hipertexto.", tipo: "Video", tema: "BASE|||#e7b86b|||Mundo real", estado: "unlocked", url: "https://youtube.com", clave: "" },
-        { id: "N-002", titulo: "Frecuencia Emancipada", autor: "Alma, Beto y Gera", descripcion: "Repositorio de evidencias sonoras. La comunidad debe documentar una problemática educativa de su territorio.", tipo: "Podcast", tema: "BASE|||#65d6b0|||Mundo auditivo", estado: "locked", url: "https://spotify.com", clave: "PRAXIS" },
-        { id: "N-003", titulo: "Pedagogía crítica virtual", autor: "Alma, Beto y Gera", descripcion: "El tercer umbral se abre cuando la red recibe diez audios y permite crear nuevos nodos y subnodos.", tipo: "Artículo", tema: "BASE|||#a78bfa|||Mundo posible", estado: "locked", url: "https://medium.com", clave: "RIZOMA" }
-    ];
-    aportesData = [
-        { idAporte: "A-1001", idNodo: "N-002", tipo: "audio", autor: "Anderson", ubicacion: "Túquerres", texto: "Evidencia sonora de prueba", url: "https://example.com/audio", fecha: "22/08/2026" }
-    ]; 
-    conexionesData = [ { origen: "N-001", destino: "N-002" } ];
-    aplicarProgresoLocal();
-    renderizarNodos();
 }

@@ -8,52 +8,111 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
-<body>
-    <div class="app-container">
-        <header class="sys-header">
+<!-- FONDO GLOBAL: La imagen ahora ocupa todo el documento, con un oscurecimiento más suave para que se vea clara -->
+<body style="background: linear-gradient(rgba(13, 23, 38, 0.65), rgba(13, 23, 38, 0.85)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg') center/cover fixed no-repeat;">
+    
+    <div class="app-container" style="padding-top: 1rem;">
+        
+        <!-- HEADER TRANSPARENTE: Los botones y métricas flotan sobre el fondo -->
+        <header class="sys-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.15); flex-wrap: wrap; gap: 1rem;">
+            
             <div class="brand">
-                <span class="brand-eyebrow">Plataforma transmedia de investigación</span>
-                <h1>EL ARCHIVO <em>DEL MAÑANA</em></h1>
-                <span class="subtitle" id="estado-red-sub">ESTADO: INICIANDO RED NEURONAL</span>
+                <span class="brand-eyebrow" style="margin-bottom: 0.1rem; font-size: 0.6rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Plataforma transmedia de investigación</span>
+                <h1 style="font-size: 1.5rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">EL ARCHIVO <em>DEL MAÑANA</em></h1>
+                <span class="subtitle" id="estado-red-sub" style="display:none;">ESTADO: INICIANDO RED NEURONAL</span>
             </div>
-            <nav class="main-nav" aria-label="Navegación principal">
-                <a href="ruta.html" class="nav-link">Ruta</a>
-                <a href="mapa.html" class="nav-link">Cartografía</a>
-                <button id="btn-abrir-mision" class="btn btn-primary header-mission-button">Abrir misión</button>
-            </nav>
+            
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <!-- Panel de métricas con efecto cristal -->
+                <div style="display: flex; gap: 1rem; background: rgba(20, 34, 56, 0.5); backdrop-filter: blur(6px); padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                    <div style="display:flex; gap:0.4rem; align-items:center;" title="Desbloquean la tercera tarjeta">
+                        <span style="color: rgba(255,255,255,0.7); font-size: 0.7rem; text-transform: uppercase;">Audios:</span> 
+                        <strong id="contador-aportes" style="color: #ffffff; font-size: 0.85rem;">0/10</strong>
+                    </div>
+                    <div style="display:flex; gap:0.4rem; align-items:center;" title="Liberan la creación de ramas">
+                        <span style="color: rgba(255,255,255,0.7); font-size: 0.7rem; text-transform: uppercase;">Videos:</span> 
+                        <strong id="contador-videos" style="color: #ffffff; font-size: 0.85rem;">0/15</strong>
+                    </div>
+                    <div style="display:flex; gap:0.4rem; align-items:center;">
+                        <span style="color: rgba(255,255,255,0.7); font-size: 0.7rem; text-transform: uppercase;">Nodos:</span> 
+                        <strong id="contador-nodos" style="color: #ffffff; font-size: 0.85rem;">3</strong>
+                    </div>
+                </div>
+
+                <nav class="main-nav" aria-label="Navegación principal" style="display: flex; gap: 0.5rem; margin: 0;">
+                   <a href="#rhizome-canvas" id="btn-ir-a-red" class="btn" style="background: var(--primary); color: var(--bg-base); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">⬇ Explorar nodos</a>
+                   <a href="mapa.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2);">Mapa</a>
+                   <a href="ruta.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2);">Ruta / Ayuda</a>
+                </nav>
+            </div>
         </header>
 
         <main>
-            <section class="index-hero">
-                <div class="index-hero-copy">
-                    <span class="section-kicker">Archivo 01 · El Hipertexto</span>
-                    <h2>La historia no está completa.</h2>
-                    <p>Alma, Beto y Gera encontraron saltos en el archivo oficial. La comunidad explora los fragmentos, encuentra las claves y reconstruye aquello que quedó fuera.</p>
-                    <div class="hero-actions"><button id="btn-abrir-mision-hero" class="btn btn-primary">Comenzar misión</button><a href="ruta.html" class="text-link">Conocer la ruta →</a></div>
+            <!-- DESCRIPCIÓN AMPLIADA EN NUEVA LÍNEA -->
+            <section class="index-hero" style="margin-bottom: 2rem;">
+                
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <h2 style="font-size: 1.4rem; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">La historia no está completa</h2>
+                    <span style="color: rgba(255,255,255,0.3);">|</span>
+                    <!-- Etiqueta dinámica de Fase -->
+                    <span id="fase-red" style="font-size: 0.85rem; margin: 0; color: var(--primary); font-weight: 700; background: rgba(101, 214, 176, 0.15); padding: 0.3rem 0.8rem; border-radius: 4px; border: 1px solid rgba(101, 214, 176, 0.3); backdrop-filter: blur(4px);">Fase 01 · Red iniciando</span>
                 </div>
-                <div class="index-hero-image">
-                    <img src="Gemini_Generated_Image_lshcwqlshcwqlshc.jpg" alt="Alma, Beto y Gera frente al mapa del Hipertexto">
-                    <span>Una red de voces · Túquerres</span>
-                </div>
-                <div class="index-steps" aria-label="Progresión de la experiencia">
-                    <span class="active"><b>01</b>El umbral</span><i></i><span><b>02</b>Frecuencia</span><i></i><span><b>03</b>Pedagogía crítica</span>
+                
+                <!-- Párrafo extenso explicando el rizoma -->
+                <p style="font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; max-width: 950px; margin-bottom: 1.5rem; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
+                    <strong>El currículo oficial tiene vacíos y nos han entregado una versión procesada de la realidad.</strong> 
+                    Este rizoma es una cartografía transmedia viva donde la comunidad reconstruye el conocimiento que el archivo dejó fuera. 
+                    Cada aporte sonoro, audiovisual o escrito que sumas al territorio crea nuevas conexiones de pensamiento. 
+                    Explora los nodos interactivos, descubre las claves ocultas y ayúdanos a romper la estructura lineal del sistema pedagógico para fundar nuevas raíces libres.
+                </p>
+                
+                <!-- Fases en estilo barra inferior transparente -->
+                <div class="index-steps" style="display: inline-flex; gap: 0.6rem; align-items: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+                    <span class="active" style="font-size: 0.75rem; color: #10b981; font-weight: 700;">01 El umbral</span>
+                    <span style="color: rgba(255,255,255,0.2); font-size: 0.75rem;">/</span>
+                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">02 Frecuencia sonora</span>
+                    <span style="color: rgba(255,255,255,0.2); font-size: 0.75rem;">/</span>
+                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">03 Pedagogía crítica</span>
                 </div>
             </section>
-            <section class="progress-board" aria-label="Estado de la investigación">
-                <div class="progress-heading"><span class="section-kicker">Estado de la investigación</span><p id="fase-red">La red avanza con evidencias compartidas.</p></div>
-                <div class="progress-metric"><span>Audios en Frecuencia</span><strong id="contador-aportes">0/10</strong><small>Desbloquean la tercera tarjeta</small></div>
-                <div class="progress-metric"><span>Videos en Pedagogía crítica</span><strong id="contador-videos">0/15</strong><small>Liberan la creación de ramas</small></div>
-                <div class="progress-metric"><span>Nodos en la cartografía</span><strong id="contador-nodos">3</strong><small>Elementos de la red</small></div>
-                <div class="progress-note">Cada nodo reúne materiales, preguntas y aportes de la comunidad.</div>
-            </section>
-            <div id="rhizome-canvas" class="rhizome-grid"></div>
+            
+            <!-- EL RIZOMA: Con un fondo semitransparente para que la imagen se cuele sutilmente -->
+            <div id="rhizome-canvas" class="rhizome-grid" style="height: calc(100vh - 300px); min-height: 550px; width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(13, 23, 38, 0.4); backdrop-filter: blur(2px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>
+        </main>
+
+        <!-- EL RIZOMA: Con un fondo semitransparente para que la imagen se cuele sutilmente -->
+            <div id="rhizome-canvas" class="rhizome-grid" style="height: calc(100vh - 300px); min-height: 550px; width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(13, 23, 38, 0.4); backdrop-filter: blur(2px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>
+            
+            <!-- NUEVO: METADATOS DEL ARCHIVO (CRÉDITOS ACADÉMICOS) -->
+            <footer class="academic-credits" style="margin-top: 2.5rem; padding: 1.5rem; background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; font-size: 0.85rem; color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Contexto del Sistema</strong>
+                        <span style="color: #fff; font-weight: 600;">Universidad de Nariño</span><br>
+                        Facultad de Educación<br>
+                        Maestría en Educación Virtual e-MEV<br>
+                        <span style="display: inline-block; margin-top: 0.4rem; padding: 0.2rem 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.75rem;">Actividad 4 | Pista 01</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Investigadores (Nodos Base)</strong>
+                        <span style="color: #fff;">Anderson Ariel Salazar Salazar</span><br>
+                        <span style="color: #fff;">[Nombre Estudiante 2]</span><br>
+                        <span style="color: #fff;">[Nombre Estudiante 3]</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Dirección Cartográfica</strong>
+                        Docente Titular: <span style="color: #fff;">[Nombre Docente Titular]</span><br>
+                        Docente Ayudante: <span style="color: #fff;">[Nombre Docente Ayudante]</span>
+                    </div>
+                </div>
+            </footer>
         </main>
     </div>
 
+    <!-- Resto del documento intacto (Botón FAB y Modales) -->
     <button id="btn-fab-crear" class="fab-button">✚ Ramificar Rizoma</button>
 
-    <!-- Modales -->
-   <div id="decoder-modal" class="modal hidden">
+    <div id="decoder-modal" class="modal hidden">
         <div class="modal-box" style="border-left: 4px solid var(--danger);">
             <h2 id="modal-title" style="color: var(--danger); margin-bottom: 0.5rem;">⚠️ Conexión Interrumpida</h2>
             <p style="margin-bottom:1rem; font-size:0.95rem; color:var(--text-main); line-height: 1.5;">
@@ -217,6 +276,7 @@
         </div>
     </div>
 
+    <!-- Modal Misión -->
     <div id="mision-modal" class="modal hidden">
         <div class="modal-box mission-box">
             <div class="mission-header">
@@ -228,8 +288,8 @@
             </div>
             <p class="mission-lead">El archivo oficial tiene un vacío. La primera tarea de la comunidad es entrar en la historia, observar con atención y encontrar la clave que abre la siguiente frecuencia.</p>
             <div class="mission-steps">
-                <div><strong>01</strong><span>La comunidad abre la tarjeta <em>El umbral del archivo</em> y observa el video completo.</span></div>
-                <div><strong>02</strong><span>La comunidad busca en los diálogos, imágenes y códigos la palabra clave del primer umbral.</span></div>
+                <div><strong>01</strong><span>La comunidad abre la tarjeta <em>El umbral del archivo</em>, observa el video completo, busca coordenadas y descifra texto.</span></div>
+                <div><strong>02</strong><span>La comunidad encuentra en los diálogos, imágenes y códigos la palabra clave del primer umbral.</span></div>
                 <div><strong>03</strong><span>La clave desbloquea <em>Frecuencia Emancipada</em>, donde comienza la misión de los audios.</span></div>
             </div>
             <div class="mission-note"><strong>Resultado:</strong> Frecuencia Emancipada desbloqueada · <span>Los audios pertenecen a la segunda etapa y no cuentan en esta misión.</span></div>
@@ -240,14 +300,11 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
-</body>
-<!-- Modal de Inicio / Onboarding Narrativo -->
+    <!-- Modal de Inicio / Onboarding Narrativo -->
     <div id="onboarding-modal" class="modal">
         <div class="modal-box" style="max-width: 600px; text-align: center;">
             <h2 style="color: var(--primary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;">El Archivo del Mañana</h2>
             
-            <!-- Tarjeta Visual de Inicio -->
             <div class="onboarding-image">
                 <img src="tarjeta.png" alt="Tarjeta de inicio del rizoma" style="display: none;" onload="this.style.display='block'; this.parentElement.style.border='none';">
              </div>
@@ -259,7 +316,7 @@
             <div style="background: var(--bg-base); border-left: 3px solid var(--primary); padding: 1rem; text-align: left; margin-bottom: 1.5rem; border-radius: 0 4px 4px 0;">
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;"><strong>Mecánica del Sistema:</strong></p>
                 <ul style="font-size: 0.85rem; color: var(--text-main); margin-left: 1.2rem; line-height: 1.5;">
-                    <li style="margin-bottom: 0.4rem;">La comunidad mira el video de El umbral del archivo y encuentra la clave para abrir Frecuencia Emancipada.</li>
+                    <li style="margin-bottom: 0.4rem;">La comunidad observa el video completo, busca coordenadas, descifra texto del umbral del archivo y encuentra la clave para abrir Frecuencia Emancipada.</li>
                     <li>La red reúne <strong>10 audios</strong> para abrir Pedagogía crítica virtual y luego <strong>15 videos</strong> para liberar la creación de nodos.</li>
                 </ul>
             </div>
@@ -269,4 +326,30 @@
             </div>
         </div>
     </div>
+
+    <script src="app.js"></script>
+
+    <!-- SCRIPT DE LOCALSTORAGE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const onboardingModal = document.getElementById("onboarding-modal");
+            const btnIniciar = document.getElementById("btn-iniciar-experiencia");
+
+            if (onboardingModal) {
+                if (localStorage.getItem("onboardingCompletado") === "true") {
+                    onboardingModal.style.display = "none";
+                    onboardingModal.classList.add("hidden");
+                }
+
+                if (btnIniciar) {
+                    btnIniciar.addEventListener("click", function() {
+                        localStorage.setItem("onboardingCompletado", "true");
+                        onboardingModal.style.display = "none";
+                        onboardingModal.classList.add("hidden");
+                    });
+                }
+            }
+        });
+    </script>
+</body>
 </html>

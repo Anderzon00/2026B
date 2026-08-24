@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -7,76 +7,107 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="app-container">
-        <header class="sys-header">
+<!-- FONDO GLOBAL: Misma imagen inmersiva con un filtro ligeramente más oscuro para favorecer la lectura -->
+<body style="background: linear-gradient(rgba(13, 23, 38, 0.75), rgba(13, 23, 38, 0.90)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg') center/cover fixed no-repeat;">
+    
+    <div class="app-container" style="padding-top: 1rem;">
+        
+        <!-- HEADER COMPACTO: Alineado al estilo del index -->
+        <header class="sys-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.15); flex-wrap: wrap; gap: 1rem;">
             <div class="brand">
-                <h1>EL ARCHIVO DEL MAÑANA</h1>
-                <span class="subtitle liberada">RUTA DE EXPERIENCIA TRANSMEDIA</span>
+                <h1 style="font-size: 1.5rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">EL ARCHIVO DEL MAÑANA</h1>
+                <span class="subtitle liberada" style="font-size: 0.75rem; letter-spacing: 1px; margin-top: 0.2rem; display: block;">RUTA DE EXPERIENCIA TRANSMEDIA</span>
             </div>
             <div class="status-panel">
-                <a href="index.html" class="btn btn-primary header-link">Volver al territorio</a>
+                <a href="index.html" class="btn btn-primary header-link" style="padding: 0.45rem 0.8rem; font-size: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">⬅ Volver al rizoma</a>
             </div>
         </header>
 
-        <main class="route-page">
-            <section class="route-hero">
-                <span class="section-kicker">Instrucciones del archivo</span>
-                <h2>El rizoma está restringido.</h2>
-                <p>La experiencia comienza con una historia en video y se libera por etapas. Completa cada tarea para abrir la siguiente tarjeta y ayudar a Alma, Beto y Gera a recuperar la red.</p>
+        <main class="route-page" style="padding-bottom: 1rem;">
+            
+            <!-- INTRODUCCIÓN REDUCIDA EN ALTURA -->
+            <section class="route-hero" style="padding: 0.5rem 0 1.5rem; max-width: 800px;">
+                <span class="section-kicker" style="text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Instrucciones del archivo</span>
+                <h2 style="margin: 0.2rem 0 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.6); color: #fff;">El rizoma está restringido.</h2>
+                <p style="color: #e2e8f0; font-size: 0.95rem; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">La experiencia comienza con una historia en video y se libera por etapas. Completa cada tarea para abrir la siguiente tarjeta y ayudar a la comunidad a recuperar la red.</p>
             </section>
 
+            <!-- TARJETAS CON EFECTO CRISTAL (Glassmorphism) -->
             <section class="route-grid" aria-label="Fases de la experiencia">
-                <article class="route-card route-card-real">
-                    <span class="route-number">01</span>
-                    <span class="route-format">Tarjeta 01 · Mundo real</span>
-                    <h3>Ver el video y encontrar la clave</h3>
-                    <p>Los personajes descubren que la historia oficial tiene vacíos intencionales. Mira el cortometraje completo y busca en sus imágenes, diálogos y códigos la clave que permite acceder a la siguiente fase.</p>
-                    <div class="route-task"><strong>Tarea</strong><span>Identifica la clave del video e ingrésala cuando el sistema la solicite.</span></div>
+                <article class="route-card route-card-real" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                    <span class="route-number" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">01</span>
+                    <span class="route-format" style="color: rgba(255,255,255,0.7);">Tarjeta 01 · Mundo real</span>
+                    <h3 style="color: #fff;">Evadir el sistema y encontrar las claves</h3>
+                    <p style="color: #cbd5e1;">Alma, Beto y Gera lograron evadir la vigilancia y ocultaron información. <strong>La primera pista se encuentra en el video enlazado en "El umbral del archivo".</strong> El sistema te obligará a mirarlo para revelar la tarjeta. Luego, tu misión es rastrear las piezas ocultas en los aportes y descifrar la clave final.</p>
+                    <div class="route-task" style="background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.1); padding: 0.6rem;">
+                        <strong>Tarea</strong><span style="color: #cbd5e1;">Sobrevive a la restricción mirando el video, encuentra las pistas y descifra la palabra clave.</span>
+                    </div>
                     <div class="route-result"><b>Al completar:</b> se abre Frecuencia Emancipada.</div>
                 </article>
-                <article class="route-card route-card-web">
-                    <span class="route-format">Tarjeta 02 · Frecuencia sonora</span>
-                    <h3>Reunir diez audios del territorio</h3>
-                    <p>Frecuencia Emancipada solo recibe audios. Graba una evidencia de máximo 30 segundos sobre una problemática educativa cercana y acompáñala con una reflexión escrita.</p>
-                    <div class="route-task"><strong>Tarea</strong><span>Publica un enlace de audio válido. La comunidad debe reunir 10 audios.</span></div>
+
+                <article class="route-card route-card-web" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                    <span class="route-format" style="color: rgba(255,255,255,0.7);">Tarjeta 02 · Frecuencia sonora</span>
+                    <h3 style="color: #fff;">Reunir diez audios del territorio</h3>
+                    <p style="color: #cbd5e1;">Frecuencia Emancipada solo recibe audios. Graba una evidencia de máximo 30 segundos sobre una problemática educativa cercana y acompáñala con una reflexión escrita.</p>
+                    <div class="route-task" style="background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.1); padding: 0.6rem; margin-top: auto;">
+                        <strong>Tarea</strong><span style="color: #cbd5e1;">Publica un enlace de audio válido. La comunidad debe reunir 10 audios.</span>
+                    </div>
                     <div class="route-result"><b>Al completar:</b> la tercera tarjeta queda desbloqueada.</div>
                 </article>
-                <article class="route-card route-card-audio">
-                    <span class="route-format">Tarjeta 03 · Pedagogía crítica virtual</span>
-                    <h3>Pedagogía crítica virtual</h3>
-                    <p>Al completar los 10 audios de Frecuencia Emancipada se abre esta tercera tarjeta. Aquí la comunidad puede aportar texto, imagen, audio, video o enlaces web. Sin embargo, la red todavía conserva una última restricción: necesita 15 videos para quedar completamente libre.</p>
-                    <div class="route-task"><strong>Tarea</strong><span>Comparte 15 videos relacionados con las preguntas y problemáticas del proyecto.</span></div>
-                    <div class="route-result"><b>Al completar:</b> se habilita la creación de nuevos nodos y subnodos.</div>
+
+                <article class="route-card route-card-audio" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                    <span class="route-format" style="color: rgba(255,255,255,0.7);">Tarjeta 03 · Pedagogía crítica</span>
+                    <h3 style="color: #fff;">Pedagogía crítica virtual</h3>
+                    <p style="color: #cbd5e1;">Al completar los 10 audios se abre este espacio. Aquí puedes aportar texto, imagen, audio o enlaces web. Sin embargo, la red conserva una última restricción: necesita 15 videos para liberarse totalmente.</p>
+                    <div class="route-task" style="background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.1); padding: 0.6rem; margin-top: auto;">
+                        <strong>Tarea</strong><span style="color: #cbd5e1;">Comparte 15 videos relacionados con las problemáticas del proyecto.</span>
+                    </div>
+                    <div class="route-result"><b>Al completar:</b> se habilita la creación de nodos libres.</div>
                 </article>
             </section>
 
-            <section class="route-completion">
+            <!-- PANEL DE PROGRESO COMPACTADO CON FONDO CRISTAL -->
+            <section class="route-completion" style="background: rgba(20, 34, 56, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); padding: 1.2rem 1.5rem; margin: 1.5rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                 <span class="section-kicker">Cómo leer tu avance</span>
-                <h3>Si ya realizaste una tarea, esa fase ya está cumplida.</h3>
-                <p>El sistema conserva los aportes de la comunidad. No tienes que repetir una etapa completada: continúa desde la tarjeta que permanezca bloqueada y revisa el contador de la portada para saber qué falta.</p>
-                <div class="completion-flow"><span>Video visto + clave</span><i></i><span>10 audios</span><i></i><span>15 videos</span><i></i><span>Rizoma libre</span></div>
-            </section>
-
-            <section class="route-principles">
-                <div>
-                    <span class="section-kicker">Marco de lectura</span>
-                    <h3>Del consumo de información a la praxis</h3>
-                </div>
-                <div class="principle-list">
-                    <div><strong>Cartografía</strong><span>Construye tu propia ruta de sentido entre medios, fuentes y experiencias.</span></div>
-                    <div><strong>Rizoma</strong><span>Conecta ideas sin depender de un centro único ni de una secuencia obligatoria.</span></div>
-                    <div><strong>Mundos posibles</strong><span>Ensaya alternativas para imaginar una educación y un territorio diferentes.</span></div>
-                    <div><strong>Praxis</strong><span>Transforma la reflexión en una intervención documentada y situada.</span></div>
+                <h3 style="color: #fff; margin-top: 0;">Identifica el estado de la red y tu misión.</h3>
+                <p style="color: #cbd5e1; margin-bottom: 0.5rem;">El sistema conserva los aportes siguiendo un orden estricto. <strong>Si notas que una tarjeta está bloqueada, necesitamos tu ayuda para cumplir la meta de esa fase. Si la red ya es libre, continúa aportando para que la cartografía crezca.</strong></p>
+                
+                <div class="completion-flow" style="margin-top: 1rem;">
+                    <span style="background: rgba(0,0,0,0.4); border-color: rgba(101, 214, 176, 0.3);"><b>Fase 1:</b><br>Descifrar claves</span><i></i>
+                    <span style="background: rgba(0,0,0,0.4); border-color: rgba(101, 214, 176, 0.3);"><b>Fase 2:</b><br>Reunir 10 audios</span><i></i>
+                    <span style="background: rgba(0,0,0,0.4); border-color: rgba(101, 214, 176, 0.3);"><b>Fase 3:</b><br>Aportar 15 videos</span><i></i>
+                    <span style="background: rgba(101, 214, 176, 0.15); border-color: var(--primary);"><b>Fase 4:</b><br>Rizoma libre</span>
                 </div>
             </section>
 
-            <section class="route-cta">
+            <!-- PRINCIPIOS REDUCIDOS EN PADDING -->
+            <section class="route-principles" style="padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.15); gap: 1.5rem;">
                 <div>
-                    <span class="section-kicker">Siguiente coordenada</span>
-                    <h3>Vuelve al territorio y continúa la investigación.</h3>
+                    <span class="section-kicker" style="text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Marco de lectura</span>
+                    <h3 style="color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6);">Del consumo de información a la praxis</h3>
                 </div>
-                <a href="index.html" class="btn btn-primary route-cta-button">Volver al territorio</a>
+                <div class="principle-list" style="gap: 0.5rem;">
+                    <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem; backdrop-filter: blur(4px);">
+                        <strong>Cartografía</strong><span style="color: #cbd5e1;">Construye tu propia ruta de sentido entre medios y experiencias.</span>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem; backdrop-filter: blur(4px);">
+                        <strong>Rizoma</strong><span style="color: #cbd5e1;">Conecta ideas sin depender de una secuencia obligatoria.</span>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem; backdrop-filter: blur(4px);">
+                        <strong>Mundos posibles</strong><span style="color: #cbd5e1;">Ensaya alternativas para imaginar una educación diferente.</span>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem; backdrop-filter: blur(4px);">
+                        <strong>Praxis</strong><span style="color: #cbd5e1;">Transforma la reflexión en una intervención documentada.</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="route-cta" style="padding: 1.5rem 0 0;">
+                <div>
+                    <span class="section-kicker" style="text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Siguiente coordenada</span>
+                    <h3 style="color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6);">Vuelve al territorio y continúa la investigación.</h3>
+                </div>
+                <a href="index.html" class="btn btn-primary route-cta-button" style="box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Volver al rizoma</a>
             </section>
         </main>
     </div>

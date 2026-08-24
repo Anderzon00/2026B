@@ -8,61 +8,77 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
-<body>
-    <div class="app-container">
-        <header class="sys-header">
+<!-- FONDO GLOBAL: Consistencia con las demás pantallas -->
+<body style="background: linear-gradient(rgba(13, 23, 38, 0.75), rgba(13, 23, 38, 0.90)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg') center/cover fixed no-repeat;">
+    
+    <div class="app-container" style="padding-top: 1rem;">
+        
+        <!-- HEADER COMPACTO Y DE CRISTAL -->
+        <header class="sys-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.15); flex-wrap: wrap; gap: 1rem;">
             <div class="brand">
-                <h1>MAPA RIZOMÁTICO</h1>
-                <span class="subtitle liberada">CONEXIONES TRANSVERSALES DEL CONOCIMIENTO</span>
+                <h1 style="font-size: 1.5rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">MAPA RIZOMÁTICO</h1>
+                <span class="subtitle liberada" style="font-size: 0.75rem; letter-spacing: 1px; margin-top: 0.2rem; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">CONEXIONES TRANSVERSALES DEL CONOCIMIENTO</span>
             </div>
-            <div class="status-panel">
-                <a href="index.html" class="btn btn-ghost" style="width:auto; padding: 0.5rem 1rem; font-size:0.85rem;">⬅ Volver al Territorio</a>
-            </div>
+            
         </header>
         
-        <main>
-            <div class="map-intro">
+        <main style="padding-bottom: 1rem;">
+            <!-- INTRO Y CONTROLES AJUSTADOS PARA AHORRAR ESPACIO -->
+            <div class="map-intro" style="padding: 0.5rem 0 1rem; border-bottom: none; align-items: center;">
                 <div>
-                    <span class="section-kicker">Laboratorio de conocimiento colectivo</span>
-                    <h2>Explora las relaciones del territorio</h2>
-                    <p>Selecciona cualquier elemento para consultar su ficha, sus vínculos y las reflexiones que lo atraviesan.</p>
+                    <span class="section-kicker" style="text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Laboratorio de conocimiento colectivo</span>
+                    <h2 style="margin: 0.2rem 0 0.2rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); font-size: 1.6rem;">Explora las relaciones del territorio</h2>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; margin: 0; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">Selecciona cualquier elemento para consultar su ficha, sus vínculos y las reflexiones que lo atraviesan.</p>
                 </div>
-                <div class="map-actions">
-                    <label class="map-filter">Mostrar
-                        <select id="filtro-mapa" class="form-select">
+                <div class="map-actions" style="background: rgba(20, 34, 56, 0.4); backdrop-filter: blur(6px); padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+                    <label class="map-filter" style="color: #fff;">Mostrar
+                        <select id="filtro-mapa" class="form-select" style="background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
                             <option value="todos">Todo el mapa</option>
                             <option value="nodos">Solo nodos</option>
                             <option value="aportes">Solo aportes</option>
                         </select>
                     </label>
-                    <button id="btn-ajustar-mapa" class="btn btn-ghost map-button">Centrar mapa</button>
+                                     <a href="index.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">⬅ Volver al Rizoma</a>
+
+                    <button id="btn-ajustar-mapa" class="btn btn-ghost map-button" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Centrar mapa</button>
                     <button id="btn-activar-conexion" class="btn btn-primary map-button">Trazar conexión</button>
-                    <span id="estado-conexion" class="connection-status">Modo conexión activo: une dos elementos</span>
+                     <span id="estado-conexion" class="connection-status">Modo conexión activo: une dos elementos</span>
                 </div>
             </div>
 
-            <div class="map-stats" aria-label="Resumen de la cartografía">
-                <div class="map-stat"><span>Nodos de investigación</span><strong id="total-nodos">0</strong></div>
-                <div class="map-stat"><span>Reflexiones</span><strong id="total-aportes">0</strong></div>
-                <div class="map-stat"><span>Conexiones transversales</span><strong id="total-conexiones">0</strong></div>
-                <div class="map-legend"><span><i class="legend-dot legend-node"></i>Nodo base</span><span><i class="legend-dot legend-subnodo"></i>Subnodo</span><span><i class="legend-square legend-aporte"></i>Aporte</span><span><i class="legend-line"></i>Conexión</span></div>
+            <!-- ESTADÍSTICAS EN TARJETAS DE CRISTAL (Glassmorphism) -->
+            <div class="map-stats" aria-label="Resumen de la cartografía" style="margin: 0.5rem 0 1.5rem;">
+                <div class="map-stat" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3);"><span style="color: #cbd5e1;">Nodos de investigación</span><strong id="total-nodos" style="color: #fff;">0</strong></div>
+                <div class="map-stat" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3);"><span style="color: #cbd5e1;">Reflexiones</span><strong id="total-aportes" style="color: #fff;">0</strong></div>
+                <div class="map-stat" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3);"><span style="color: #cbd5e1;">Conexiones transversales</span><strong id="total-conexiones" style="color: #fff;">0</strong></div>
+                <div class="map-legend" style="background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    <span><i class="legend-dot legend-node"></i>Nodo base</span>
+                    <span><i class="legend-dot legend-subnodo"></i>Subnodo</span>
+                    <span><i class="legend-square legend-aporte"></i>Aporte</span>
+                    <span><i class="legend-line"></i>Conexión</span>
+                </div>
             </div>
 
-            <div class="map-workspace">
+            <div class="map-workspace" style="gap: 1.5rem;">
+                
+                <!-- LIENZO DEL MAPA: Fondo semitransparente para ver la imagen detrás -->
                 <section class="network-panel" aria-label="Mapa de relaciones">
                     <h3 id="loading-text" class="loading-text">Cargando cartografía desde la base de datos...</h3>
-                    <div id="mynetwork"></div>
-                    <div id="mapa-bloqueado" class="map-lock-overlay hidden">
+                    <div id="mynetwork" style="background: rgba(13, 23, 38, 0.4); backdrop-filter: blur(3px); border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 8px;"></div>
+                    <div id="mapa-bloqueado" class="map-lock-overlay hidden" style="background: rgba(13,23,38,0.85); backdrop-filter: blur(6px);">
                         <span class="map-lock-symbol">✦</span>
-                        <strong>Cartografía restringida</strong>
-                        <p>Las conexiones existen, pero la lectura profunda se libera después del video inicial y los 10 audios de Frecuencia Emancipada.</p>
+                        <strong style="color: #fff;">Cartografía restringida</strong>
+                        <p style="color: #cbd5e1;">Las conexiones existen, pero la lectura profunda se libera después del video inicial y los 10 audios de Frecuencia Emancipada.</p>
                     </div>
                 </section>
-                <aside id="detalle-mapa" class="map-detail-panel empty" aria-live="polite">
-                    <div class="detail-empty-icon">+</div>
-                    <h3>Selecciona un elemento</h3>
-                    <p>La ficha detallada del nodo o aporte aparecerá aquí para facilitar la lectura y el análisis.</p>
+                
+                <!-- PANEL LATERAL: Diseño unificado en cristal -->
+                <aside id="detalle-mapa" class="map-detail-panel empty" aria-live="polite" style="background: rgba(20, 34, 56, 0.65); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+                    <div class="detail-empty-icon" style="border-color: rgba(101, 214, 176, 0.5); color: rgba(101, 214, 176, 0.8);">+</div>
+                    <h3 style="color: #fff;">Selecciona un elemento</h3>
+                    <p style="color: #cbd5e1;">La ficha detallada del nodo o aporte aparecerá aquí para facilitar la lectura y el análisis.</p>
                 </aside>
+                
             </div>
         </main>
     </div>

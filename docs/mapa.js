@@ -27,6 +27,10 @@ function obtenerTemaRaiz(nodo) {
     return partes[0] === "SUB" ? partes[2] : "";
 }
 
+function contarVideosDelRizoma() {
+    return aportesData.filter(aporte => String(aporte.idNodo) === NODO_APERTURA_ID && String(aporte.tipo).toLowerCase() === "video").length;
+}
+
 function puedeVerMapa() {
     const videoVisto = localStorage.getItem("archivoVideoInicialVisto") === "true";
     const audios = aportesData.filter(aporte => String(aporte.idNodo) === NODO_FRECUENCIA_ID && String(aporte.tipo).toLowerCase() === "audio").length;
@@ -34,7 +38,7 @@ function puedeVerMapa() {
 }
 
 function puedeTrazarConexion() {
-    return aportesData.filter(aporte => String(aporte.idNodo) === NODO_APERTURA_ID && String(aporte.tipo).toLowerCase() === "video").length >= META_VIDEOS;
+    return contarVideosDelRizoma() >= META_VIDEOS;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -70,6 +74,24 @@ function aplicarProgresoLocal() {
     }
 }
 
+// --- NUEVA FUNCIÓN PARA APLICAR LA NARRATIVA EN TODA LA WEB ---
+function actualizarTextosGlobales() {
+    const subtitle = document.querySelector(".subtitle");
+    if (!subtitle) return;
+    
+    if (puedeTrazarConexion()) {
+        subtitle.innerText = "EL RIZOMA ESTABA RESTRINGIDO, PERO YA ES TOTALMENTE LIBRE";
+        subtitle.style.color = "var(--primary)";
+    } else if (puedeVerMapa()) {
+        const faltan = META_VIDEOS - contarVideosDelRizoma();
+        subtitle.innerText = `EL RIZOMA ESTÁ POR LIBERARSE (Faltan ${faltan} videos)`;
+        subtitle.style.color = "#f59e0b"; // Naranja
+    } else {
+        subtitle.innerText = "CARTOGRAFÍA RESTRINGIDA (FASE INICIAL)";
+        subtitle.style.color = "var(--danger)"; // Rojo
+    }
+}
+
 async function cargarDatosDesdeDrive() {
     try {
         const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=leerDatos`);
@@ -79,7 +101,8 @@ async function cargarDatosDesdeDrive() {
         aportesData = data.aportes || [];
         conexionesData = data.conexiones || [];
         
-        aplicarProgresoLocal(); // Sincronizar el estado de los candados localmente
+        aplicarProgresoLocal(); 
+        actualizarTextosGlobales(); // Aplicamos los textos globalmente en el header
         
         document.getElementById("loading-text").style.display = "none";
         dibujarRedRizomatica();
@@ -89,7 +112,6 @@ async function cargarDatosDesdeDrive() {
         console.error("Fallo la conexión:", error);
         document.getElementById("loading-text").innerText = "Modo contingencia (Visualizando datos locales)";
         
-        // Datos de contingencia actualizados
         nodosData = [
             { id: "N-001", titulo: "El Paradigma del Árbol", autor: "Sistema", tipo: "Artículo", tema: "BASE|||#ef4444|||Paradigma Tradicional", estado: "unlocked" },
             { id: "N-002", titulo: "Frecuencia Emancipada", autor: "Profesor Cartográfico", tipo: "Podcast", tema: "BASE|||#10b981|||El Rizoma", estado: "locked" },
@@ -99,6 +121,7 @@ async function cargarDatosDesdeDrive() {
         conexionesData = [{origen: "A-1001", destino: "N-001"}];
         
         aplicarProgresoLocal();
+        actualizarTextosGlobales();
         dibujarRedRizomatica();
         actualizarBloqueoMapa();
         actualizarEstadoConexion();
@@ -108,9 +131,23 @@ async function cargarDatosDesdeDrive() {
 function actualizarEstadoConexion() {
     const boton = document.getElementById("btn-activar-conexion");
     if (!boton) return;
-    boton.disabled = !puedeTrazarConexion();
-    boton.title = boton.disabled ? "Disponible cuando el rizoma alcance 15 videos" : "Trazar una conexión transversal";
-    if (boton.disabled) boton.innerText = "Conexiones libres: 0/15 videos";
+    const libres = puedeTrazarConexion();
+    boton.disabled = !libres;
+    
+    if (!libres) {
+        const faltan = META_VIDEOS - contarVideosDelRizoma();
+        boton.innerText = `Por liberarse (Faltan ${faltan} videos)`;
+        boton.title = "El rizoma está por liberarse. Aporta los videos necesarios en la red principal.";
+        boton.style.background = "rgba(0,0,0,0.5)";
+        boton.style.borderColor = "#f59e0b";
+        boton.style.color = "#f59e0b";
+    } else {
+        boton.innerText = "Trazar conexión libre";
+        boton.title = "El rizoma es libre. Traza conexiones transversales.";
+        boton.style.background = "var(--primary)";
+        boton.style.borderColor = "var(--primary)";
+        boton.style.color = "var(--bg-base)";
+    }
 }
 
 function actualizarBloqueoMapa() {
@@ -142,7 +179,6 @@ function dibujarRedRizomatica() {
     nodosData.forEach(nodo => {
         if (filtroMapa === "aportes") return;
         if (mapaBloqueado && !["N-001", "N-002", "N-003"].includes(String(nodo.id))) return;
-        // ERROR CORREGIDO: Ya no ocultamos los nodos con && nodo.id !== 'N-002'
         
         let esBase = false;
         let colorNodo = "#a1a1aa";
@@ -154,10 +190,9 @@ function dibujarRedRizomatica() {
             colorNodo = partes[1];
         }
 
-        // Si el nodo sigue bloqueado (el usuario no lo ha desencriptado), lo mostramos como enigmático
         if (nodo.estado === "locked") {
             labelFinal = "🔒 " + (nodo.id === "N-003" ? "NODO ENCRIPTADO" : "NODO ENCRIPTADO");
-            colorNodo = "#3f3f46"; // Gris oscuro para ocultar su color real
+            colorNodo = "#3f3f46"; 
         } else if (esBase) {
             labelFinal = nodo.titulo.toUpperCase();
         }
@@ -292,9 +327,9 @@ function mostrarDetalle(id) {
         panel.classList.remove("empty");
         panel.innerHTML = `<span class="detail-label">${nodo.estado === "locked" ? "Nodo protegido" : "Nodo de investigación"}</span>
             <h3 class="detail-title">${escaparHTML(nodo.estado === "locked" ? "Nodo encriptado" : nodo.titulo)}</h3>
-            <div class="detail-meta">ID ${escaparHTML(nodo.id)}<br>Autor: ${escaparHTML(nodo.autor || "Anónimo")}<br>Tema: ${escaparHTML(tema)}<br>${reflexiones} reflexiones vinculadas</div>
-            <p class="detail-text">${escaparHTML(nodo.estado === "locked" ? "Este contenido está protegido. Accede al Territorio Central para desencriptarlo." : nodo.descripcion || "Este nodo todavía no tiene una descripción.")}</p>
-            ${nodo.estado === "locked" ? "" : `<a class="detail-link" href="${escaparHTML(recurso)}" target="_blank" rel="noopener noreferrer">Abrir recurso transmedia ↗</a>`}`;
+            <div class="detail-meta" style="color: #cbd5e1;">ID ${escaparHTML(nodo.id)}<br>Autor: ${escaparHTML(nodo.autor || "Anónimo")}<br>Tema: ${escaparHTML(tema)}<br>${reflexiones} reflexiones vinculadas</div>
+            <p class="detail-text" style="color: #fff;">${escaparHTML(nodo.estado === "locked" ? "Este contenido está protegido. Accede al Territorio Central para desencriptarlo." : nodo.descripcion || "Este nodo todavía no tiene una descripción.")}</p>
+            ${nodo.estado === "locked" ? "" : `<a class="detail-link" style="color: var(--primary);" href="${escaparHTML(recurso)}" target="_blank" rel="noopener noreferrer">Abrir recurso transmedia ↗</a>`}`;
         return;
     }
 
@@ -303,8 +338,8 @@ function mostrarDetalle(id) {
         panel.classList.remove("empty");
         panel.innerHTML = `<span class="detail-label">Reflexión comunitaria</span>
             <h3 class="detail-title">${escaparHTML(aporte.autor || "Anónimo")}</h3>
-            <div class="detail-meta">ID ${escaparHTML(aporte.idAporte || id)}<br>Ubicación: ${escaparHTML(aporte.ubicacion || "Territorio digital")}<br>Fecha: ${escaparHTML(aporte.fecha || "Sin fecha")}</div>
-            <p class="detail-text">${escaparHTML(aporte.texto || "Sin texto registrado.")}</p>
-            ${aporte.url ? `<a class="detail-link" href="${escaparHTML(recurso)}" target="_blank" rel="noopener noreferrer">Abrir enlace adjunto ↗</a>` : ""}`;
+            <div class="detail-meta" style="color: #cbd5e1;">ID ${escaparHTML(aporte.idAporte || id)}<br>Ubicación: ${escaparHTML(aporte.ubicacion || "Territorio digital")}<br>Fecha: ${escaparHTML(aporte.fecha || "Sin fecha")}</div>
+            <p class="detail-text" style="color: #fff;">${escaparHTML(aporte.texto || "Sin texto registrado.")}</p>
+            ${aporte.url ? `<a class="detail-link" style="color: var(--primary);" href="${escaparHTML(recurso)}" target="_blank" rel="noopener noreferrer">Abrir enlace adjunto ↗</a>` : ""}`;
     }
 }
