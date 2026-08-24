@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function cargarDatosDesdeDrive() {
     const canvas = document.getElementById("rhizome-canvas");
-    canvas.innerHTML = "<p style='text-align:center; width:100%; color:#fff;'>Sincronizando cartografía de la e-MEV...</p>";
+    if (canvas) canvas.innerHTML = "<p style='text-align:center; width:100%; color:#fff;'>Sincronizando cartografía de la e-MEV...</p>";
     
     try {
         const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=leerDatos`);
@@ -148,7 +148,6 @@ function actualizarGamificacion(totalAportes) {
     const alertaVideoAporte = document.getElementById("alerta-video-aporte");
     const faseRed = document.getElementById("fase-red");
 
-    // 1. Verificamos el progreso de los audios y videos
     const audiosFrecuencia = contarAudiosDeFrecuencia();
     if (audiosFrecuencia >= META_AUDIOS) {
         const nodoApertura = nodosData.find(nodo => String(nodo.id) === NODO_APERTURA_ID);
@@ -157,75 +156,51 @@ function actualizarGamificacion(totalAportes) {
     const videosRizoma = contarVideosDelRizoma();
     const expansionDesbloqueada = rizomaDesbloqueado();
 
-    // Actualizamos los contadores visuales
-    labelAportes.innerText = `${audiosFrecuencia}/${META_AUDIOS}`;
+    if (labelAportes) labelAportes.innerText = `${audiosFrecuencia}/${META_AUDIOS}`;
     const contadorVideos = document.getElementById("contador-videos");
     if (contadorVideos) contadorVideos.innerText = `${videosRizoma}/${META_VIDEOS}`;
 
-    // 2. Verificamos si el usuario ya descifró el candado inicial (Fase 1 completada)
     const nodoFrecuencia = nodosData.find(nodo => String(nodo.id) === NODO_FRECUENCIA_ID);
     const frecuenciaDesbloqueada = nodoFrecuencia && String(nodoFrecuencia.estado).toLowerCase() === "unlocked";
 
-    // 3. LÓGICA DE FASES ESTRICTA Y ORDENADA
-    subHeader.style.display = "block"; // Asegurar que el mensaje se ve
+    if (subHeader) subHeader.style.display = "block";
     
     if (!frecuenciaDesbloqueada) {
-        // --- FASE 1: CANDADO BLOQUEADO ---
-        subHeader.innerText = "SISTEMA BLOQUEADO (FASE 01)";
-        subHeader.style.color = "var(--danger)";
-        btnFab.style.display = "none";
-        labelAportes.style.color = "var(--text-muted)";
-        if (faseRed) {
-            faseRed.innerText = "Fase 01 · Mira el video y descifra la clave.";
-            faseRed.style.color = "var(--danger)";
-        }
+        if (subHeader) { subHeader.innerText = "SISTEMA BLOQUEADO (FASE 01)"; subHeader.style.color = "var(--danger)"; }
+        if (btnFab) btnFab.style.display = "none";
+        if (labelAportes) labelAportes.style.color = "var(--text-muted)";
+        if (faseRed) { faseRed.innerText = "Fase 01 · Mira el video y descifra la clave."; faseRed.style.color = "var(--danger)"; }
         
     } else if (audiosFrecuencia < META_AUDIOS) {
-        // --- FASE 2: REUNIENDO AUDIOS ---
-        subHeader.innerText = `SISTEMA RESTRINGIDO (Faltan ${META_AUDIOS - audiosFrecuencia} audios)`;
-        subHeader.style.color = "#f59e0b"; 
-        btnFab.style.display = "none";
-        labelAportes.style.color = "#f59e0b"; 
-        if (faseRed) {
-            faseRed.innerText = "Fase 02 · Reúne 10 audios para abrir Pedagogía crítica.";
-            faseRed.style.color = "#f59e0b";
-        }
+        if (subHeader) { subHeader.innerText = `SISTEMA RESTRINGIDO (Faltan ${META_AUDIOS - audiosFrecuencia} audios)`; subHeader.style.color = "#f59e0b"; }
+        if (btnFab) btnFab.style.display = "none";
+        if (labelAportes) labelAportes.style.color = "#f59e0b"; 
+        if (faseRed) { faseRed.innerText = "Fase 02 · Reúne 10 audios para abrir Pedagogía crítica."; faseRed.style.color = "#f59e0b"; }
         
     } else if (videosRizoma < META_VIDEOS) {
-        // --- FASE 3: ESTÁ POR LIBERARSE (VIDEOS) ---
-        subHeader.innerText = `EL RIZOMA ESTÁ POR LIBERARSE (Faltan ${META_VIDEOS - videosRizoma} videos)`;
-        subHeader.style.color = "#f59e0b"; 
-        btnFab.style.display = "none";
-        labelAportes.style.color = "var(--primary)";
-        if (faseRed) {
-            faseRed.innerText = "Fase 03 · El rizoma está por liberarse. Aporta videos.";
-            faseRed.style.color = "#f59e0b";
-        }
+        if (subHeader) { subHeader.innerText = `EL RIZOMA ESTÁ POR LIBERARSE (Faltan ${META_VIDEOS - videosRizoma} videos)`; subHeader.style.color = "#f59e0b"; }
+        if (btnFab) btnFab.style.display = "none";
+        if (labelAportes) labelAportes.style.color = "var(--primary)";
+        if (faseRed) { faseRed.innerText = "Fase 03 · El rizoma está por liberarse. Aporta videos."; faseRed.style.color = "#f59e0b"; }
         
     } else {
-        // --- FASE 4: RIZOMA LIBRE ---
-        subHeader.innerText = "EL RIZOMA ESTABA RESTRINGIDO, PERO YA ES TOTALMENTE LIBRE";
-        subHeader.style.color = "var(--primary)";
-        btnFab.style.display = "block";
-        labelAportes.style.color = "var(--primary)";
-        if (faseRed) {
-            faseRed.innerText = "Fase 04 · Rizoma libre. La comunidad ha roto la estructura oficial.";
-            faseRed.style.color = "var(--primary)";
-        }
+        if (subHeader) { subHeader.innerText = "EL RIZOMA ESTABA RESTRINGIDO, PERO YA ES TOTALMENTE LIBRE"; subHeader.style.color = "var(--primary)"; }
+        if (btnFab) btnFab.style.display = "block";
+        if (labelAportes) labelAportes.style.color = "var(--primary)";
+        if (faseRed) { faseRed.innerText = "Fase 04 · Rizoma libre. La comunidad ha roto la estructura oficial."; faseRed.style.color = "var(--primary)"; }
 
-        if (selectNivel.querySelector("option[value='BASE']")) selectNivel.querySelector("option[value='BASE']").disabled = false;
+        if (selectNivel && selectNivel.querySelector("option[value='BASE']")) selectNivel.querySelector("option[value='BASE']").disabled = false;
         if (alertaTema) alertaTema.style.display = "none";
 
-        if (!selectTipoNodo.querySelector("option[value='Video']")) {
+        if (selectTipoNodo && !selectTipoNodo.querySelector("option[value='Video']")) {
             const opt = document.createElement("option"); opt.value = "Video"; opt.text = "4. Video / Cortometraje (YouTube)"; selectTipoNodo.appendChild(opt);
         }
-        alertaVideoNodo.innerText = "";
-        alertaVideoAporte.style.display = "none";
+        if (alertaVideoNodo) alertaVideoNodo.innerText = "";
+        if (alertaVideoAporte) alertaVideoAporte.style.display = "none";
     }
     
-    // Controles para ocultar/mostrar creación de Tema Base según si la red está libre
-    if (selectNivel.querySelector("option[value='BASE']")) selectNivel.querySelector("option[value='BASE']").disabled = !expansionDesbloqueada;
-    if (!expansionDesbloqueada) { 
+    if (selectNivel && selectNivel.querySelector("option[value='BASE']")) selectNivel.querySelector("option[value='BASE']").disabled = !expansionDesbloqueada;
+    if (!expansionDesbloqueada && selectNivel && cajaBase && cajaSub) { 
         selectNivel.value = "SUB"; 
         cajaBase.style.display = "none"; 
         cajaSub.style.display = "block"; 
@@ -234,9 +209,11 @@ function actualizarGamificacion(totalAportes) {
 }
 
 function renderizarNodos() {
-    const canvas = document.getElementById("rhizome-canvas"); canvas.innerHTML = "";
-    const totalAportes = aportesData.length;
+    const canvas = document.getElementById("rhizome-canvas"); 
+    if (!canvas) return;
+    canvas.innerHTML = "";
     
+    const totalAportes = aportesData.length;
     actualizarGamificacion(totalAportes);
 
     const nodosMostrados = [...obtenerNodosVisibles()].reverse(); 
@@ -262,6 +239,33 @@ function renderizarNodos() {
             btnHtml = `<button class="btn btn-primary btn-abrir-visor" data-id="${nodo.id}">Explorar Material Transmedia</button>`;
         }
 
+        // --- LÓGICA INTEGRADA: RAMIFICACIONES DIRECTAS EN EL NODO PRINCIPAL ---
+        let conexionesId = new Set();
+        conexionesData.forEach(c => {
+            if (c.origen === nodo.id && c.destino.startsWith('N-')) conexionesId.add(c.destino);
+            if (c.destino === nodo.id && c.origen.startsWith('N-')) conexionesId.add(c.origen);
+        });
+
+        let conHTML = "";
+        if (conexionesId.size > 0) {
+            conHTML = `<div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px dashed rgba(255,255,255,0.15);">
+                <span style="display:block; font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.5px;">🔗 Conexiones directas:</span>
+                <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">`;
+            
+            Array.from(conexionesId).forEach(conId => {
+                let nodoDest = nodosData.find(n => String(n.id) === String(conId));
+                if(nodoDest) {
+                    const bloqueado = String(nodoDest.estado || "unlocked").trim().toLowerCase() === "locked";
+                    const esApertura = String(nodoDest.id) === NODO_APERTURA_ID;
+                    const accion = bloqueado ? (esApertura ? "btn-sin-acceso" : "btn-abrir-desbloqueo") : "btn-abrir-visor";
+                    const etiqueta = bloqueado ? `🔒 ${nodoDest.titulo}` : nodoDest.titulo;
+                    
+                    conHTML += `<button class="btn-ghost ${accion}" data-id="${escaparHTML(conId)}" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; border-radius: 4px; width:auto; border-color: rgba(255,255,255,0.2); color:var(--text-muted); cursor:pointer;">${escaparHTML(etiqueta)}</button>`;
+                }
+            });
+            conHTML += `</div></div>`;
+        }
+
         const estiloEtiqueta = `style="color: ${escaparHTML(colorParaEtiqueta)}; border: 1px solid ${escaparHTML(colorParaEtiqueta)}40; background: rgba(0,0,0,0.4);"`;
 
         card.innerHTML = `
@@ -272,16 +276,19 @@ function renderizarNodos() {
                 </div>
                 <span>${estadoVisual === "locked" ? '🔒' : '🌐'}</span>
             </div>
-            <div class="node-content">
+            <div class="node-content" style="padding-bottom: 0.5rem;">
                 <h3 class="node-title">${escaparHTML(nodo.titulo)}</h3>
                 ${nodo.autor ? `<span class="node-autor">Por: ${escaparHTML(nodo.autor)}</span>` : ""}
                 <p class="node-excerpt">${escaparHTML(obtenerExtracto(nodo.descripcion))}</p>
+                ${conHTML}
             </div>
             ${btnHtml}
         `;
         canvas.appendChild(card);
     });
-    document.getElementById("contador-nodos").innerText = nodosData.length;
+    
+    const contadorNodos = document.getElementById("contador-nodos");
+    if (contadorNodos) contadorNodos.innerText = nodosData.length;
 }
 
 function obtenerExtracto(descripcion) {
@@ -321,6 +328,7 @@ function abrirVisorMultimedia(id) {
         mediaContainer.style.display = "none";
     }
     
+    // Las conexiones también se mantienen en el visor por completitud
     let conexionesId = new Set();
     conexionesData.forEach(c => {
         if (c.origen === id && c.destino.startsWith('N-')) conexionesId.add(c.destino);
@@ -429,6 +437,8 @@ function configurarEventos() {
             localStorage.setItem(MEMORIA_VIDEO, "true");
             renderizarNodos();
         }
+        
+        // Al dar clic en el botón de un nodo principal O en el botón de una ramificación:
         const btnVisor = e.target.closest(".btn-abrir-visor");
         if (btnVisor) {
             const id = btnVisor.getAttribute("data-id");
@@ -479,7 +489,6 @@ function configurarEventos() {
         }
     });
 
-    // --- NUEVA LÓGICA DE MODAL DE RESTRICCIÓN AL INTENTAR CREAR NODO ---
     document.getElementById("btn-fab-crear").addEventListener("click", () => {
         const audiosFrecuencia = contarAudiosDeFrecuencia();
         if (!rizomaDesbloqueado()) {
@@ -494,14 +503,12 @@ function configurarEventos() {
             const modalDesc = document.querySelector("#restriccion-modal p");
             
             if (tercerNodoDesbloqueado()) {
-                // Estamos en FASE 3 (Esperando videos)
                 modalTitle.innerText = "⏳ EL RIZOMA ESTÁ POR LIBERARSE";
-                modalTitle.style.color = "#f59e0b"; // Naranja vibrante
+                modalTitle.style.color = "#f59e0b";
                 modalDesc.innerText = `El rizoma está por liberarse. Faltan ${faltan} videos en Pedagogía crítica virtual para romper la estructura lineal definitivamente.`;
             } else {
-                // Estamos en FASE 2 o menor
                 modalTitle.innerText = "⚠️ SISTEMA RESTRINGIDO";
-                modalTitle.style.color = "var(--danger)"; // Rojo
+                modalTitle.style.color = "var(--danger)";
                 modalDesc.innerText = `La red necesita ${META_AUDIOS} audios en Frecuencia Emancipada para abrir el tercer nodo.`;
             }
             
@@ -509,7 +516,6 @@ function configurarEventos() {
             return;
         }
         
-        // Si el rizoma está libre, abre el modal normalmente
         document.getElementById("crear-nodo-modal").classList.remove("hidden");
         actualizarSelectorPadres();
         document.getElementById("nuevo-nivel").value = "BASE";
@@ -529,18 +535,12 @@ function configurarEventos() {
 
     document.getElementById("btn-save-nodo").addEventListener("click", async () => {
         const titulo = document.getElementById("nuevo-titulo").value.trim();
-        if (!titulo) {
-            alert("SISTEMA: El 'Título' es obligatorio para poder fundar un nuevo nodo.");
-            return;
-        }
+        if (!titulo) { alert("SISTEMA: El 'Título' es obligatorio para poder fundar un nuevo nodo."); return; }
         
         const tipoNodo = document.getElementById("nuevo-tipo").value;
         const urlNodo = document.getElementById("nuevo-url").value.trim();
         
-        if (!urlNodo) {
-            alert(`SISTEMA: Para un nodo transmedia tipo '${tipoNodo}', el Enlace Externo del material es completamente OBLIGATORIO.`);
-            return;
-        }
+        if (!urlNodo) { alert(`SISTEMA: Para un nodo transmedia tipo '${tipoNodo}', el Enlace Externo del material es completamente OBLIGATORIO.`); return; }
 
         const btnGuardar = document.getElementById("btn-save-nodo"); btnGuardar.innerText = "Conectando..."; btnGuardar.disabled = true;
 
@@ -594,10 +594,12 @@ function configurarEventos() {
 
     const aporteTexto = document.getElementById("aporte-texto");
     const contadorCaracteres = document.getElementById("contador-caracteres-aporte");
-    aporteTexto.maxLength = 1000;
-    aporteTexto.addEventListener("input", () => {
-        contadorCaracteres.innerText = `${aporteTexto.value.length} / 1000`;
-    });
+    if(aporteTexto) {
+        aporteTexto.maxLength = 1000;
+        aporteTexto.addEventListener("input", () => {
+            contadorCaracteres.innerText = `${aporteTexto.value.length} / 1000`;
+        });
+    }
 
     document.getElementById("btn-enviar-aporte").addEventListener("click", async () => {
         const texto = document.getElementById("aporte-texto").value.trim(); 
@@ -610,17 +612,14 @@ function configurarEventos() {
         const urlAporte = document.getElementById("aporte-url").value.trim();
 
         if (nodoActivoId === NODO_FRECUENCIA_ID && tipoAporte !== "audio") {
-            alert("Esta frecuencia recibe únicamente audios de máximo 30 segundos.");
-            return;
+            alert("Esta frecuencia recibe únicamente audios de máximo 30 segundos."); return;
         }
         
         if ((tipoAporte === "audio" || tipoAporte === "video" || tipoAporte === "imagen") && !urlAporte) {
-            alert(`SISTEMA: Has elegido incrustar '${tipoAporte}'. El enlace del archivo multimedia es obligatorio.`);
-            return;
+            alert(`SISTEMA: Has elegido incrustar '${tipoAporte}'. El enlace del archivo multimedia es obligatorio.`); return;
         }
         if (urlAporte && obtenerURLSegura(urlAporte) === "#") {
-            alert("SISTEMA: Introduce un enlace web válido que comience por http:// o https://.");
-            return;
+            alert("SISTEMA: Introduce un enlace web válido que comience por http:// o https://."); return;
         }
 
         const btnAporte = document.getElementById("btn-enviar-aporte"); btnAporte.innerText = "Transmitiendo..."; btnAporte.disabled = true;
@@ -637,9 +636,7 @@ function configurarEventos() {
         renderizarNodos(); 
         
         const exito = await enviarADrive("NUEVO_APORTE", nuevoAporte);
-        if (!exito && GOOGLE_SCRIPT_URL !== "") {
-            console.warn("Fallo el guardado en Drive, pero se mantiene en sesión local.");
-        }
+        if (!exito && GOOGLE_SCRIPT_URL !== "") { console.warn("Fallo el guardado en Drive, pero se mantiene en sesión local."); }
         
         btnAporte.innerText = "Transmitir Reflexión"; btnAporte.disabled = false; limpiarFormularioAporte();
     });
@@ -648,8 +645,6 @@ function configurarEventos() {
         btn.addEventListener("click", (e) => { e.target.closest(".modal").classList.add("hidden"); });
     });
 
-
-    // Cierra el modal inicial de Onboarding
     const btnIniciar = document.getElementById("btn-iniciar-experiencia");
     if (btnIniciar) {
         btnIniciar.addEventListener("click", () => {
@@ -663,7 +658,8 @@ function configurarEventos() {
     if (btnIrARed) {
         btnIrARed.addEventListener("click", () => {
             document.getElementById("mision-modal")?.classList.add("hidden");
-            document.getElementById("rhizome-canvas").scrollIntoView({ behavior: "smooth", block: "start" });
+            const canvas = document.getElementById("rhizome-canvas");
+            if (canvas) canvas.scrollIntoView({ behavior: "smooth", block: "start" });
         });
     }
 }
