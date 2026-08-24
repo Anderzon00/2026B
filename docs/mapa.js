@@ -278,16 +278,24 @@ function dibujarRedRizomatica() {
                 gravitationalConstant: -50, 
                 centralGravity: 0.005, 
                 springLength: 100, 
-                springConstant: 0.08 
+                springConstant: 0.08,
+                damping: 0.4 // 👈 Frena el movimiento más rápido (por defecto es 0.4, puedes subirlo a 0.6)
             }, 
-            maxVelocity: 50, minVelocity: 0.1, timestep: 0.5 
+            maxVelocity: 50, 
+            minVelocity: 1.5, // 👈 CLAVE: Si se mueven más lento que esto, el motor los detiene por completo
+            timestep: 0.5,
+            stabilization: {
+                enabled: true, // Calcula el acomodo antes de soltar la animación
+                iterations: 200, // Cuántas veces calcula en segundo plano
+                fit: true // Ajusta la cámara para que se vean todos al terminar
+            }
         },
         interaction: { hover: true, tooltipDelay: 200, zoomView: true, dragView: true },
         manipulation: {
             enabled: false,
             addEdge: function (data, callback) {
                 if (data.from === data.to) { alert("Un rizoma se conecta con otros elementos, no consigo mismo."); return; }
-                if(confirm("¿Establecer conexión transversal en el rizoma educativo?")) {
+                if(confirm("¿Establecer conexión con el rizoma?")) {
                     data.color = { color: '#8b5cf6', opacity: 0.8 };
                     data.dashes = true;
                     data.width = 1.5;

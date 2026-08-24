@@ -230,13 +230,14 @@ function renderizarNodos() {
         const estadoVisual = nodo.estado ? nodo.estado.trim().toLowerCase() : "unlocked";
         const card = document.createElement("article"); card.className = `node-card ${estadoVisual}`; card.style.borderLeftColor = colorParaEtiqueta;
         
-        let btnHtml = "";
+       let btnHtml = "";
         if (estadoVisual === "locked") {
             btnHtml = nodo.id === NODO_APERTURA_ID
-                ? `<button class="btn btn-locked" disabled style="background: rgba(0,0,0,0.5); color: #f59e0b; border-color: #f59e0b;">Restringido · Reúne 10 audios</button>`
-                : `<button class="btn btn-locked btn-abrir-desbloqueo" data-id="${nodo.id}">Ingresar clave secreta</button>`;
+                ? `<button class="btn btn-locked" disabled style="background: rgba(0,0,0,0.5); color: #f59e0b; border-color: #f59e0b; margin-top: auto;">Restringido · Reúne 10 audios</button>`
+                : `<button class="btn btn-locked btn-abrir-desbloqueo" data-id="${nodo.id}" style="margin-top: auto;">Ingresar clave secreta</button>`;
         } else {
-            btnHtml = `<button class="btn btn-primary btn-abrir-visor" data-id="${nodo.id}">Explorar Material Transmedia</button>`;
+            // AQUI CAMBIAMOS EL TEXTO Y ANCLAMOS EL BOTÓN AL FONDO
+            btnHtml = `<button class="btn btn-primary btn-abrir-visor" data-id="${nodo.id}" style="margin-top: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">Ver tarjeta del nodo</button>`;
         }
 
         // --- LÓGICA INTEGRADA: RAMIFICACIONES DIRECTAS EN EL NODO PRINCIPAL ---

@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
-<!-- FONDO GLOBAL: La imagen ahora ocupa todo el documento, con un oscurecimiento más suave para que se vea clara -->
 <body style="background: linear-gradient(rgba(13, 23, 38, 0.65), rgba(13, 23, 38, 0.85)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg') center/cover fixed no-repeat;">
     
     <div class="app-container" style="padding-top: 1rem;">
@@ -43,6 +42,8 @@
                    <a href="#rhizome-canvas" id="btn-ir-a-red" class="btn" style="background: var(--primary); color: var(--bg-base); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">⬇ Explorar nodos</a>
                    <a href="mapa.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2);">Mapa</a>
                    <a href="ruta.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2);">Ruta / Ayuda</a>
+                   <!-- Botón de créditos -->
+                   <button id="btn-info-creditos" class="btn btn-ghost" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px); padding: 0.45rem 0.8rem; font-size: 0.75rem; width: auto; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;"> Créditos</button>
                 </nav>
             </div>
         </header>
@@ -77,34 +78,8 @@
             </section>
             
             <!-- EL RIZOMA: Con un fondo semitransparente para que la imagen se cuele sutilmente -->
-         </main>
-
-        <!-- EL RIZOMA: Con un fondo semitransparente para que la imagen se cuele sutilmente -->
             <div id="rhizome-canvas" class="rhizome-grid" style="height: calc(100vh - 300px); min-height: 550px; width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(13, 23, 38, 0.4); backdrop-filter: blur(2px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>
             
-            <!-- NUEVO: METADATOS DEL ARCHIVO (CRÉDITOS ACADÉMICOS) -->
-            <footer class="academic-credits" style="margin-top: 2.5rem; padding: 1.5rem; background: rgba(20, 34, 56, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; font-size: 0.85rem; color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                    <div>
-                        <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Acerca del Sistema</strong>
-                        <span style="color: #fff; font-weight: 600;">Universidad de Nariño</span><br>
-                        Facultad de Educación<br>
-                        Maestría en Educación Virtual e-MEV<br>
-                        <span style="display: inline-block; margin-top: 0.4rem; padding: 0.2rem 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.75rem;">Actividad 4 | Pista 01</span>
-                    </div>
-                    <div>
-                        <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">AUTORES</strong>
-                        <span style="color: #fff;">Anderson Ariel Salazar Salazar</span><br>
-                        <span style="color: #fff;">[Nombre Estudiante 2]</span><br>
-                        <span style="color: #fff;">[Nombre Estudiante 3]</span>
-                    </div>
-                    <div>
-                        <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Dirección Cartográfica</strong>
-                        Docente Titular: <span style="color: #fff;">[Nombre Docente Titular]</span><br>
-                        Docente Ayudante: <span style="color: #fff;">[Nombre Docente Ayudante]</span>
-                    </div>
-                </div>
-            </footer>
         </main>
     </div>
 
@@ -326,11 +301,58 @@
         </div>
     </div>
 
+    <!-- MODAL DE CRÉDITOS ACADÉMICOS -->
+   <!-- MODAL DE CRÉDITOS ACADÉMICOS -->
+    <div id="creditos-modal" class="modal hidden">
+        <div class="modal-box" style="max-width: 700px; text-align: left; border-top: 4px solid var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 1px;">Créditos del Proyecto</h2>
+                <button class="btn-ghost btn-cerrar-modal" style="font-size: 1.2rem; cursor: pointer; padding: 0.2rem 0.5rem; border: none; background: transparent; color: var(--text-muted);">✖</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; font-size: 0.85rem; color: var(--text-main);">
+                <!-- Columna 1 -->
+                <div>
+                    <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Acerca del Sistema</strong>
+                    <span style="font-weight: 600;">Universidad de Nariño</span><br>
+                    Facultad de Educación<br>
+                    Maestría en Educación Virtual e-MEV<br>
+                    <span style="display: inline-block; margin-top: 0.6rem; padding: 0.3rem 0.6rem; background: rgba(101, 214, 176, 0.15); border: 1px solid rgba(101, 214, 176, 0.3); border-radius: 4px; font-size: 0.75rem; color: var(--primary); font-weight: bold;">Actividad 4 - Cartografía del ser profesor en la virtualidad.</span>
+                </div>
+                <!-- Columna 2 -->
+                <div>
+                    <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">AUTORES</strong>
+                    Anderson Ariel Salazar Salazar<br>
+                    Julihet Stefany Buesaquillo Tulcan <br>
+                    Gerardo Gonzalo Lara Jiménez 
+                </div>
+                <!-- Columna 3 -->
+                <div>
+                    <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Dirección Cartográfica</strong>
+                    Docente Titular:<br><strong> Dr. Carlos Guazmayan Ruiz </strong><br><br>
+                    Docente Asistente:<br><strong>Mg. Mónica Cerón </strong>
+                </div>
+            </div>
+
+            <!-- NUEVA SECCIÓN DE CRÉDITOS DE DESARROLLO / IA -->
+            <div style="margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; color: var(--text-muted); text-align: center; line-height: 1.5;">
+                <span style="color: var(--primary);">✦</span> Plataforma web creada con asistencia de Inteligencia Artificial (Gemini).<br>
+                Código depurado y corregido por el autor <strong>Anderson Salazar</strong>.
+            </div>
+
+            <div class="modal-actions" style="justify-content: center; margin-top: 1.5rem;">
+                <button class="btn btn-primary btn-cerrar-modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 
-    <!-- SCRIPT DE LOCALSTORAGE -->
+    <!-- SCRIPT DE LOCALSTORAGE Y MODAL DE CRÉDITOS -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            
+            // --- Lógica del Onboarding Modal ---
             const onboardingModal = document.getElementById("onboarding-modal");
             const btnIniciar = document.getElementById("btn-iniciar-experiencia");
 
@@ -347,6 +369,18 @@
                         onboardingModal.classList.add("hidden");
                     });
                 }
+            }
+
+            // --- Lógica del Modal de Créditos ---
+            const btnInfo = document.getElementById("btn-info-creditos");
+            const modalCreditos = document.getElementById("creditos-modal");
+
+            if(btnInfo && modalCreditos) {
+                btnInfo.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    modalCreditos.style.display = "flex"; 
+                    modalCreditos.classList.remove("hidden");
+                });
             }
         });
     </script>
