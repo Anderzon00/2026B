@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Territorio Vivo — Cartografia Comunitaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #17324d;
+  --ink-soft: #415a77;
+  --ink-muted: #778da9;
+  --surface: #f8f9fa;
+  --surface-raised: #ffffff;
+  --border: #dee2e6;
+  --border-soft: #e9ecef;
+  --blue: #3a86ff;
+  --blue-dim: rgba(58,134,255,.08);
+  --green: #2d9d78;
+  --green-dim: rgba(45,157,120,.08);
+  --amber: #e59a2f;
+  --amber-dim: rgba(229,154,47,.08);
+  --red: #e63946;
+  --red-dim: rgba(230,57,70,.06);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow: 0 4px 16px rgba(0,0,0,.07);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--surface);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ────────────────────────────────── */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 20px; }
+.layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; align-items: start; }
+
+/* ── Header ────────────────────────────────── */
+header {
+  background: var(--ink); color: white; border-radius: 16px;
+  padding: 32px 36px; margin-bottom: 20px; box-shadow: var(--shadow-lg);
+}
+header h1 {
+  margin: 0 0 6px; font-family: 'DM Serif Display', serif;
+  font-size: clamp(26px, 4vw, 42px); font-weight: 400; letter-spacing: -.5px;
+}
+header p { margin: 0; font-size: 15px; line-height: 1.6; color: #bfcfd9; }
+
+/* ── Card ──────────────────────────────────── */
+.card {
+  background: var(--surface-raised); border-radius: var(--radius);
+  box-shadow: var(--shadow); border: 1px solid var(--border-soft); overflow: hidden;
+}
+
+/* ── Mapa ──────────────────────────────────── */
+.map {
+  position: relative; min-height: 700px;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255,255,255,.9) 0 10%, transparent 11%),
+    linear-gradient(135deg, #e8f5e9, #fff8e1);
+}
+.river {
+  position: absolute; left: 47%; top: -6%; width: 100px; height: 118%;
+  background: #7cc7e8; border: 4px solid #4c9fc5;
+  border-radius: 48% 52% 45% 55%; transform: rotate(9deg); opacity: .88;
+}
+.road { position: absolute; background: #e4d6ba; border: 6px solid #cfbea0; border-radius: 30px; }
+.r1 { width: 78%; height: 48px; left: 8%; top: 44%; transform: rotate(-12deg); }
+.r2 { width: 65%; height: 42px; left: 22%; top: 23%; transform: rotate(27deg); }
+.r3 { width: 60%; height: 40px; left: 25%; top: 69%; transform: rotate(11deg); }
+
+.map-label {
+  position: absolute; left: 20px; top: 16px; font-weight: 700; font-size: 14px;
+  color: var(--ink-soft); background: rgba(255,255,255,.92);
+  padding: 10px 16px; border-radius: var(--radius-sm);
+  backdrop-filter: blur(4px); box-shadow: var(--shadow-sm);
+}
+
+.legend {
+  position: absolute; bottom: 14px; left: 14px;
+  background: rgba(255,255,255,.95); padding: 14px 16px;
+  border-radius: var(--radius-sm); font-size: 12px; line-height: 2;
+  box-shadow: var(--shadow-sm); backdrop-filter: blur(4px);
+}
+.legend strong { display: block; margin-bottom: 2px; font-size: 13px; color: var(--ink); }
+.legend-dot {
+  display: inline-block; width: 10px; height: 10px;
+  border-radius: 50%; margin-right: 5px; vertical-align: middle;
+}
+
+/* ── Nodos del mapa ────────────────────────── */
+.node {
+  position: absolute; width: 88px; height: 88px; border-radius: 50%;
+  border: 3px solid white; box-shadow: 0 6px 16px rgba(0,0,0,.18);
+  color: white; font-weight: 700; font-size: 11px; text-align: center;
+  padding: 10px 4px; cursor: pointer; transition: transform .2s, box-shadow .2s;
+  display: flex; align-items: center; justify-content: center; line-height: 1.2;
+}
+.node:hover { transform: scale(1.1); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+.school    { left: 12%; top: 28%; background: #5f6eea; }
+.river-n   { left: 56%; top: 12%; background: #2d9ed0; }
+.market    { left: 67%; top: 37%; background: #e59a2f; }
+.artisan   { left: 12%; top: 62%; background: #d66ba3; }
+.farm      { left: 65%; top: 66%; background: #4f9d59; }
+.community { left: 36%; top: 77%; background: #8f6bd8; }
+
+.connector {
+  position: absolute; height: 4px; background: #94a3b8;
+  transform-origin: left center; opacity: .5; border-radius: 4px;
+}
+.c1 { left: 20%; top: 37%; width: 23%; transform: rotate(-18deg); }
+.c2 { left: 43%; top: 34%; width: 23%; transform: rotate(-31deg); }
+.c3 { left: 54%; top: 48%; width: 18%; transform: rotate(18deg); }
+.c4 { left: 27%; top: 68%; width: 32%; transform: rotate(24deg); }
+.c5 { left: 43%; top: 80%; width: 25%; transform: rotate(-21deg); }
+
+/* ── Sidebar ───────────────────────────────── */
+.side { padding: 24px; position: sticky; top: 20px; }
+
+.intro {
+  background: var(--blue-dim); border-left: 3px solid var(--blue);
+  padding: 14px 16px; border-radius: var(--radius-sm);
+  font-size: 14px; line-height: 1.6; margin-bottom: 16px;
+}
+.intro strong { color: var(--blue); }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.tag {
+  display: inline-block; padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: .5px;
+  background: var(--ink); color: white; margin-bottom: 10px;
+}
+.panel h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; font-weight: 400; margin: 6px 0 8px;
+}
+.panel p { font-size: 14px; line-height: 1.65; color: var(--ink-soft); }
+
+.question {
+  margin-top: 14px; padding: 14px 16px;
+  background: var(--amber-dim); border-radius: var(--radius-sm);
+  border: 1px solid rgba(229,154,47,.2); font-size: 13px; line-height: 1.5;
+}
+.question strong { color: var(--amber); }
+
+/* ── Formulario reflexion ──────────────────── */
+.form-section {
+  margin-top: 18px; background: var(--surface); border-radius: var(--radius);
+  padding: 18px; border: 1px solid var(--border-soft);
+}
+.form-section h4 { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
+.form-section .subtitle { font-size: 13px; color: var(--ink-muted); margin-bottom: 14px; }
+
+.form-field { margin-bottom: 12px; }
+.form-field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
+
+.input, textarea {
+  width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 12px; font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--surface-raised); transition: border-color .2s;
+}
+.input:focus, textarea:focus { outline: none; border-color: var(--blue); }
+textarea { min-height: 100px; resize: vertical; line-height: 1.55; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: none; border-radius: var(--radius-sm);
+  padding: 10px 18px; font: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background .15s, transform .1s;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--ink); color: white; }
+.btn-primary:hover { background: #2a4a6b; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+.msg {
+  font-size: 13px; font-weight: 600; padding: 8px 12px;
+  border-radius: var(--radius-sm); transition: opacity .3s;
+}
+.msg:empty { display: none; }
+.msg.ok { background: var(--green-dim); color: var(--green); }
+.msg.err { background: var(--red-dim); color: var(--red); }
+
+/* ── Feed reflexiones ──────────────────────── */
+.feed-section {
+  margin-top: 18px; background: var(--surface); border-radius: var(--radius);
+  padding: 18px; border: 1px solid var(--border-soft);
+}
+.feed-section h4 { margin: 0 0 14px; font-size: 15px; font-weight: 700; }
+
+.reflexion-card {
+  background: var(--surface-raised); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px;
+}
+.reflexion-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px; font-size: 12px; color: var(--ink-muted);
+}
+.reflexion-author { font-weight: 700; color: var(--ink); }
+.reflexion-node {
+  display: inline-block; padding: 2px 8px; border-radius: 10px;
+  font-size: 10px; font-weight: 700; background: var(--blue-dim); color: var(--blue);
+}
+.reflexion-text { font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 10px; }
+.reflexion-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* ── Comentarios ───────────────────────────── */
+.comments-toggle {
+  font-size: 12px; font-weight: 600; color: var(--blue);
+  cursor: pointer; background: none; border: none; padding: 0; margin: 0;
+}
+.comments-toggle:hover { text-decoration: underline; }
+.comment-count {
+  display: none; background: var(--blue-dim); color: var(--blue);
+  font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 8px;
+}
+.comment-count.has { display: inline-block; }
+
+.comments-box {
+  display: none; margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--border-soft);
+}
+.comments-box.open { display: block; }
+
+.comment-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+.comment-avatar {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: var(--blue-dim); color: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 11px;
+}
+.comment-body { flex: 1; }
+.comment-meta { font-size: 11px; color: var(--ink-muted); margin-bottom: 2px; }
+.comment-text { line-height: 1.5; color: var(--ink-soft); }
+
+.comment-form { display: flex; gap: 6px; margin-top: 8px; }
+.comment-form .input { flex: 1; padding: 7px 10px; font-size: 13px; }
+.comment-form .btn { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+
+.feed-empty { text-align: center; padding: 20px; font-size: 13px; color: var(--ink-muted); }
+
+/* ── Status bar ────────────────────────────── */
+.status-bar {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-muted); margin-top: 6px;
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-muted); }
+.status-dot.on { background: var(--green); }
+
+/* ── Footer ────────────────────────────────── */
+.footer { text-align: center; padding: 20px 0; color: var(--ink-muted); font-size: 12px; }
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .map { min-height: 500px; }
+  .side { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Territorio Vivo</h1>
+    <p>Explora, escucha, conecta y transforma. Cada punto del mapa guarda un saber, una historia o un problema que puede convertirse en aprendizaje.</p>
+  </header>
+
+  <div class="layout">
+    <!-- ── MAPA ── -->
+    <section class="card map" aria-label="Mapa interactivo del territorio">
+      <div class="map-label">Haz clic en los nodos para descubrir</div>
+      <div class="river"></div>
+      <div class="road r1"></div>
+      <div class="road r2"></div>
+      <div class="road r3"></div>
+      <div class="connector c1"></div>
+      <div class="connector c2"></div>
+      <div class="connector c3"></div>
+      <div class="connector c4"></div>
+      <div class="connector c5"></div>
+
+      <button class="node school"    onclick="showNode('school')">🏫<br>Escuela</button>
+      <button class="node river-n"   onclick="showNode('river')">💧<br>Río</button>
+      <button class="node market"    onclick="showNode('market')">🧺<br>Mercado</button>
+      <button class="node artisan"   onclick="showNode('artisan')">🧵<br>Saberes</button>
+      <button class="node farm"      onclick="showNode('farm')">🌱<br>Rural</button>
+      <button class="node community" onclick="showNode('community')">🤝<br>Comunidad</button>
+
+      <div class="legend">
+        <strong>¿Qué estás explorando?</strong>
+        <span><span class="legend-dot" style="background:#5f6eea"></span>Aprendizaje</span>
+        <span><span class="legend-dot" style="background:#2d9ed0"></span>Problema real</span>
+        <span><span class="legend-dot" style="background:#d66ba3"></span>Saber local</span>
+        <span><span class="legend-dot" style="background:#4f9d59"></span>Territorio</span>
+        <span><span class="legend-dot" style="background:#8f6bd8"></span>Co-creación</span>
+      </div>
+    </section>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="card side">
+      <div class="intro">
+        <strong>Tu misión:</strong> recorre el territorio y descubre cómo la escuela puede aprender con la comunidad, no solamente sobre ella.
+      </div>
+
+      <!-- Paneles de nodos -->
+      <div id="default" class="panel active">
+        <span class="tag">INICIO</span>
+        <h3>El mapa está esperando...</h3>
+        <p>Hay conocimientos que no aparecen en los libros: viven en las personas, en los lugares, en las historias y en los problemas cotidianos.</p>
+        <p><strong>Elige un nodo.</strong> Tu recorrido será diferente al de otros exploradores.</p>
+        <div class="question"><strong>Pregunta detonadora:</strong> ¿Qué lugar de tu territorio podría convertirse en una nueva aula?</div>
+      </div>
+
+      <div id="school" class="panel">
+        <span class="tag">NODO 1 · APRENDIZAJE</span>
+        <h3>🏫 La escuela abierta</h3>
+        <p>La escuela deja de ser una isla. Sus preguntas salen al territorio y regresan convertidas en proyectos, investigaciones y nuevas conexiones.</p>
+        <div class="question"><strong>Reto:</strong> ¿Qué problema real de tu comunidad llevarías al aula?</div>
+      </div>
+
+      <div id="river" class="panel">
+        <span class="tag">NODO 2 · PROBLEMA REAL</span>
+        <h3>💧 El río pregunta</h3>
+        <p>El agua contaminada, la basura o la pérdida de ecosistemas no son solo "temas". Son desafíos auténticos que pueden movilizar conocimientos de ciencias, tecnología, comunicación y ciudadanía.</p>
+        <div class="question"><strong>Reto:</strong> formula una pregunta de investigación que ayude a comprender este problema.</div>
+      </div>
+
+      <div id="market" class="panel">
+        <span class="tag">NODO 3 · SABER COTIDIANO</span>
+        <h3>🧺 El mercado enseña</h3>
+        <p>En el mercado también hay matemáticas, economía, cultura, alimentación, historias familiares y decisiones. Los espacios cotidianos están llenos de oportunidades para aprender.</p>
+        <div class="question"><strong>Reto:</strong> ¿qué conocimiento podría aprenderse conversando con una persona del mercado?</div>
+      </div>
+
+      <div id="artisan" class="panel">
+        <span class="tag">NODO 4 · SABER INTERGENERACIONAL</span>
+        <h3>🧵 La memoria tiene manos</h3>
+        <p>Los oficios, las recetas, las técnicas artesanales y las historias transmitidas entre generaciones son nodos de conocimiento. Escuchar a quienes los conservan ayuda a que el currículo tenga identidad territorial.</p>
+        <div class="question"><strong>Reto:</strong> entrevista a una persona mayor y registra un saber que no quieras que se pierda.</div>
+      </div>
+
+      <div id="farm" class="panel">
+        <span class="tag">NODO 5 · TERRITORIO</span>
+        <h3>🌱 La tierra también habla</h3>
+        <p>Quien trabaja la tierra observa ciclos, clima, biodiversidad y cambios del entorno. Su experiencia puede dialogar con el conocimiento científico y generar nuevas preguntas.</p>
+        <div class="question"><strong>Reto:</strong> compara un saber local con una explicación científica. ¿Qué tienen en común? ¿Qué preguntas aparecen?</div>
+      </div>
+
+      <div id="community" class="panel">
+        <span class="tag">NODO 6 · CO-CREACIÓN</span>
+        <h3>🤝 Nadie aprende solo</h3>
+        <p>Estudiantes, docentes, familias, expertos y líderes comunitarios pueden convertirse en co-creadores del currículo. Cada persona aporta una pieza distinta del rompecabezas.</p>
+        <div class="question"><strong>Reto final:</strong> diseña una pequeña acción para transformar un problema de tu territorio.</div>
+      </div>
+
+      <!-- Formulario de reflexion -->
+      <div class="form-section">
+        <h4>Comparte tu reflexión</h4>
+        <p class="subtitle">Después de explorar los nodos, escribe tu idea: <em>"Mi territorio podría enseñarnos…"</em></p>
+        <div class="form-field">
+          <label for="student">Tu nombre o seudónimo</label>
+          <input id="student" type="text" class="input" placeholder="Opcional" maxlength="80">
+        </div>
+        <div class="form-field">
+          <label for="answer">Tu reflexión</label>
+          <textarea id="answer" placeholder="Escribe aquí tu descubrimiento..." maxlength="2000"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button id="btn-save" class="btn btn-primary" onclick="saveAnswer()">Guardar mi reflexión</button>
+          <span id="saved" class="msg"></span>
+        </div>
+        <div class="status-bar">
+          <span id="statusDot" class="status-dot"></span>
+          <span id="backendStatus">Verificando backend…</span>
+        </div>
+      </div>
+
+      <!-- Feed de reflexiones -->
+      <div class="feed-section">
+        <h4>Reflexiones de la comunidad</h4>
+        <div id="dataBox"><div class="feed-empty">Cargando reflexiones…</div></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="footer">Creada con ayuda de ChatGPT y OpenCode · Revisada y depurada por Anderson A. Salazar</div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG
+   ══════════════════════════════════════════════ */
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbylgYe-v2u78zFwunNRWoRNgLzbuPMj8-J5VWRB9_3NjzH-wLxJoJirGdlpcUMOLIl6zA/exec';
+
+const NODE_NAMES = {
+  default: 'Inicio', school: 'Escuela', river: 'Río',
+  market: 'Mercado', artisan: 'Saberes', farm: 'Rural', community: 'Comunidad'
+};
+
+const REQUIRED_FIELDS = ['id', 'estudiante', 'reflexion'];
+
+/* ══════════════════════════════════════════════
+   ESTADO
+   ══════════════════════════════════════════════ */
+const _reflections = {};
+let _msgTimer = null;
+let _busy = false;
+
+/* ══════════════════════════════════════════════
+   UTILIDADES
+   ══════════════════════════════════════════════ */
+function esc(v) {
+  return String(v ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function safeDomId(id) {
+  return 'r' + String(id).replace(/[^a-zA-Z0-9]/g, '');
+}
+
+function backendConfigured() {
+  return BACKEND_URL.startsWith('https://script.google.com/macros/s/');
+}
+
+/* ══════════════════════════════════════════════
+   UI
+   ══════════════════════════════════════════════ */
+function setStatus(msg, ok) {
+  document.getElementById('backendStatus').textContent = msg;
+  document.getElementById('statusDot').className = 'status-dot' + (ok ? ' on' : '');
+}
+
+function showMsg(text, type) {
+  clearTimeout(_msgTimer);
+  const el = document.getElementById('saved');
+  el.className = 'msg ' + type;
+  el.textContent = text;
+  if (type === 'ok') {
+    _msgTimer = setTimeout(() => { el.textContent = ''; el.className = 'msg'; }, 4000);
+  }
+}
+
+function showNode(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.side').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ══════════════════════════════════════════════
+   FILAS VALIDAS (descarta encabezados del sheet)
+   ══════════════════════════════════════════════ */
+function isValidRecord(r) {
+  if (!r || typeof r !== 'object') return false;
+  return REQUIRED_FIELDS.every(f => r[f] && String(r[f]).trim() !== '');
+}
+
+/* ══════════════════════════════════════════════
+   GUARDAR REFLEXION
+   ══════════════════════════════════════════════ */
+async function saveAnswer() {
+  if (_busy) return;
+
+  const value = document.getElementById('answer').value.trim();
+  const student = document.getElementById('student').value.trim() || 'Anónimo';
+  const btn = document.getElementById('btn-save');
+
+  if (!value) { showMsg('Escribe primero tu reflexión.', 'err'); return; }
+  if (!backendConfigured()) { showMsg('Backend no configurado.', 'err'); return; }
+
+  _busy = true;
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+  showMsg('', '');
+  setStatus('Enviando…', false);
+
+  try {
+    const payload = {
+      action: 'save',
+      student,
+      reflection: value,
+      source: 'Territorio Vivo',
+      node: document.querySelector('.panel.active')?.id || 'default',
+      timestampClient: new Date().toISOString()
+    };
+
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (!data.ok) throw new Error(data.error || 'Error al guardar.');
+
+    showMsg('Reflexión guardada correctamente.', 'ok');
+    setStatus('Backend: conectado', true);
+    document.getElementById('answer').value = '';
+    loadData();
+  } catch (err) {
+    showMsg('No se pudo conectar con el servidor.', 'err');
+    setStatus('Backend: error', false);
+    console.error('[saveAnswer]', err);
+  } finally {
+    _busy = false;
+    btn.disabled = false;
+    btn.textContent = 'Guardar mi reflexión';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   CARGAR REFLEXIONES
+   ══════════════════════════════════════════════ */
+async function loadData() {
+  const box = document.getElementById('dataBox');
+
+  if (!backendConfigured()) {
+    box.innerHTML = '<div class="feed-empty">Backend no configurado.</div>';
+    return;
+  }
+
+  try {
+    const res = await fetch(BACKEND_URL + '?action=list');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+    renderFeed(data.records || []);
+    setStatus('Backend: conectado', true);
+  } catch (err) {
+    box.innerHTML = '<div class="feed-empty">Error al cargar reflexiones.</div>';
+    setStatus('Backend: error', false);
+    console.error('[loadData]', err);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RENDER FEED
+   ══════════════════════════════════════════════ */
+function renderFeed(records) {
+  const box = document.getElementById('dataBox');
+
+  Object.keys(_reflections).forEach(k => delete _reflections[k]);
+
+  const valid = records.filter(isValidRecord);
+
+  if (!valid.length) {
+    box.innerHTML = '<div class="feed-empty">Aún no hay reflexiones. Sé el primero en compartir.</div>';
+    return;
+  }
+
+  box.innerHTML = valid.slice().reverse().map(r => {
+    const did = safeDomId(r.id);
+    _reflections[did] = r;
+    const label = NODE_NAMES[r.nodo] || r.nodo || 'General';
+    return `
+      <div class="reflexion-card" data-rid="${esc(r.id)}">
+        <div class="reflexion-head">
+          <div><span class="reflexion-author">${esc(r.estudiante)}</span> · ${esc(r.fecha)}</div>
+          <span class="reflexion-node">${esc(label)}</span>
+        </div>
+        <div class="reflexion-text">${esc(r.reflexion)}</div>
+        <div class="reflexion-actions">
+          <button class="comments-toggle" onclick="toggleComments('${did}')">💬 Comentar</button>
+          <span class="comment-count" id="ccount-${did}"></span>
+        </div>
+        <div class="comments-box" id="cbox-${did}">
+          <div class="comments-list" id="clist-${did}"></div>
+          <div class="comment-form">
+            <input id="cname-${did}" class="input" placeholder="Tu nombre" maxlength="80">
+            <input id="ctext-${did}" class="input" placeholder="Escribe un comentario…" maxlength="500"
+                   onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment('${did}');}">
+            <button class="btn btn-primary" id="cbtn-${did}" onclick="sendComment('${did}')">Enviar</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   COMENTARIOS
+   ══════════════════════════════════════════════ */
+async function toggleComments(did) {
+  const box = document.getElementById('cbox-' + did);
+  if (!box) return;
+
+  if (box.classList.contains('open')) {
+    box.classList.remove('open');
+    return;
+  }
+
+  box.classList.add('open');
+  await loadComments(did);
+  document.getElementById('ctext-' + did)?.focus();
+}
+
+async function loadComments(did) {
+  const list = document.getElementById('clist-' + did);
+  const countEl = document.getElementById('ccount-' + did);
+  const r = _reflections[did];
+
+  if (!r) {
+    list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Reflexión no encontrada.</div>';
+    return;
+  }
+
+  list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Cargando…</div>';
+
+  try {
+    const res = await fetch(BACKEND_URL + '?action=comments&id=' + encodeURIComponent(r.id));
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+
+    const comments = (data.comments || []).filter(c => c && c.texto);
+
+    if (countEl) {
+      if (comments.length) {
+        countEl.textContent = comments.length;
+        countEl.className = 'comment-count has';
+      } else {
+        countEl.textContent = '';
+        countEl.className = 'comment-count';
+      }
+    }
+
+    if (!comments.length) {
+      list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Sin comentarios aún.</div>';
+      return;
+    }
+
+    list.innerHTML = comments.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar">${esc((c.autor || 'A').charAt(0).toUpperCase())}</div>
+        <div class="comment-body">
+          <div class="comment-meta">${esc(c.autor)} · ${esc(c.fecha)}</div>
+          <div class="comment-text">${esc(c.texto)}</div>
+        </div>
+      </div>`).join('');
+  } catch (err) {
+    list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Error al cargar comentarios.</div>';
+    console.error('[loadComments]', err);
+  }
+}
+
+async function sendComment(did) {
+  const r = _reflections[did];
+  if (!r) return;
+
+  const nameInput = document.getElementById('cname-' + did);
+  const textInput = document.getElementById('ctext-' + did);
+  const sendBtn = document.getElementById('cbtn-' + did);
+  const text = textInput.value.trim();
+  const author = nameInput.value.trim() || 'Anónimo';
+
+  if (!text) { textInput.focus(); return; }
+  if (sendBtn.disabled) return;
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = '…';
+
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'comment',
+        reflectionId: r.id,
+        node: r.nodo || 'default',
+        author,
+        text
+      })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+
+    textInput.value = '';
+    loadComments(did);
+  } catch (err) {
+    alert('No se pudo enviar el comentario. Intenta de nuevo.');
+    console.error('[sendComment]', err);
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Enviar';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  setStatus(
+    backendConfigured() ? 'Backend: conectado' : 'Backend: sin configurar',
+    backendConfigured()
+  );
+  loadData();
+});
+</script>
+</body>
+</html>
