@@ -1,407 +1,488 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Territorio Vivo — Cartografia Comunitaria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #17324d;
-  --ink-soft: #415a77;
-  --ink-muted: #778da9;
-  --surface: #f8f9fa;
-  --surface-raised: #ffffff;
-  --border: #dee2e6;
-  --border-soft: #e9ecef;
-  --blue: #3a86ff;
-  --blue-dim: rgba(58,134,255,.08);
-  --green: #2d9d78;
-  --green-dim: rgba(45,157,120,.08);
+  --paper: #faf9f6;
+  --surface: #ffffff;
+  --ink: #1c2333;
+  --ink-2: #4a5266;
+  --ink-3: #8b93a7;
+  --line: #e7e4dc;
+  --line-strong: #dcd8cd;
+  --accent: #2456ea;
+  --accent-soft: #edf1ff;
   --amber: #e59a2f;
-  --amber-dim: rgba(229,154,47,.08);
-  --red: #e63946;
-  --red-dim: rgba(230,57,70,.06);
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
-  --shadow: 0 4px 16px rgba(0,0,0,.07);
-  --shadow-lg: 0 12px 32px rgba(0,0,0,.1);
+  --red: #e24b4b;
+  --radius: 18px;
+  --radius-lg: 24px;
+  --radius-sm: 12px;
+  --shadow-1: 0 1px 2px rgba(28,35,51,.05), 0 1px 3px rgba(28,35,51,.06);
+  --shadow-2: 0 6px 18px -6px rgba(28,35,51,.12);
+  --shadow-3: 0 24px 60px -20px rgba(28,35,51,.2);
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  font-family: 'DM Sans', system-ui, sans-serif;
-  background: var(--surface);
+  font-family: var(--font);
   color: var(--ink);
+  background: var(--paper);
   -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
 }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 22px; }
 
-/* ── Layout ────────────────────────────────── */
-.wrap { max-width: 1280px; margin: 0 auto; padding: 20px; }
-.layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; align-items: start; }
+/* ── Topbar ── */
+.topbar { position: sticky; top: 0; z-index: 50; background: rgba(250,249,246,.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.topbar .inner { max-width: 1240px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 15px; letter-spacing: -.2px; }
+.brand .mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(145deg, var(--accent), #3d6dff); color: #fff; display: grid; place-items: center; font-size: 15px; box-shadow: var(--shadow-1); }
+.brand small { font-weight: 500; color: var(--ink-3); }
+.top-status { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-3); background: var(--surface); border: 1px solid var(--line); padding: 6px 13px; border-radius: 999px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
+.status-dot.on { background: #22a06b; box-shadow: 0 0 0 3px rgba(34,160,107,.16); }
 
-/* ── Header ────────────────────────────────── */
-header {
-  background: var(--ink); color: white; border-radius: 16px;
-  padding: 32px 36px; margin-bottom: 20px; box-shadow: var(--shadow-lg);
-}
-header h1 {
-  margin: 0 0 6px; font-family: 'DM Serif Display', serif;
-  font-size: clamp(26px, 4vw, 42px); font-weight: 400; letter-spacing: -.5px;
-}
-header p { margin: 0; font-size: 15px; line-height: 1.6; color: #bfcfd9; }
+/* ── Encabezado ── */
+.pagehead { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 26px 0 16px; }
+.pagehead h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spacing: -1.2px; }
+.pagehead h1 em { font-style: italic; color: var(--accent); }
+.pagehead .lede { margin: 8px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); max-width: 58ch; }
+.pagehead .lede strong { color: var(--ink); font-weight: 600; }
 
-/* ── Card ──────────────────────────────────── */
-.card {
-  background: var(--surface-raised); border-radius: var(--radius);
-  box-shadow: var(--shadow); border: 1px solid var(--border-soft); overflow: hidden;
-}
+/* ── Mapa ── */
+.map-shell { position: relative; border-radius: var(--radius-lg); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-2); overflow: hidden; }
+.map { position: relative; height: 470px; background: linear-gradient(rgba(28,35,51,.028) 1px, transparent 1px), linear-gradient(90deg, rgba(28,35,51,.028) 1px, transparent 1px), radial-gradient(120% 120% at 80% -10%, #f3f6ff 0%, transparent 55%), radial-gradient(120% 120% at 10% 110%, #f2f8f4 0%, transparent 55%), linear-gradient(180deg, #fbfaf7, #f6f5f0); background-size: 40px 40px, 40px 40px, auto, auto, auto; }
+.map-hint { position: absolute; left: 22px; top: 20px; z-index: 6; display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; color: var(--ink-2); background: rgba(255,255,255,.9); border: 1px solid var(--line); padding: 9px 15px; border-radius: 999px; box-shadow: var(--shadow-1); }
+.map-hint .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1.8s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(36,86,234,.4); } 70% { box-shadow: 0 0 0 9px rgba(36,86,234,0); } 100% { box-shadow: 0 0 0 0 rgba(36,86,234,0); } }
+.river { position: absolute; left: 46%; top: -8%; width: 60px; height: 116%; background: linear-gradient(90deg,#d6e9f5,#a5d2ea 50%,#cfe6f3); border: 2px solid #7fb6d6; border-radius: 48% 52% 45% 55%; transform: rotate(8deg); opacity: .5; z-index: 1; }
+.road { position: absolute; background: #efe7d6; border: 3px solid #e0d3b6; border-radius: 30px; opacity: .85; z-index: 2; }
+.r1 { width: 76%; height: 32px; left: 8%; top: 44%; transform: rotate(-12deg); }
+.r2 { width: 62%; height: 30px; left: 22%; top: 23%; transform: rotate(27deg); }
+.r3 { width: 58%; height: 28px; left: 25%; top: 69%; transform: rotate(11deg); }
+.r4 { width: 34%; height: 28px; left: 60%; top: 58%; margin-left: -17%; margin-top: -14px; transform: rotate(-35deg); }
+.river-waves { position: absolute; left: 46%; top: -8%; width: 60px; height: 116%; transform: rotate(8deg); opacity: .5; z-index: 1; pointer-events: none; }
+.river-waves i { position: absolute; display: block; left: 12px; width: 26px; height: 30px; border: 2px solid rgba(255,255,255,.9); border-radius: 50%; }
+.river-waves i:nth-child(1) { top: 18%; }
+.river-waves i:nth-child(2) { top: 42%; left: 20px; }
+.river-waves i:nth-child(3) { top: 66%; }
+.river-waves i:nth-child(4) { top: 88%; left: 22px; }
 
-/* ── Mapa ──────────────────────────────────── */
-.map {
-  position: relative; min-height: 700px;
-  background:
-    radial-gradient(circle at 20% 25%, rgba(255,255,255,.9) 0 10%, transparent 11%),
-    linear-gradient(135deg, #e8f5e9, #fff8e1);
-}
-.river {
-  position: absolute; left: 47%; top: -6%; width: 100px; height: 118%;
-  background: #7cc7e8; border: 4px solid #4c9fc5;
-  border-radius: 48% 52% 45% 55%; transform: rotate(9deg); opacity: .88;
-}
-.road { position: absolute; background: #e4d6ba; border: 6px solid #cfbea0; border-radius: 30px; }
-.r1 { width: 78%; height: 48px; left: 8%; top: 44%; transform: rotate(-12deg); }
-.r2 { width: 65%; height: 42px; left: 22%; top: 23%; transform: rotate(27deg); }
-.r3 { width: 60%; height: 40px; left: 25%; top: 69%; transform: rotate(11deg); }
+.node { position: absolute; z-index: 4; width: 62px; height: 62px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 8px 22px -4px rgba(28,35,51,.28); color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-weight: 600; font-size: 10px; letter-spacing: .2px; transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; }
+.node .emoji { font-size: 19px; line-height: 1; }
+.node:hover { transform: scale(1.1); box-shadow: 0 14px 30px -6px rgba(28,35,51,.35); }
+.node:active { transform: scale(.96); }
+.node:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.node::after { content: attr(data-label); position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #fff; color: var(--ink); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); box-shadow: var(--shadow-1); opacity: 0; transition: opacity .18s, transform .18s; white-space: nowrap; pointer-events: none; }
+.node:hover::after { opacity: 1; transform: translateX(-50%) translateY(2px); }
+.node.active { transform: scale(1.16); box-shadow: 0 0 0 5px rgba(255,255,255,.9), 0 14px 34px -6px rgba(28,35,51,.4); z-index: 7; }
+.node.active::after { opacity: 1; }
 
-.map-label {
-  position: absolute; left: 20px; top: 16px; font-weight: 700; font-size: 14px;
-  color: var(--ink-soft); background: rgba(255,255,255,.92);
-  padding: 10px 16px; border-radius: var(--radius-sm);
-  backdrop-filter: blur(4px); box-shadow: var(--shadow-sm);
-}
+.school    { left: 20%; top: 22%; background: linear-gradient(145deg,#6a76f0,#4a58e0); }
+.river-n   { left: 52%; top: 12%; background: linear-gradient(145deg,#38a8dd,#1787c2); }
+.market    { left: 71%; top: 30%; background: linear-gradient(145deg,#f0a93c,#d98a20); }
+.artisan   { left: 15%; top: 62%; background: linear-gradient(145deg,#e380b2,#cf5292); }
+.farm      { left: 70%; top: 66%; background: linear-gradient(145deg,#53a768,#3b8a4f); }
+.community { left: 42%; top: 78%; background: linear-gradient(145deg,#a184e6,#7b5ccb); }
 
-.legend {
-  position: absolute; bottom: 14px; left: 14px;
-  background: rgba(255,255,255,.95); padding: 14px 16px;
-  border-radius: var(--radius-sm); font-size: 12px; line-height: 2;
-  box-shadow: var(--shadow-sm); backdrop-filter: blur(4px);
-}
-.legend strong { display: block; margin-bottom: 2px; font-size: 13px; color: var(--ink); }
-.legend-dot {
-  display: inline-block; width: 10px; height: 10px;
-  border-radius: 50%; margin-right: 5px; vertical-align: middle;
-}
+/* ── Decoración ilustrativa del mapa ── */
+.deco { position: absolute; z-index: 2; pointer-events: none; line-height: 1; }
 
-/* ── Nodos del mapa ────────────────────────── */
-.node {
-  position: absolute; width: 88px; height: 88px; border-radius: 50%;
-  border: 3px solid white; box-shadow: 0 6px 16px rgba(0,0,0,.18);
-  color: white; font-weight: 700; font-size: 11px; text-align: center;
-  padding: 10px 4px; cursor: pointer; transition: transform .2s, box-shadow .2s;
-  display: flex; align-items: center; justify-content: center; line-height: 1.2;
+/* Montañas */
+.mountains { position: absolute; z-index: 1; left: 0; right: 0; top: 0; height: 90px; pointer-events: none; }
+.mountains .peak { position: absolute; bottom: 0; width: 0; height: 0; border-left: 34px solid transparent; border-right: 34px solid transparent; border-bottom: 46px solid #dde7ee; }
+.mountains .peak::before { content: ""; position: absolute; left: -24px; top: 10px; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-bottom: 22px solid rgba(255,255,255,.85); }
+.mountains .p1 { left: 6%; }
+.mountains .p2 { left: 26%; transform: scale(.78); border-bottom-color: #d6e1ea; }
+.mountains .p3 { left: 78%; transform: scale(.9); border-bottom-color: #e2ebf1; }
+.mountains .p4 { left: 88%; transform: scale(.6); border-bottom-color: #e8eef3; }
+
+/* Casitas */
+.houses .h {
+  position: relative;
+  width: 26px; height: 24px;
+  background: #f0d9b0;
+  border: 1.5px solid #d8b885;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px -2px rgba(28,35,51,.2);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
-.node:hover { transform: scale(1.1); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
-.school    { left: 12%; top: 28%; background: #5f6eea; }
-.river-n   { left: 56%; top: 12%; background: #2d9ed0; }
-.market    { left: 67%; top: 37%; background: #e59a2f; }
-.artisan   { left: 12%; top: 62%; background: #d66ba3; }
-.farm      { left: 65%; top: 66%; background: #4f9d59; }
-.community { left: 36%; top: 77%; background: #8f6bd8; }
-
-.connector {
-  position: absolute; height: 4px; background: #94a3b8;
-  transform-origin: left center; opacity: .5; border-radius: 4px;
+.houses .h .roof {
+  position: absolute; top: -8px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 11px solid #c96a5b;
 }
-.c1 { left: 20%; top: 37%; width: 23%; transform: rotate(-18deg); }
-.c2 { left: 43%; top: 34%; width: 23%; transform: rotate(-31deg); }
-.c3 { left: 54%; top: 48%; width: 18%; transform: rotate(18deg); }
-.c4 { left: 27%; top: 68%; width: 32%; transform: rotate(24deg); }
-.c5 { left: 43%; top: 80%; width: 25%; transform: rotate(-21deg); }
+.houses .h .door { width: 7px; height: 9px; background: #8b5e3c; border-radius: 2px 2px 0 0; }
+.houses { position: absolute; z-index: 2; pointer-events: none; }
+.houses .hp { position: relative; width: 26px; height: 24px; margin-top: 9px; }
+.hp1 { left: 10%; top: 34%; }
+.hp2 { left: 84%; top: 50%; transform: scale(.8); }
+.hp3 { left: 34%; top: 20%; transform: scale(.7); }
+.hp4 { left: 58%; top: 66%; transform: scale(.85); }
 
-/* ── Sidebar ───────────────────────────────── */
-.side { padding: 24px; position: sticky; top: 20px; }
-
-.intro {
-  background: var(--blue-dim); border-left: 3px solid var(--blue);
-  padding: 14px 16px; border-radius: var(--radius-sm);
-  font-size: 14px; line-height: 1.6; margin-bottom: 16px;
+/* Árboles */
+.tree {
+  width: 0; height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-bottom: 20px solid #7cb86e;
+  position: relative;
 }
-.intro strong { color: var(--blue); }
+.tree::after {
+  content: ""; position: absolute; left: -3px; top: 18px;
+  width: 6px; height: 9px; background: #8b6436; border-radius: 2px;
+}
+.trees .tree { position: absolute; }
+.tr1 { left: 30%; top: 58%; transform: scale(.8); }
+.tr2 { left: 86%; top: 20%; transform: scale(.7); }
+.tr3 { left: 8%; top: 84%; transform: scale(.7); }
+.trees { position: absolute; left: 0; right: 0; top: 0; height: 100%; pointer-events: none; }
 
+/* Personas */
+.person {
+  width: 16px; height: 26px;
+  position: absolute;
+}
+.person .head { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 9px; height: 9px; border-radius: 50%; background: #ffd3a8; }
+.person .body { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 11px; height: 13px; border-radius: 7px 7px 5px 5px; }
+.people { position: absolute; left: 0; right: 0; top: 0; height: 100%; pointer-events: none; }
+.people .p { position: absolute; }
+.pp1 { left: 34%; top: 34%; }
+.pp1 .body { background: #e38fb0; }
+.pp2 { left: 27%; top: 52%; transform: scale(.9); }
+.pp2 .body { background: #6a76f0; }
+.pp3 { left: 74%; top: 40%; transform: scale(.9); }
+.pp3 .body { background: #53a768; }
+.pp4 { left: 50%; top: 58%; transform: scale(.8); }
+.pp4 .body { background: #f0a93c; }
+
+/* ── Botones de nodos ── */
+.band { margin-top: 14px; background: rgba(255,255,255,.6); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px; }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-chip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .18s; }
+.nav-chip:hover { border-color: var(--line-strong); background: var(--paper-deep); }
+.nav-chip.active { border-color: var(--ink); background: var(--ink); color: #fff; }
+.nav-chip .dot { width: 9px; height: 9px; border-radius: 50%; }
+
+/* ── Texto del nodo activo ── */
+.thought { position: relative; margin: 14px 0 26px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-1); overflow: hidden; }
+.thought .rail { position: absolute; top: 0; left: 0; bottom: 0; width: 5px; background: linear-gradient(180deg, var(--rail-c, var(--accent)), var(--rail-c2, var(--accent))); }
+.thought-body { padding: 24px 28px; }
 .panel { display: none; }
-.panel.active { display: block; }
+.panel.active { display: block; animation: slideIn .3s cubic-bezier(.22,.8,.35,1); }
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.thought-body .tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--rail-c, var(--accent)); margin: 0 0 8px; }
+.thought-body h3 { font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.15; letter-spacing: -.4px; margin: 0 0 12px; }
+.thought-body h3 .emoji { font-size: 24px; margin-right: 2px; }
+.thought-body p { font-size: 15px; line-height: 1.7; color: var(--ink-2); margin: 0; max-width: 70ch; }
+.thought-body p strong { color: var(--ink); }
+.thought .question { margin-top: 16px; padding: 13px 16px; background: linear-gradient(180deg, #fdf8ee, #fbf4e4); border: 1px solid #f0e2c4; border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.thought .question strong { color: var(--amber); display: block; margin-bottom: 2px; font-size: 11.5px; letter-spacing: .4px; text-transform: uppercase; }
 
-.tag {
-  display: inline-block; padding: 4px 10px; border-radius: 20px;
-  font-size: 11px; font-weight: 700; letter-spacing: .5px;
-  background: var(--ink); color: white; margin-bottom: 10px;
-}
-.panel h3 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 22px; font-weight: 400; margin: 6px 0 8px;
-}
-.panel p { font-size: 14px; line-height: 1.65; color: var(--ink-soft); }
-
-.question {
-  margin-top: 14px; padding: 14px 16px;
-  background: var(--amber-dim); border-radius: var(--radius-sm);
-  border: 1px solid rgba(229,154,47,.2); font-size: 13px; line-height: 1.5;
-}
-.question strong { color: var(--amber); }
-
-/* ── Formulario reflexion ──────────────────── */
-.form-section {
-  margin-top: 18px; background: var(--surface); border-radius: var(--radius);
-  padding: 18px; border: 1px solid var(--border-soft);
-}
-.form-section h4 { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
-.form-section .subtitle { font-size: 13px; color: var(--ink-muted); margin-bottom: 14px; }
-
-.form-field { margin-bottom: 12px; }
-.form-field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
-
-.input, textarea {
-  width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 10px 12px; font: inherit; font-size: 14px; color: var(--ink);
-  background: var(--surface-raised); transition: border-color .2s;
-}
-.input:focus, textarea:focus { outline: none; border-color: var(--blue); }
-textarea { min-height: 100px; resize: vertical; line-height: 1.55; }
-
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  border: none; border-radius: var(--radius-sm);
-  padding: 10px 18px; font: inherit; font-size: 13px; font-weight: 700;
-  cursor: pointer; transition: background .15s, transform .1s;
-}
-.btn:active { transform: scale(.97); }
-.btn-primary { background: var(--ink); color: white; }
-.btn-primary:hover { background: #2a4a6b; }
-.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
-
-.msg {
-  font-size: 13px; font-weight: 600; padding: 8px 12px;
-  border-radius: var(--radius-sm); transition: opacity .3s;
-}
-.msg:empty { display: none; }
-.msg.ok { background: var(--green-dim); color: var(--green); }
-.msg.err { background: var(--red-dim); color: var(--red); }
-
-/* ── Feed reflexiones ──────────────────────── */
-.feed-section {
-  margin-top: 18px; background: var(--surface); border-radius: var(--radius);
-  padding: 18px; border: 1px solid var(--border-soft);
-}
-.feed-section h4 { margin: 0 0 14px; font-size: 15px; font-weight: 700; }
-
-.reflexion-card {
-  background: var(--surface-raised); border: 1px solid var(--border-soft);
-  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px;
-}
-.reflexion-head {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 8px; font-size: 12px; color: var(--ink-muted);
-}
-.reflexion-author { font-weight: 700; color: var(--ink); }
-.reflexion-node {
-  display: inline-block; padding: 2px 8px; border-radius: 10px;
-  font-size: 10px; font-weight: 700; background: var(--blue-dim); color: var(--blue);
-}
-.reflexion-text { font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 10px; }
-.reflexion-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-/* ── Comentarios ───────────────────────────── */
-.comments-toggle {
-  font-size: 12px; font-weight: 600; color: var(--blue);
-  cursor: pointer; background: none; border: none; padding: 0; margin: 0;
-}
-.comments-toggle:hover { text-decoration: underline; }
-.comment-count {
-  display: none; background: var(--blue-dim); color: var(--blue);
-  font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 8px;
-}
-.comment-count.has { display: inline-block; }
-
-.comments-box {
-  display: none; margin-top: 10px; padding-top: 10px;
-  border-top: 1px solid var(--border-soft);
-}
-.comments-box.open { display: block; }
-
-.comment-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
-.comment-avatar {
-  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-  background: var(--blue-dim); color: var(--blue);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 11px;
-}
+/* ── Feed ── */
+.feed-section { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-1); padding: 24px; }
+.feed-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 18px; }
+.feed-header h4 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.2px; }
+.feed-count { background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 700; padding: 2px 11px; border-radius: 999px; }
+.reflexion-card { border: 1px solid var(--line); border-radius: 14px; padding: 16px 17px; margin-bottom: 12px; transition: box-shadow .18s, border-color .18s; }
+.reflexion-card:hover { box-shadow: var(--shadow-1); border-color: var(--line-strong); }
+.reflexion-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--ink-3); }
+.reflexion-head .who { font-weight: 600; color: var(--ink); }
+.reflexion-head .who .rid { color: var(--ink-3); font-weight: 500; margin-left: 5px; }
+.reflexion-node { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 600; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.reflexion-text { font-size: 14px; line-height: 1.65; color: var(--ink-2); margin-bottom: 12px; }
+.reflexion-comments { border-top: 1px solid var(--line); padding-top: 12px; }
+.reflexion-comments .cm-label { font-size: 11px; font-weight: 600; color: var(--ink-3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+.comment-item { display: flex; gap: 10px; margin-bottom: 10px; font-size: 13px; background: var(--paper); border-radius: 10px; padding: 10px 12px; }
+.comment-avatar { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 12px; }
 .comment-body { flex: 1; }
-.comment-meta { font-size: 11px; color: var(--ink-muted); margin-bottom: 2px; }
-.comment-text { line-height: 1.5; color: var(--ink-soft); }
+.comment-meta { font-size: 11px; color: var(--ink-3); margin-bottom: 2px; }
+.comment-text { line-height: 1.5; color: var(--ink-2); }
+.comment-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 12.5px; font-weight: 600; color: #fff; cursor: pointer; background: var(--ui-c, var(--accent)); border: none; border-radius: 9px; padding: 7px 12px; box-shadow: 0 4px 12px -3px var(--ui-glow, rgba(36,86,234,.4)); transition: filter .15s, transform .1s; }
+.comment-toggle:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.comment-count { display: none; background: var(--accent-soft); color: var(--accent); font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+.comment-count.has { display: inline-block; }
+.feed-empty { text-align: center; padding: 24px 14px; font-size: 13px; color: var(--ink-3); background: var(--paper); border: 1px dashed var(--line-strong); border-radius: 12px; }
 
-.comment-form { display: flex; gap: 6px; margin-top: 8px; }
-.comment-form .input { flex: 1; padding: 7px 10px; font-size: 13px; }
-.comment-form .btn { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+/* ── Botón flotante ── */
+.fab { position: fixed; right: 26px; bottom: 26px; z-index: 45; display: inline-flex; align-items: center; gap: 9px; border: none; border-radius: 999px; padding: 15px 22px; font: inherit; font-size: 14.5px; font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--fab-c, var(--amber)), var(--fab-c2, #f0a93c)); box-shadow: 0 14px 34px -8px var(--fab-glow, rgba(229,154,47,.6)); cursor: pointer; transition: background .3s, transform .16s, box-shadow .16s; }
+.fab:hover { transform: translateY(-2px); }
+.fab:active { transform: scale(.96); }
+.fab .pin { font-size: 17px; }
 
-.feed-empty { text-align: center; padding: 20px; font-size: 13px; color: var(--ink-muted); }
+/* ── Modal genérico (centrado) ── */
+.overlay { position: fixed; inset: 0; z-index: 60; background: rgba(28,35,51,.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity .25s; }
+.overlay.show { display: flex; opacity: 1; }
 
-/* ── Status bar ────────────────────────────── */
-.status-bar {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--ink-muted); margin-top: 6px;
-}
-.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-muted); }
-.status-dot.on { background: var(--green); }
+/* Modal infantil (compartir reflexión) */
+.modal { background: #fffdf6; width: 100%; max-width: 520px; border-radius: 30px; box-shadow: var(--shadow-3); overflow: hidden; transform: translateY(24px) scale(.96); transition: transform .28s cubic-bezier(.22,.8,.35,1); position: relative; display: flex; flex-direction: column; max-height: 92vh; }
+.overlay.show .modal { transform: none; }
+.modal-head { position: relative; padding: 30px 30px 22px; background: linear-gradient(135deg, var(--ui-c, #f0a93c), var(--ui-c2, #d98a20)); text-align: center; flex-shrink: 0; }
+.modal-head .big { font-size: 40px; line-height: 1; margin-bottom: 8px; }
+.modal-head h3 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 25px; letter-spacing: -.3px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.modal-head p { margin: 6px 0 0; font-size: 13.5px; color: rgba(255,255,255,.92); }
+.modal-close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,.32); color: #fff; font-size: 16px; cursor: pointer; display: grid; place-items: center; transition: background .15s; z-index: 2; }
+.modal-close:hover { background: rgba(255,255,255,.6); }
+.modal-body { padding: 24px 30px 28px; overflow-y: auto; flex: 1; }
+.modal-field { margin-bottom: 18px; }
+.modal-field label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
+.modal-field .input, .modal-field textarea { width: 100%; border: 2px solid var(--line-strong); border-radius: 14px; padding: 13px 15px; font: inherit; font-size: 14.5px; color: var(--ink); background: #fff; transition: border-color .16s, box-shadow .16s; }
+.modal-field .input::placeholder, .modal-field textarea::placeholder { color: #b7a98a; }
+.modal-field .input:focus, .modal-field textarea:focus { outline: none; border-color: var(--ui-c, var(--amber)); box-shadow: 0 0 0 4px var(--ui-glow, rgba(229,154,47,.15)); }
+.modal-field textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+.modal-submit { width: 100%; border: none; border-radius: 16px; padding: 15px; font: inherit; font-size: 15.5px; font-weight: 800; color: #fff; background: linear-gradient(135deg, var(--ui-c, var(--amber)), var(--ui-c2, #f0a93c)); box-shadow: 0 10px 24px -8px var(--ui-glow, rgba(229,154,47,.6)); cursor: pointer; transition: transform .12s, box-shadow .16s, opacity .16s; }
+.modal-submit:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -8px var(--ui-glow, rgba(229,154,47,.7)); }
+.modal-submit:active { transform: scale(.97); }
+.modal-submit:disabled { opacity: .6; cursor: not-allowed; }
+.modal .msg { display: block; text-align: center; margin-top: 14px; font-size: 13.5px; font-weight: 600; }
+.modal .msg.ok { color: #1b7a4e; }
+.modal .msg.err { color: var(--red); }
+.modal-confetti { position: absolute; top: 14px; left: 14px; right: 14px; bottom: 14px; pointer-events: none; border-radius: 24px; border: 1px dashed rgba(255,255,255,.6); }
 
-/* ── Footer ────────────────────────────────── */
-.footer { text-align: center; padding: 20px 0; color: var(--ink-muted); font-size: 12px; }
+/* Modal de comentarios (centrado) */
+.cmodal { background: var(--surface); width: 100%; max-width: 560px; border-radius: 22px; box-shadow: var(--shadow-3); overflow: hidden; transform: translateY(24px) scale(.96); transition: transform .28s cubic-bezier(.22,.8,.35,1); display: flex; flex-direction: column; max-height: 90vh; }
+.overlay.show .cmodal { transform: none; }
+.cmodal-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--line); position: relative; flex-shrink: 0; }
+.cmodal-head h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.2px; }
+.cmodal-head .csub { font-size: 12.5px; color: var(--ink-3); margin-top: 3px; }
+.cmodal-head .modal-close { background: var(--paper); color: var(--ink-2); }
+.cmodal-head .modal-close:hover { background: var(--paper-deep); }
+.cmodal-body { padding: 18px 24px 22px; overflow-y: auto; flex: 1; }
+.cmodal-ref { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; margin-bottom: 16px; font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+.cmodal-ref .who { font-weight: 700; color: var(--ink); margin-bottom: 3px; font-size: 12.5px; }
+.cmodal-ref .who .rid { color: var(--ink-3); font-weight: 600; }
+.comments-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.cmodal-form-label { font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin: 4px 0 9px; display: flex; align-items: center; gap: 7px; }
+.cmodal-form-label .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.comment-form { border-top: 1px solid var(--line); padding-top: 16px; }
+.comment-form .input { width: 100%; border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px 12px; font: inherit; font-size: 13px; margin-bottom: 8px; }
+.comment-form .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(36,86,234,.13); }
+.comment-form .btn { width: 100%; border: none; border-radius: 10px; padding: 12px; font: inherit; font-size: 13.5px; font-weight: 600; background: var(--ink); color: #fff; cursor: pointer; transition: opacity .15s, background .15s; }
+.comment-form .btn:hover { background: #2a3350; }
+.comment-form .btn:disabled { opacity: .6; cursor: not-allowed; }
+.feed-empty { text-align: center; padding: 16px; font-size: 13px; color: var(--ink-3); background: var(--paper); border: 1px dashed var(--line-strong); border-radius: 12px; }
 
-/* ── Responsive ────────────────────────────── */
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-  .map { min-height: 500px; }
-  .side { position: static; }
-}
+/* ── Footer ── */
+.footer { text-align: center; padding: 26px 0 96px; color: var(--ink-3); font-size: 12.5px; border-top: 1px solid var(--line); margin-top: 26px; }
+
+@media (max-width: 920px) { .pagehead { flex-direction: column; align-items: flex-start; gap: 8px; } .map { height: 430px; } }
+@media (max-width: 520px) { .wrap { padding: 0 14px; } .top-status { display: none; } .node { width: 52px; height: 52px; font-size: 9px; } .node .emoji { font-size: 16px; } .thought-body { padding: 20px; } }
 </style>
 </head>
 <body>
 
+<div class="topbar">
+  <div class="inner">
+    <div class="brand">
+      <span class="mark">🌿</span>
+      <span>Territorio Vivo<small> · cartografía comunitaria</small></span>
+    </div>
+    <div class="top-status">
+      <span id="statusDot" class="status-dot"></span>
+      <span id="backendStatus">Verificando backend…</span>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
-  <header>
-    <h1>Territorio Vivo</h1>
-    <p>Explora, escucha, conecta y transforma. Cada punto del mapa guarda un saber, una historia o un problema que puede convertirse en aprendizaje.</p>
+
+  <header class="pagehead">
+    <div>
+      <h1>Un territorio <em>que enseña</em></h1>
+      <p class="lede">Cada punto del mapa guarda un saber, una historia o un problema. <strong>Elige un nodo</strong> y descubre qué te propone.</p>
+    </div>
   </header>
 
-  <div class="layout">
-    <!-- ── MAPA ── -->
-    <section class="card map" aria-label="Mapa interactivo del territorio">
-      <div class="map-label">Haz clic en los nodos para descubrir</div>
+  <!-- Mapa -->
+  <section class="map-shell">
+    <div class="map" aria-label="Mapa interactivo del territorio">
+      <div class="map-hint"><span class="pulse"></span> Toca un nodo</div>
       <div class="river"></div>
+      <div class="river-waves"><i></i><i></i><i></i><i></i></div>
+
+      <!-- Decoración: montañas, casitas, árboles, personas -->
+      <div class="mountains">
+        <div class="peak p1"></div><div class="peak p2"></div><div class="peak p3"></div><div class="peak p4"></div>
+      </div>
+      <div class="houses">
+        <div class="hp hp1"><div class="h"><div class="roof"></div><div class="door"></div></div></div>
+        <div class="hp hp2"><div class="h"><div class="roof"></div><div class="door"></div></div></div>
+        <div class="hp hp3"><div class="h"><div class="roof"></div><div class="door"></div></div></div>
+        <div class="hp hp4"><div class="h"><div class="roof"></div><div class="door"></div></div></div>
+      </div>
+      <div class="trees">
+        <div class="tree tr1"></div><div class="tree tr2"></div><div class="tree tr3"></div>
+      </div>
+      <div class="people">
+        <div class="person pp1"><div class="head"></div><div class="body"></div></div>
+        <div class="person pp2"><div class="head"></div><div class="body"></div></div>
+        <div class="person pp3"><div class="head"></div><div class="body"></div></div>
+        <div class="person pp4"><div class="head"></div><div class="body"></div></div>
+      </div>
+
       <div class="road r1"></div>
       <div class="road r2"></div>
       <div class="road r3"></div>
-      <div class="connector c1"></div>
-      <div class="connector c2"></div>
-      <div class="connector c3"></div>
-      <div class="connector c4"></div>
-      <div class="connector c5"></div>
+      <div class="road r4"></div>
 
-      <button class="node school"    onclick="showNode('school')">🏫<br>Escuela</button>
-      <button class="node river-n"   onclick="showNode('river')">💧<br>Río</button>
-      <button class="node market"    onclick="showNode('market')">🧺<br>Mercado</button>
-      <button class="node artisan"   onclick="showNode('artisan')">🧵<br>Saberes</button>
-      <button class="node farm"      onclick="showNode('farm')">🌱<br>Rural</button>
-      <button class="node community" onclick="showNode('community')">🤝<br>Comunidad</button>
+      <button class="node school"    data-label="Escuela"   onclick="showNode('school')"><span class="emoji">🏫</span>Escuela</button>
+      <button class="node river-n"   data-label="Río"       onclick="showNode('river')"><span class="emoji">💧</span>Río</button>
+      <button class="node market"    data-label="Mercado"   onclick="showNode('market')"><span class="emoji">🧺</span>Mercado</button>
+      <button class="node artisan"   data-label="Saberes"   onclick="showNode('artisan')"><span class="emoji">🧵</span>Saberes</button>
+      <button class="node farm"      data-label="Rural"     onclick="showNode('farm')"><span class="emoji">🌱</span>Rural</button>
+      <button class="node community" data-label="Comunidad" onclick="showNode('community')"><span class="emoji">🤝</span>Comunidad</button>
+    </div>
+  </section>
 
-      <div class="legend">
-        <strong>¿Qué estás explorando?</strong>
-        <span><span class="legend-dot" style="background:#5f6eea"></span>Aprendizaje</span>
-        <span><span class="legend-dot" style="background:#2d9ed0"></span>Problema real</span>
-        <span><span class="legend-dot" style="background:#d66ba3"></span>Saber local</span>
-        <span><span class="legend-dot" style="background:#4f9d59"></span>Territorio</span>
-        <span><span class="legend-dot" style="background:#8f6bd8"></span>Co-creación</span>
-      </div>
-    </section>
+  <!-- Botones de nodos -->
+  <div class="band">
+    <nav class="nav" aria-label="Exploración de nodos">
+      <button class="nav-chip active" data-node="default" onclick="showNode('default')"><span class="dot" style="background:#8b93a7"></span>Inicio</button>
+      <button class="nav-chip" data-node="school" onclick="showNode('school')"><span class="dot" style="background:#6a76f0"></span>Escuela</button>
+      <button class="nav-chip" data-node="river" onclick="showNode('river')"><span class="dot" style="background:#2d9ed0"></span>Río</button>
+      <button class="nav-chip" data-node="market" onclick="showNode('market')"><span class="dot" style="background:#f0a93c"></span>Mercado</button>
+      <button class="nav-chip" data-node="artisan" onclick="showNode('artisan')"><span class="dot" style="background:#e380b2"></span>Saberes</button>
+      <button class="nav-chip" data-node="farm" onclick="showNode('farm')"><span class="dot" style="background:#53a768"></span>Rural</button>
+      <button class="nav-chip" data-node="community" onclick="showNode('community')"><span class="dot" style="background:#a184e6"></span>Comunidad</button>
+    </nav>
+  </div>
 
-    <!-- ── SIDEBAR ── -->
-    <aside class="card side">
-      <div class="intro">
-        <strong>Tu misión:</strong> recorre el territorio y descubre cómo la escuela puede aprender con la comunidad, no solamente sobre ella.
-      </div>
+  <!-- Texto del nodo activo -->
+  <section class="thought" style="--rail-c:var(--accent);--rail-c2:#3d6dff">
+    <div class="rail"></div>
+    <div class="thought-body">
 
-      <!-- Paneles de nodos -->
       <div id="default" class="panel active">
-        <span class="tag">INICIO</span>
-        <h3>El mapa está esperando...</h3>
-        <p>Hay conocimientos que no aparecen en los libros: viven en las personas, en los lugares, en las historias y en los problemas cotidianos.</p>
-        <p><strong>Elige un nodo.</strong> Tu recorrido será diferente al de otros exploradores.</p>
-        <div class="question"><strong>Pregunta detonadora:</strong> ¿Qué lugar de tu territorio podría convertirse en una nueva aula?</div>
+        <span class="tag">Inicio</span>
+        <h3>El mapa está esperando…</h3>
+        <p>Hay conocimientos que no aparecen en los libros: viven en las personas, en los lugares, en las historias y en los problemas cotidianos. <strong>Elige un nodo</strong> — tu recorrido será único.</p>
+        <div class="question"><strong>Pregunta detonadora</strong>¿Qué lugar de tu territorio podría convertirse en una nueva aula?</div>
       </div>
 
       <div id="school" class="panel">
-        <span class="tag">NODO 1 · APRENDIZAJE</span>
-        <h3>🏫 La escuela abierta</h3>
-        <p>La escuela deja de ser una isla. Sus preguntas salen al territorio y regresan convertidas en proyectos, investigaciones y nuevas conexiones.</p>
-        <div class="question"><strong>Reto:</strong> ¿Qué problema real de tu comunidad llevarías al aula?</div>
+        <span class="tag">Nodo 1 · Aprendizaje</span>
+        <h3><span class="emoji">🏫</span> La escuela abierta</h3>
+        <p>El aula siempre estuvo entre cuatro paredes. Pero ¿y si ese lugar para aprender pudiera moverse? Imagina llevarlo directo al territorio, donde están los problemas reales por resolver, como cuando los estudiantes van de práctica al campo. Así, el aula deja de tener paredes: el territorio es el aula.</p>
+        <div class="question"><strong>Reto</strong>¿Qué problema real de tu comunidad llevarías contigo, como aula de práctica, para aprender resolviéndolo?</div>
       </div>
 
       <div id="river" class="panel">
-        <span class="tag">NODO 2 · PROBLEMA REAL</span>
-        <h3>💧 El río pregunta</h3>
+        <span class="tag">Nodo 2 · Problema real</span>
+        <h3><span class="emoji">💧</span> El río pregunta</h3>
         <p>El agua contaminada, la basura o la pérdida de ecosistemas no son solo "temas". Son desafíos auténticos que pueden movilizar conocimientos de ciencias, tecnología, comunicación y ciudadanía.</p>
-        <div class="question"><strong>Reto:</strong> formula una pregunta de investigación que ayude a comprender este problema.</div>
+        <div class="question"><strong>Reto</strong>Detecta un problema real de un río de tu territorio y transforma tu observación en una pregunta de investigación que pueda responderse con datos del lugar.</div>
       </div>
 
       <div id="market" class="panel">
-        <span class="tag">NODO 3 · SABER COTIDIANO</span>
-        <h3>🧺 El mercado enseña</h3>
+        <span class="tag">Nodo 3 · Saber cotidiano</span>
+        <h3><span class="emoji">🧺</span> El mercado enseña</h3>
         <p>En el mercado también hay matemáticas, economía, cultura, alimentación, historias familiares y decisiones. Los espacios cotidianos están llenos de oportunidades para aprender.</p>
-        <div class="question"><strong>Reto:</strong> ¿qué conocimiento podría aprenderse conversando con una persona del mercado?</div>
+        <div class="question"><strong>Reto</strong>¿Qué conocimiento podría aprenderse conversando con una persona del mercado?</div>
       </div>
 
       <div id="artisan" class="panel">
-        <span class="tag">NODO 4 · SABER INTERGENERACIONAL</span>
-        <h3>🧵 La memoria tiene manos</h3>
+        <span class="tag">Nodo 4 · Saber intergeneracional</span>
+        <h3><span class="emoji">🧵</span> La memoria tiene manos</h3>
         <p>Los oficios, las recetas, las técnicas artesanales y las historias transmitidas entre generaciones son nodos de conocimiento. Escuchar a quienes los conservan ayuda a que el currículo tenga identidad territorial.</p>
-        <div class="question"><strong>Reto:</strong> entrevista a una persona mayor y registra un saber que no quieras que se pierda.</div>
+        <div class="question"><strong>Reto</strong>Entrevista a una persona mayor y registra un saber que no quieras que se pierda.</div>
       </div>
 
       <div id="farm" class="panel">
-        <span class="tag">NODO 5 · TERRITORIO</span>
-        <h3>🌱 La tierra también habla</h3>
-        <p>Quien trabaja la tierra observa ciclos, clima, biodiversidad y cambios del entorno. Su experiencia puede dialogar con el conocimiento científico y generar nuevas preguntas.</p>
-        <div class="question"><strong>Reto:</strong> compara un saber local con una explicación científica. ¿Qué tienen en común? ¿Qué preguntas aparecen?</div>
+        <span class="tag">Nodo 5 · Territorio</span>
+        <h3><span class="emoji">🌱</span> La tierra también habla</h3>
+        <p>Quien trabaja la tierra no estudió en un aula, pero aprende todos los días: observa ciclos, clima, biodiversidad y cambios del entorno. Como dicen los abuelos, aprenden con la experiencia, en la universidad de la vida. Su saber puede dialogar con el conocimiento científico y generar nuevas preguntas.</p>
+        <div class="question"><strong>Reto</strong>Compara un saber local con una explicación científica. ¿Qué tienen en común? ¿Qué preguntas aparecen?</div>
       </div>
 
       <div id="community" class="panel">
-        <span class="tag">NODO 6 · CO-CREACIÓN</span>
-        <h3>🤝 Nadie aprende solo</h3>
+        <span class="tag">Nodo 6 · Co-creación</span>
+        <h3><span class="emoji">🤝</span> Nadie aprende solo</h3>
         <p>Estudiantes, docentes, familias, expertos y líderes comunitarios pueden convertirse en co-creadores del currículo. Cada persona aporta una pieza distinta del rompecabezas.</p>
-        <div class="question"><strong>Reto final:</strong> diseña una pequeña acción para transformar un problema de tu territorio.</div>
+        <div class="question"><strong>Reto final</strong>Identifica qué problemas hay en tu territorio y qué acciones tomarías, junto con otras personas, para enfrentarlos.</div>
       </div>
 
-      <!-- Formulario de reflexion -->
-      <div class="form-section">
-        <h4>Comparte tu reflexión</h4>
-        <p class="subtitle">Después de explorar los nodos, escribe tu idea: <em>"Mi territorio podría enseñarnos…"</em></p>
-        <div class="form-field">
-          <label for="student">Tu nombre o seudónimo</label>
-          <input id="student" type="text" class="input" placeholder="Opcional" maxlength="80">
-        </div>
-        <div class="form-field">
-          <label for="answer">Tu reflexión</label>
-          <textarea id="answer" placeholder="Escribe aquí tu descubrimiento..." maxlength="2000"></textarea>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button id="btn-save" class="btn btn-primary" onclick="saveAnswer()">Guardar mi reflexión</button>
-          <span id="saved" class="msg"></span>
-        </div>
-        <div class="status-bar">
-          <span id="statusDot" class="status-dot"></span>
-          <span id="backendStatus">Verificando backend…</span>
-        </div>
-      </div>
+    </div>
+  </section>
 
-      <!-- Feed de reflexiones -->
-      <div class="feed-section">
-        <h4>Reflexiones de la comunidad</h4>
-        <div id="dataBox"><div class="feed-empty">Cargando reflexiones…</div></div>
-      </div>
-    </aside>
+  <!-- Feed -->
+  <div class="feed-section">
+    <div class="feed-header">
+      <h4>Reflexiones de la comunidad</h4>
+      <span class="feed-count" id="feedCount"></span>
+    </div>
+    <div id="dataBox"><div class="feed-empty">Cargando reflexiones…</div></div>
   </div>
 
   <div class="footer">Creada con ayuda de ChatGPT y OpenCode · Revisada y depurada por Anderson A. Salazar</div>
 </div>
 
+<!-- Botón flotante -->
+<button class="fab" id="fab" onclick="openModal()"><span class="pin">✏️</span> Compartir reflexión</button>
+
+<!-- MODAL INFANTIL: compartir reflexión -->
+<div class="overlay" id="overlayForm">
+  <div class="modal">
+    <span class="modal-confetti"></span>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-head">
+      <div class="big">🎨</div>
+      <h3 id="modalTitle">Aportar reflexión</h3>
+      <p id="modalSub"></p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <label for="student">Tu nombre o seudónimo</label>
+        <input id="student" type="text" class="input" placeholder="¿Cómo te llamas? (opcional)" maxlength="80">
+      </div>
+      <div class="modal-field">
+        <label for="answer">Tu reflexión</label>
+        <textarea id="answer" placeholder="Mi territorio podría enseñarnos…" maxlength="2000"></textarea>
+      </div>
+      <button id="btn-save" class="modal-submit" onclick="saveAnswer()">🚀 ¡Compartir!</button>
+      <span id="saved" class="msg"></span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CENTRADO: comentarios de la reflexión -->
+<div class="overlay" id="overlayComments">
+  <div class="cmodal">
+    <div class="cmodal-head">
+      <button class="modal-close" onclick="closeComments()">✕</button>
+      <h3>Comentarios de la reflexión</h3>
+      <div class="csub" id="cmodalSub"></div>
+    </div>
+    <div class="cmodal-body">
+      <div class="cmodal-ref" id="cmodalRef"></div>
+      <div class="comments-list" id="clist"></div>
+      <div class="comment-form">
+        <label class="cmodal-form-label"><span class="dot"></span> Responder o comentar a la reflexión</label>
+        <input id="cname" class="input" placeholder="Tu nombre" maxlength="80">
+        <input id="ctext" class="input" placeholder="Escribe un comentario…" maxlength="500"
+               onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment();}">
+        <button class="btn" id="cbtn" onclick="sendComment()">Enviar comentario</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ══════════════════════════════════════════════
-   CONFIG
-   ══════════════════════════════════════════════ */
+/* ══════════ CONFIG ══════════ */
 const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbylgYe-v2u78zFwunNRWoRNgLzbuPMj8-J5VWRB9_3NjzH-wLxJoJirGdlpcUMOLIl6zA/exec';
 
 const NODE_NAMES = {
@@ -411,71 +492,106 @@ const NODE_NAMES = {
 
 const REQUIRED_FIELDS = ['id', 'estudiante', 'reflexion'];
 
-/* ══════════════════════════════════════════════
-   ESTADO
-   ══════════════════════════════════════════════ */
+/* ══════════ ESTADO ══════════ */
 const _reflections = {};
 let _msgTimer = null;
 let _busy = false;
+let _activeCommentId = null;
+let _allRecords = [];
 
-/* ══════════════════════════════════════════════
-   UTILIDADES
-   ══════════════════════════════════════════════ */
+/* ══════════ UTILIDADES ══════════ */
 function esc(v) {
-  return String(v ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+  return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
+function safeDomId(id) { return 'r' + String(id).replace(/[^a-zA-Z0-9]/g, ''); }
+function backendConfigured() { return BACKEND_URL.startsWith('https://script.google.com/macros/s/'); }
+function ridLabel(id) { return '#' + String(id); }
+function activeNode() { return document.querySelector('.panel.active')?.id || 'default'; }
 
-function safeDomId(id) {
-  return 'r' + String(id).replace(/[^a-zA-Z0-9]/g, '');
-}
-
-function backendConfigured() {
-  return BACKEND_URL.startsWith('https://script.google.com/macros/s/');
-}
-
-/* ══════════════════════════════════════════════
-   UI
-   ══════════════════════════════════════════════ */
+/* ══════════ UI: STATUS / NODOS / FAB ══════════ */
 function setStatus(msg, ok) {
   document.getElementById('backendStatus').textContent = msg;
   document.getElementById('statusDot').className = 'status-dot' + (ok ? ' on' : '');
 }
+
+const NODE_COLORS = {
+  default: ['#8b93a7', '#8b93a7', 'rgba(139,147,167,.5)'],
+  school:  ['#6a76f0', '#4a58e0', 'rgba(106,118,240,.4)'],
+  river:   ['#2d9ed0', '#1787c2', 'rgba(45,158,208,.4)'],
+  market:  ['#f0a93c', '#e08a16', 'rgba(240,169,60,.5)'],
+  artisan: ['#e380b2', '#cf5292', 'rgba(227,128,178,.4)'],
+  farm:    ['#53a768', '#3b8a4f', 'rgba(83,167,104,.4)'],
+  community:['#a184e6', '#7b5ccb', 'rgba(161,132,230,.4)']
+};
+
+function syncActive() {
+  const active = document.querySelector('.panel.active')?.id || 'default';
+  document.querySelectorAll('.node').forEach(n => n.classList.toggle('active', n.classList.contains(active)));
+  document.querySelectorAll('.nav-chip').forEach(c => c.classList.toggle('active', c.dataset.node === active));
+
+  const c = NODE_COLORS[active] || NODE_COLORS.default;
+  const root = document.documentElement;
+  root.style.setProperty('--ui-c', c[0]);
+  root.style.setProperty('--ui-c2', c[1]);
+  root.style.setProperty('--ui-glow', c[2]);
+
+  const rail = document.querySelector('.thought');
+  if (rail) { rail.style.setProperty('--rail-c', c[0]); rail.style.setProperty('--rail-c2', c[1]); }
+  const fab = document.getElementById('fab');
+  if (fab) { fab.style.setProperty('--fab-c', c[0]); fab.style.setProperty('--fab-c2', c[1]); fab.style.setProperty('--fab-glow', c[2]); }
+}
+
+function showNode(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  syncActive();
+  if (typeof _allRecords === 'undefined') return;
+  renderFeed(_allRecords);
+}
+
+/* ══════════ MODAL FORMULARIO ══════════ */
+const overlayForm = document.getElementById('overlayForm');
+const overlayComments = document.getElementById('overlayComments');
+function openModal() {
+  const tema = NODE_NAMES[activeNode()] || 'este territorio';
+  document.getElementById('modalTitle').textContent = 'Aportar reflexión a ' + tema;
+  const q = document.querySelector('.panel.active .question');
+  const sub = document.getElementById('modalSub');
+  if (q) {
+    const strong = q.querySelector('strong');
+    let txt = '';
+    if (strong) { txt = strong.textContent.trim() + ' '; }
+    txt += (q.lastChild ? q.lastChild.textContent : '').trim();
+    sub.textContent = txt.replace(/\s+/g, ' ');
+  } else {
+    sub.textContent = 'Comparte tu descubrimiento';
+  }
+  overlayForm.classList.add('show');
+}
+function closeModal() { overlayForm.classList.remove('show'); const el = document.getElementById('saved'); el.textContent = ''; el.className = 'msg'; }
+function closeComments() { overlayComments.classList.remove('show'); _activeCommentId = null; }
+
+overlayForm.addEventListener('click', e => { if (e.target.id === 'overlayForm') closeModal(); });
+overlayComments.addEventListener('click', e => { if (e.target.id === 'overlayComments') closeComments(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeComments(); } });
 
 function showMsg(text, type) {
   clearTimeout(_msgTimer);
   const el = document.getElementById('saved');
   el.className = 'msg ' + type;
   el.textContent = text;
-  if (type === 'ok') {
-    _msgTimer = setTimeout(() => { el.textContent = ''; el.className = 'msg'; }, 4000);
-  }
+  if (type === 'ok') _msgTimer = setTimeout(() => { el.textContent = ''; el.className = 'msg'; }, 3200);
 }
 
-function showNode(id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelector('.side').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-/* ══════════════════════════════════════════════
-   FILAS VALIDAS (descarta encabezados del sheet)
-   ══════════════════════════════════════════════ */
+/* ══════════ FILAS VALIDAS ══════════ */
 function isValidRecord(r) {
   if (!r || typeof r !== 'object') return false;
   return REQUIRED_FIELDS.every(f => r[f] && String(r[f]).trim() !== '');
 }
 
-/* ══════════════════════════════════════════════
-   GUARDAR REFLEXION
-   ══════════════════════════════════════════════ */
+/* ══════════ GUARDAR REFLEXION ══════════ */
 async function saveAnswer() {
   if (_busy) return;
-
   const value = document.getElementById('answer').value.trim();
   const student = document.getElementById('student').value.trim() || 'Anónimo';
   const btn = document.getElementById('btn-save');
@@ -483,61 +599,43 @@ async function saveAnswer() {
   if (!value) { showMsg('Escribe primero tu reflexión.', 'err'); return; }
   if (!backendConfigured()) { showMsg('Backend no configurado.', 'err'); return; }
 
-  _busy = true;
-  btn.disabled = true;
-  btn.textContent = 'Guardando…';
-  showMsg('', '');
-  setStatus('Enviando…', false);
+  _busy = true; btn.disabled = true; btn.textContent = 'Guardando…';
+  showMsg('', ''); setStatus('Enviando…', false);
 
   try {
     const payload = {
-      action: 'save',
-      student,
-      reflection: value,
-      source: 'Territorio Vivo',
+      action: 'save', student, reflection: value, source: 'Territorio Vivo',
       node: document.querySelector('.panel.active')?.id || 'default',
       timestampClient: new Date().toISOString()
     };
-
-    const res = await fetch(BACKEND_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(BACKEND_URL, { method: 'POST', body: JSON.stringify(payload) });
     const data = await res.json();
-
     if (!data.ok) throw new Error(data.error || 'Error al guardar.');
 
-    showMsg('Reflexión guardada correctamente.', 'ok');
+    showMsg('¡Reflexión guardada! 🎉', 'ok');
     setStatus('Backend: conectado', true);
     document.getElementById('answer').value = '';
-    loadData();
+    closeModal(); loadData();
+    _busy = false;
+    setTimeout(() => { btn.disabled = false; btn.textContent = '🚀 ¡Compartir!'; }, 1600);
   } catch (err) {
     showMsg('No se pudo conectar con el servidor.', 'err');
     setStatus('Backend: error', false);
     console.error('[saveAnswer]', err);
-  } finally {
-    _busy = false;
-    btn.disabled = false;
-    btn.textContent = 'Guardar mi reflexión';
+    _busy = false; btn.disabled = false; btn.textContent = '🚀 ¡Compartir!';
   }
 }
 
-/* ══════════════════════════════════════════════
-   CARGAR REFLEXIONES
-   ══════════════════════════════════════════════ */
+/* ══════════ CARGAR REFLEXIONES ══════════ */
 async function loadData() {
   const box = document.getElementById('dataBox');
-
-  if (!backendConfigured()) {
-    box.innerHTML = '<div class="feed-empty">Backend no configurado.</div>';
-    return;
-  }
-
+  if (!backendConfigured()) { box.innerHTML = '<div class="feed-empty">Backend no configurado.</div>'; return; }
   try {
     const res = await fetch(BACKEND_URL + '?action=list');
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
-    renderFeed(data.records || []);
+    _allRecords = data.records || [];
+    renderFeed(_allRecords);
     setStatus('Backend: conectado', true);
   } catch (err) {
     box.innerHTML = '<div class="feed-empty">Error al cargar reflexiones.</div>';
@@ -546,100 +644,76 @@ async function loadData() {
   }
 }
 
-/* ══════════════════════════════════════════════
-   RENDER FEED
-   ══════════════════════════════════════════════ */
+/* ══════════ RENDER FEED ══════════ */
 function renderFeed(records) {
   const box = document.getElementById('dataBox');
-
+  const countEl = document.getElementById('feedCount');
   Object.keys(_reflections).forEach(k => delete _reflections[k]);
 
+  const node = activeNode();
   const valid = records.filter(isValidRecord);
+  const filtered = node === 'default'
+    ? valid
+    : valid.filter(r => (r.nodo || 'default') === node);
 
-  if (!valid.length) {
-    box.innerHTML = '<div class="feed-empty">Aún no hay reflexiones. Sé el primero en compartir.</div>';
+  if (countEl) countEl.textContent = filtered.length ? String(filtered.length) : '';
+  if (!filtered.length) {
+    box.innerHTML = '<div class="feed-empty">Este lugar aún no tiene reflexión. ¡Aporta la primera!</div>';
     return;
   }
 
-  box.innerHTML = valid.slice().reverse().map(r => {
+  box.innerHTML = filtered.slice().reverse().map(r => {
     const did = safeDomId(r.id);
     _reflections[did] = r;
     const label = NODE_NAMES[r.nodo] || r.nodo || 'General';
     return `
       <div class="reflexion-card" data-rid="${esc(r.id)}">
         <div class="reflexion-head">
-          <div><span class="reflexion-author">${esc(r.estudiante)}</span> · ${esc(r.fecha)}</div>
+          <div class="who">${esc(r.estudiante)} <span class="rid">· Ref ${ridLabel(r.id)}</span></div>
           <span class="reflexion-node">${esc(label)}</span>
         </div>
         <div class="reflexion-text">${esc(r.reflexion)}</div>
-        <div class="reflexion-actions">
-          <button class="comments-toggle" onclick="toggleComments('${did}')">💬 Comentar</button>
-          <span class="comment-count" id="ccount-${did}"></span>
-        </div>
-        <div class="comments-box" id="cbox-${did}">
-          <div class="comments-list" id="clist-${did}"></div>
-          <div class="comment-form">
-            <input id="cname-${did}" class="input" placeholder="Tu nombre" maxlength="80">
-            <input id="ctext-${did}" class="input" placeholder="Escribe un comentario…" maxlength="500"
-                   onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendComment('${did}');}">
-            <button class="btn btn-primary" id="cbtn-${did}" onclick="sendComment('${did}')">Enviar</button>
-          </div>
+        <div class="reflexion-comments">
+          <div class="cm-label">Comentarios</div>
+          <button class="comment-toggle" onclick="openComments('${did}')">💬 Ver comentarios de la reflexión</button>
+          <span class="comment-count" id="ccount-${did}" style="display:none"></span>
         </div>
       </div>`;
   }).join('');
 }
 
-/* ══════════════════════════════════════════════
-   COMENTARIOS
-   ══════════════════════════════════════════════ */
-async function toggleComments(did) {
-  const box = document.getElementById('cbox-' + did);
-  if (!box) return;
+/* ══════════ MODAL COMENTARIOS ══════════ */
+function openComments(did) {
+  const r = _reflections[did];
+  if (!r) return;
+  _activeCommentId = did;
 
-  if (box.classList.contains('open')) {
-    box.classList.remove('open');
-    return;
-  }
+  document.getElementById('cmodalRef').innerHTML =
+    '<div class="who">' + esc(r.estudiante) + ' <span class="rid">· Ref ' + ridLabel(r.id) + '</span></div>' +
+    esc(r.reflexion);
+  document.getElementById('cmodalSub').textContent =
+    (NODE_NAMES[r.nodo] || r.nodo || 'General') + ' · ' + ridLabel(r.id);
 
-  box.classList.add('open');
-  await loadComments(did);
-  document.getElementById('ctext-' + did)?.focus();
+  document.getElementById('cname').value = '';
+  document.getElementById('ctext').value = '';
+  overlayComments.classList.add('show');
+  loadComments();
+  setTimeout(() => document.getElementById('ctext')?.focus(), 350);
 }
 
-async function loadComments(did) {
-  const list = document.getElementById('clist-' + did);
-  const countEl = document.getElementById('ccount-' + did);
-  const r = _reflections[did];
-
-  if (!r) {
-    list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Reflexión no encontrada.</div>';
-    return;
-  }
-
-  list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Cargando…</div>';
-
+async function loadComments() {
+  const list = document.getElementById('clist');
+  const r = _reflections[_activeCommentId];
+  if (!r) { list.innerHTML = '<div class="feed-empty">Reflexión no encontrada.</div>'; return; }
+  list.innerHTML = '<div class="feed-empty">Cargando…</div>';
   try {
     const res = await fetch(BACKEND_URL + '?action=comments&id=' + encodeURIComponent(r.id));
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
-
     const comments = (data.comments || []).filter(c => c && c.texto);
-
-    if (countEl) {
-      if (comments.length) {
-        countEl.textContent = comments.length;
-        countEl.className = 'comment-count has';
-      } else {
-        countEl.textContent = '';
-        countEl.className = 'comment-count';
-      }
-    }
-
-    if (!comments.length) {
-      list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Sin comentarios aún.</div>';
-      return;
-    }
-
+    const countEl = document.getElementById('ccount-' + _activeCommentId);
+    if (countEl) { if (comments.length) { countEl.textContent = comments.length; countEl.style.display = 'inline-block'; } else { countEl.textContent = ''; countEl.style.display = 'none'; } }
+    if (!comments.length) { list.innerHTML = '<div class="feed-empty">Sin comentarios aún. ¡Sé el primero!</div>'; return; }
     list.innerHTML = comments.map(c => `
       <div class="comment-item">
         <div class="comment-avatar">${esc((c.autor || 'A').charAt(0).toUpperCase())}</div>
@@ -649,60 +723,43 @@ async function loadComments(did) {
         </div>
       </div>`).join('');
   } catch (err) {
-    list.innerHTML = '<div class="feed-empty" style="padding:6px 0">Error al cargar comentarios.</div>';
+    list.innerHTML = '<div class="feed-empty">Error al cargar comentarios.</div>';
     console.error('[loadComments]', err);
   }
 }
 
-async function sendComment(did) {
-  const r = _reflections[did];
+async function sendComment() {
+  const r = _reflections[_activeCommentId];
   if (!r) return;
-
-  const nameInput = document.getElementById('cname-' + did);
-  const textInput = document.getElementById('ctext-' + did);
-  const sendBtn = document.getElementById('cbtn-' + did);
+  const nameInput = document.getElementById('cname');
+  const textInput = document.getElementById('ctext');
+  const sendBtn = document.getElementById('cbtn');
   const text = textInput.value.trim();
   const author = nameInput.value.trim() || 'Anónimo';
-
   if (!text) { textInput.focus(); return; }
   if (sendBtn.disabled) return;
-
-  sendBtn.disabled = true;
-  sendBtn.textContent = '…';
-
+  sendBtn.disabled = true; sendBtn.textContent = 'Enviando…';
   try {
     const res = await fetch(BACKEND_URL, {
       method: 'POST',
-      body: JSON.stringify({
-        action: 'comment',
-        reflectionId: r.id,
-        node: r.nodo || 'default',
-        author,
-        text
-      })
+      body: JSON.stringify({ action: 'comment', reflectionId: r.id, node: r.nodo || 'default', author, text })
     });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
-
     textInput.value = '';
-    loadComments(did);
+    loadComments();
   } catch (err) {
     alert('No se pudo enviar el comentario. Intenta de nuevo.');
     console.error('[sendComment]', err);
   } finally {
-    sendBtn.disabled = false;
-    sendBtn.textContent = 'Enviar';
+    sendBtn.disabled = false; sendBtn.textContent = 'Enviar comentario';
   }
 }
 
-/* ══════════════════════════════════════════════
-   INIT
-   ══════════════════════════════════════════════ */
+/* ══════════ INIT ══════════ */
 window.addEventListener('load', () => {
-  setStatus(
-    backendConfigured() ? 'Backend: conectado' : 'Backend: sin configurar',
-    backendConfigured()
-  );
+  setStatus(backendConfigured() ? 'Backend: conectado' : 'Backend: sin configurar', backendConfigured());
+  syncActive();
   loadData();
 });
 </script>
