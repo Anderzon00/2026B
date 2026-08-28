@@ -14,11 +14,11 @@ const MEMORIA_VIDEO = "archivoVideoInicialVisto";
 
 const COMENTARIO_TARJETA_1 = `
 <div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 15px;">
-    <p>Paso 1: Acceder al enlace "Abrir Enlace Transmedia" ubicado en la parte de arriba.</p>
+    <p>Paso 1: Acceder al enlace "Abrir Enlace Transmedia" ubicado en la parte de arriba.</p> <br>
 
     <p><span style="color: #d9534f; font-weight: bold;">Busca en esa página el único número de distinto color.</span></p>
  
-    <p><span style="color: #d9534f; font-weight: bold;">Suma 36 al número encontrado.</span></p>
+    <p><span style="color: #d9534f; font-weight: bold;">Suma 36 al número encontrado.</span></p> <br>
  
     <p><span style="color: #d9534f; font-weight: bold;">Restar los dígitos: Toma el resultado de tu suma y resta el segundo dígito del primero. Por ejemplo, si la suma te dio 85, la operación matemática que debes hacer es 8 - 5 = 3. 
   vuelve al enlace  y busca la tarjeta que corresponda al resultado, el texto resaltado es la clave para ingresar a la siguiente tarjeta "Voces del territorio" .</span></p>
