@@ -21,7 +21,7 @@ const COMENTARIO_TARJETA_1 = `
     <p><span style="color: #d9534f; font-weight: bold;">Suma 36 al número encontrado.</span></p>
  
     <p><span style="color: #d9534f; font-weight: bold;">Restar los dígitos: Toma el resultado de tu suma y resta el segundo dígito del primero. Por ejemplo, si la suma te dio 85, la operación matemática que debes hacer es 8 - 5 = 3. 
-  vuelve al enlace  y busca la tarjeta que corresponda al resultado, el texto resaltado es la clave.</span></p>
+  vuelve al enlace  y busca la tarjeta que corresponda al resultado, el texto resaltado es la clave para ingresar a la siguiente tarjeta "Voces del territorio" .</span></p>
 
  
 </div>`;
