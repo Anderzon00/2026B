@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nueve tarjetas | Territorio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1c2333;
+  --ink-100: #1c2333;
+  --ink-300: #737b8f;
+  --ink-400: #8b93a7;
+  --surface-0: #f5f3ee;
+  --surface-1: #ffffff;
+  --surface-2: #faf9f6;
+  --surface-3: #f0eee7;
+  --teal: #2456ea;
+  --teal-dim: rgba(36, 86, 234, 0.08);
+  --line: rgba(28, 35, 51, 0.09);
+  --line-strong: rgba(28, 35, 51, 0.16);
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-full: 9999px;
+  --sh-1: 0 1px 2px rgba(28,35,51,.05), 0 1px 3px rgba(28,35,51,.06);
+  --sh-2: 0 6px 18px -6px rgba(28,35,51,.12);
+  --sh-3: 0 12px 40px rgba(28,35,51,.16);
+  --sh-4: 0 24px 64px rgba(28,35,51,.22);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(120% 120% at 80% -10%, #f3f6ff 0%, transparent 55%),
+    radial-gradient(120% 120% at 10% 110%, #f2f8f4 0%, transparent 55%),
+    linear-gradient(180deg, var(--surface-2), var(--surface-0));
+  color: var(--ink-100);
+  font-family: 'Inter', Arial, sans-serif;
+  min-height: 100%;
+}
+
+.wrap { max-width: 3850px; margin: 0 auto; padding: 0 24px; }
+
+.pagehead {
+  border-bottom: 1px solid var(--line);
+  padding: 22px 24px 18px;
+  background: var(--surface-1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.pagehead h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.pagehead h1 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.pagehead .lede {
+  margin: 8px 0 0;
+  color: var(--ink-300);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+main {
+  padding: 28px 24px 60px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 3850px;
+  margin: 0 auto;
+}
+
+.card {
+  position: relative;
+  background: var(--surface-1);
+  cursor: zoom-in;
+  overflow: hidden;
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(36, 86, 234, 0.14);
+  color: transparent;
+  font-size: clamp(20px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
+}
+
+.card:hover::after {
+  opacity: 1;
+  color: #fff;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(24, 28, 40, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .22s ease, visibility 0s linear .22s;
+}
+
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .22s ease, visibility 0s;
+}
+
+.lb-card {
+  background: var(--surface-0);
+  border-radius: var(--r-lg);
+  padding: 8px;
+  box-shadow: var(--sh-4);
+  max-width: min(94vw, calc(100vw - 150px));
+  transform: scale(.94);
+  transition: transform .22s ease;
+}
+
+.lightbox.open .lb-card { transform: scale(1); }
+
+.lb-stage {
+  width: 100%;
+  max-height: 84vh;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--surface-1);
+}
+
+.lb-stage img {
+  display: block;
+  width: 100%;
+  height: 84vh;
+  object-fit: cover;
+}
+
+.lb-card figcaption {
+  text-align: center;
+  margin: 10px 4px 2px;
+  color: var(--ink-300);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lb-close,
+.lb-nav {
+  position: absolute;
+  border: 0;
+  cursor: pointer;
+  background: var(--surface-1);
+  color: var(--ink);
+  border-radius: var(--r-full);
+  box-shadow: var(--sh-2);
+  transition: transform .15s ease, background .15s ease, color .15s ease;
+}
+
+.lb-close {
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.lb-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+}
+
+.lb-nav.prev { left: 14px; }
+
+.lb-nav.next { right: 14px; }
+
+.lb-nav.prev:hover { transform: translateY(-50%) scale(1.06); }
+
+.lb-nav.next:hover { transform: translateY(-50%) scale(1.06); }
+
+.lb-close:hover,
+.lb-nav:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+@media (max-width: 560px) {
+  .wrap, main { padding-left: 14px; padding-right: 14px; }
+  .grid { gap: 0; grid-template-columns: repeat(3, 1fr); }
+  .lb-nav { width: 36px; height: 36px; font-size: 16px; }
+  .lb-nav.prev { left: 6px; }
+  .lb-nav.next { right: 6px; }
+}
+</style>
+</head>
+<body>
+
+<header class="pagehead">
+  <div class="wrap">
+    <h1>Nueve tarjetas, <em>un territorio</em></h1>
+    <p class="lede">Cada cuadro de la imagen se abre por separado. Haz clic en una tarjeta para ampliarla.</p>
+  </div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Cerrar">×</button>
+  <button class="lb-nav prev" id="lbPrev" aria-label="Anterior">‹</button>
+  <figure class="lb-card">
+    <div class="lb-stage" id="lbStage">
+      <img id="lbImg" alt="">
+    </div>
+    <figcaption>
+      <span id="lbCap"></span>
+    </figcaption>
+  </figure>
+  <button class="lb-nav next" id="lbNext" aria-label="Siguiente">›</button>
+</div>
+
+<script>
+var IMG_SRC = 'img.png';
+var GRID_X = [0, 1240, 2484, 3857];
+var GRID_Y_COLS = [
+  [0, 910, 1692, 2560],
+  [0, 896, 1690, 2560],
+  [0, 906, 1685, 2560]
+];
+
+var gridEl = document.getElementById('grid');
+var lightbox = document.getElementById('lightbox');
+var lbImg = document.getElementById('lbImg');
+var lbCap = document.getElementById('lbCap');
+var tiles = [];
+var current = 0;
+
+function makeTile(src, sx, sy, sw, sh, ratio) {
+  var cv = document.createElement('canvas');
+  cv.width = sw * 2;
+  cv.height = sh * 2;
+  cv.getContext('2d').drawImage(src, sx, sy, sw, sh, 0, 0, sw * 2, sh * 2);
+  var card = document.createElement('div');
+  card.className = 'card';
+  card.style.aspectRatio = ratio;
+  var img = document.createElement('img');
+  img.src = cv.toDataURL('image/jpeg', 0.92);
+  img.alt = 'Tarjeta ' + (tiles.length + 1);
+  card.setAttribute('data-label', String(tiles.length + 1).padStart(2, '0'));
+  card.appendChild(img);
+  card.dataset.index = tiles.length;
+  card.setAttribute('tabindex', '0');
+  gridEl.appendChild(card);
+  tiles.push(cv.toDataURL('image/jpeg', 0.92));
+}
+
+function build() {
+  if (!src || !src.naturalWidth) { return; }
+  gridEl.innerHTML = '';
+  tiles = [];
+  for (var r = 0; r < GRID_Y_COLS[0].length - 1; r++) {
+    for (var c = 0; c < GRID_X.length - 1; c++) {
+      var gy = GRID_Y_COLS[c];
+      var sx = GRID_X[c];
+      var sw = GRID_X[c + 1] - sx;
+      var sy = gy[r];
+      var sh = gy[r + 1] - sy;
+      makeTile(src, sx, sy, sw, sh, (sw / sh).toFixed(4));
+    }
+  }
+}
+
+function openTile(i) {
+  if (i < 0) { i = tiles.length - 1; }
+  if (i >= tiles.length) { i = 0; }
+  current = i;
+  lbImg.src = tiles[i];
+  lbCap.textContent = 'Tarjeta ' + (i + 1) + ' de ' + tiles.length;
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+var src = new Image();
+src.onload = function () { build(); };
+src.onerror = function () {
+  gridEl.innerHTML = '<p style="color:var(--teal);font-weight:600">No se pudo cargar la imagen. Revisa la ruta en IMG_SRC.</p>';
+};
+src.src = IMG_SRC;
+
+gridEl.addEventListener('click', function (e) {
+  var card = e.target.closest ? e.target.closest('.card') : null;
+  if (card) { openTile(parseInt(card.dataset.index, 10)); }
+});
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', function (e) {
+  e.stopPropagation();
+  openTile(current - 1);
+});
+document.getElementById('lbNext').addEventListener('click', function (e) {
+  e.stopPropagation();
+  openTile(current + 1);
+});
+
+lightbox.addEventListener('click', function (e) {
+  if (e.target === lightbox) { closeLightbox(); }
+});
+
+document.addEventListener('keydown', function (e) {
+  if (!lightbox.classList.contains('open')) { return; }
+  if (e.key === 'Escape') { closeLightbox(); }
+  if (e.key === 'ArrowLeft') { openTile(current - 1); }
+  if (e.key === 'ArrowRight') { openTile(current + 1); }
+});
+</script>
+</body>
+</html>
