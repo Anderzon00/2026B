@@ -59,8 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("btn-activar-conexion").addEventListener("click", () => {
         if(window.network) {
             window.network.addEdgeMode();
-            document.getElementById("estado-conexion").style.display = "inline";
-            document.getElementById("btn-activar-conexion").style.display = "none";
+            document.getElementById("btn-activar-conexion").classList.add("is-tracing");
         }
     });
 });
@@ -130,20 +129,16 @@ function actualizarEstadoConexion() {
     if (!boton) return;
     const libres = puedeTrazarConexion();
     boton.disabled = !libres;
-    
+    boton.classList.toggle("is-disabled", !libres);
+    const label = boton.querySelector(".ma-t");
+
     if (!libres) {
         const faltan = META_ELEMENTOS - contarElementosDelRizoma();
-        boton.innerText = `Disponible pronto · faltan ${faltan} elemento(s)`;
-        boton.title = "La conexión transversal se habilita cuando el rizoma se libere.";
-        boton.style.background = "rgba(0,0,0,0.5)";
-        boton.style.borderColor = "#f59e0b";
-        boton.style.color = "#f59e0b";
+        if (label) label.textContent = `Nueva conexión · faltan ${faltan}`;
+        boton.title = "La conexión se habilita cuando el rizoma se libere.";
     } else {
-        boton.innerText = "Trazar conexión transversal";
+        if (label) label.textContent = "Nueva conexión";
         boton.title = "El rizoma está libre. Conecta cualquier nodo de forma transversal.";
-        boton.style.background = "var(--teal)";
-        boton.style.borderColor = "var(--teal)";
-        boton.style.color = "var(--ink)";
     }
 }
 
@@ -197,10 +192,10 @@ function dibujarRedRizomatica() {
         }
 
         if (esBase) {
-            nodes.push({ id: nodo.id, label: labelFinal, title: nodo.estado === "locked" ? "Nodo protegido." : `[TEMA BASE] ID: ${nodo.id}\nAutor: ${nodo.autor || 'Anónimo'}`, shape: 'dot', size: 25, color: { background: colorNodo, border: '#ffffff', highlight: { border: '#ffffff' } }, font: { color: '#ffffff', size: 14, bold: true } });
+            nodes.push({ id: nodo.id, label: labelFinal, shape: 'dot', size: 25, color: { background: colorNodo, border: '#ffffff', highlight: { border: '#ffffff' } }, font: { color: '#ffffff', size: 14, bold: true } });
             idsVisibles.add(nodo.id);
         } else {
-            nodes.push({ id: nodo.id, label: labelFinal, title: nodo.estado === "locked" ? "Nodo protegido." : `[SUB-NODO] ID: ${nodo.id}\nTipo: ${nodo.tipo}\nAutor: ${nodo.autor || 'Anónimo'}`, shape: 'dot', size: 15, color: { background: colorNodo, border: '#ffffff' }, font: { color: '#f4f4f5' } });
+            nodes.push({ id: nodo.id, label: labelFinal, shape: 'dot', size: 15, color: { background: colorNodo, border: '#ffffff' }, font: { color: '#f4f4f5' } });
             idsVisibles.add(nodo.id);
             if (!mapaBloqueado) {
                 const temaRaiz = obtenerTemaRaiz(nodo);
@@ -222,7 +217,7 @@ function dibujarRedRizomatica() {
         let colorLinea = "#3f3f46"; 
         if(nodoPadre && nodoPadre.tema && nodoPadre.tema.includes("|||")) { colorLinea = nodoPadre.tema.split("|||")[1]; }
 
-        nodes.push({ id: idAporte, label: aporte.autor || 'Anónimo', title: `[APORTE] ID: ${idAporte}\n\n${aporte.texto}`, group: 'aporte', shape: 'box', size: 12, color: { background: '#1d304b', border: colorLinea }, font: { color: '#a1a1aa', size: 11 } });
+        nodes.push({ id: idAporte, label: aporte.autor || 'Anónimo', group: 'aporte', shape: 'box', size: 12, color: { background: '#1d304b', border: colorLinea }, font: { color: '#a1a1aa', size: 13 } });
         idsVisibles.add(idAporte);
         if (idsVisibles.has(aporte.idNodo)) edges.push({ from: idAporte, to: aporte.idNodo, color: { color: colorLinea, opacity: 0.4 }, length: 40 });
     });
@@ -237,7 +232,7 @@ function dibujarRedRizomatica() {
     
     const options = {
         nodes: { borderWidth: 2, shadow: true }, edges: { smooth: { type: 'continuous' } },
-        physics: { solver: 'forceAtlas2Based', forceAtlas2Based: { gravitationalConstant: -50, centralGravity: 0.005, springLength: 100, springConstant: 0.08, damping: 0.4 }, maxVelocity: 50, minVelocity: 1.5, timestep: 0.5, stabilization: { enabled: true, iterations: 200, fit: true } },
+        physics: { solver: 'forceAtlas2Based', forceAtlas2Based: { gravitationalConstant: -40, centralGravity: 0.004, springLength: 130, springConstant: 0.06, damping: 0.32 }, maxVelocity: 60, minVelocity: 1, timestep: 0.4, stabilization: { enabled: true, iterations: 160, updateInterval: 30, fit: false } },
         interaction: { hover: true, tooltipDelay: 200, zoomView: true, dragView: true },
         manipulation: {
             enabled: false,
@@ -246,8 +241,7 @@ function dibujarRedRizomatica() {
                 if(confirm("¿Establecer conexión con el rizoma?")) {
                     data.color = { color: '#8b5cf6', opacity: 0.8 }; data.dashes = true; data.width = 1.5;
                     callback(data); guardarConexionEnDrive(data.from, data.to); 
-                    document.getElementById("estado-conexion").style.display = "none";
-                    document.getElementById("btn-activar-conexion").style.display = "inline-block";
+                    document.getElementById("btn-activar-conexion").classList.remove("is-tracing");
                     window.network.disableEditMode();
                 }
             }
@@ -255,6 +249,9 @@ function dibujarRedRizomatica() {
     };
     if (window.network) window.network.destroy();
     window.network = new vis.Network(container, data, options);
+    window.network.once("stabilizationIterationsDone", () => {
+        window.network.fit({ animation: { duration: 700, easingFunction: 'easeInOutQuad' } });
+    });
     window.network.on("click", evento => { if (!mapaBloqueado && evento.nodes.length) mostrarDetalle(evento.nodes[0]); });
 }
 

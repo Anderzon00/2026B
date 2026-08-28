@@ -12,6 +12,24 @@ const META_ELEMENTOS = 3;
 const MEMORIA_INICIO = "archivoExperienciaIniciada";
 const MEMORIA_VIDEO = "archivoVideoInicialVisto";
 
+const COMENTARIO_TARJETA_1 = `
+<div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 15px;">
+    <p>La digitalización ha sumido a la educación en una Infocracia, donde la reflexión es reemplazada por el dato puro. El currículo oficial oculta la verdad territorial.</p>
+
+    <p><span style="color: #d9534f; font-weight: bold;">Busca en la página el único número de distinto color.</span></p>
+
+    <p>En 'Conocimiento e interés', Habermas advierte sobre el poder técnico que domina. El aprendizaje debe ser un acto de pura emancipación.</p>
+
+    <p><span style="color: #d9534f; font-weight: bold;">Suma 36 al número encontrado.</span></p>
+
+    <p>Pierre Lévy postula que lo digital no se opone a lo real. La inteligencia colectiva nos convierte en habitantes de un planeta nómada.</p>
+
+    <p><span style="color: #d9534f; font-weight: bold;">Por último, resta los dígitos de tu resultado entre sí (por ejemplo, si es 63, el resultado es 6 - 3). Abre la tarjeta correspondiente al número final.</span></p>
+
+    <p>El maestro ignorante de Ranciére nos exige usar nuestra propia capacidad frente a la máquina. Todo conocimiento es una potencia latente.</p>
+
+</div>`;
+
 function escaparHTML(valor) {
     return String(valor ?? "").replace(/[&<>'"]/g, caracter => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
@@ -123,7 +141,9 @@ async function cargarDatosDesdeDrive() {
         aportesData = data.aportes || [];
         conexionesData = data.conexiones || [];
         
-        inyectarPistasIniciales();
+        const nodoInicial = nodosData.find(nodo => String(nodo.id) === NODO_INICIAL_ID);
+        if (nodoInicial) nodoInicial.descripcion = COMENTARIO_TARJETA_1;
+        
         aplicarProgresoLocal();
         renderizarNodos();
     } catch (error) {
@@ -131,23 +151,7 @@ async function cargarDatosDesdeDrive() {
     }
 }
 
-function inyectarPistasIniciales() {
-    const tienePistas = aportesData.some(a => a.idAporte === "PISTA-001");
-    if (!tienePistas) {
-        aportesData.unshift(
-            {
-                idAporte: "PISTA-002", idNodo: NODO_INICIAL_ID, tipo: "texto",
-                autor: "Archivo Central", ubicacion: "El Umbral", fecha: "Clave",
-                texto: "🔐 PISTA 3 (LA CLAVE): La clave es un NÚMERO.\nOperación: [Pista 1] - [Pista 2] debe dar como resultado 2."
-            },
-            {
-                idAporte: "PISTA-001", idNodo: NODO_INICIAL_ID, tipo: "texto",
-                autor: "Archivo Central", ubicacion: "El Umbral", fecha: "Clave",
-                texto: "🔍 PISTAS 1 Y 2:\n1. Busca un número resaltado en la infografía.\n2. La segunda pista es una operación matemática."
-            }
-        );
-    }
-}
+
 
 function aplicarProgresoLocal() {
     const nodoFrecuencia = nodosData.find(nodo => String(nodo.id) === NODO_FRECUENCIA_ID);
@@ -276,7 +280,11 @@ function renderizarNodos() {
     const totalAportes = aportesData.length;
     actualizarGamificacion(totalAportes);
 
-    const nodosMostrados = [...obtenerNodosVisibles()].reverse(); 
+    const nodosMostrados = [...obtenerNodosVisibles()].sort((a, b) => {
+        const numA = parseInt(String(a.id).replace(/\D/g, ""), 10) || 0;
+        const numB = parseInt(String(b.id).replace(/\D/g, ""), 10) || 0;
+        return numA - numB;
+    });
     nodosMostrados.forEach(nodo => {
         let colorParaEtiqueta = "#a1a1aa";
         let textoEtiqueta = nodo.tipo;
@@ -316,11 +324,11 @@ function renderizarNodos() {
                 let nodoDest = nodosData.find(n => String(n.id) === String(conId));
                 if(nodoDest) {
                     const bloqueado = String(nodoDest.estado || "unlocked").trim().toLowerCase() === "locked";
-                    const esApertura = String(nodoDest.id) === NODO_APERTURA_ID;
-                    const accion = bloqueado ? (esApertura ? "btn-sin-acceso" : "btn-abrir-desbloqueo") : "btn-abrir-visor";
+                    const accion = bloqueado ? "btn-bloqueado" : "btn-abrir-visor";
                     const etiqueta = bloqueado ? `🔒 ${nodoDest.titulo}` : nodoDest.titulo;
+                    const tip = bloqueado ? `title="Nodo bloqueado"` : "";
                     
-                    conHTML += `<button class="btn-ghost ${accion}" data-id="${escaparHTML(conId)}" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; border-radius: 4px; width:auto; border-color: rgba(255,255,255,0.2); color:var(--text-muted); cursor:pointer;">${escaparHTML(etiqueta)}</button>`;
+                    conHTML += `<button class="btn-ghost ${accion}" data-id="${escaparHTML(conId)}" ${tip} style="padding: 0.5rem 0.75rem; font-size: 0.82rem; border-radius: 4px; width:auto; min-height: 2.6rem; border-color: rgba(255,255,255,0.2); color:var(--text-muted); cursor:pointer;">${escaparHTML(etiqueta)}</button>`;
                 }
             });
             conHTML += `</div></div>`;
@@ -352,9 +360,28 @@ function renderizarNodos() {
 }
 
 function obtenerExtracto(descripcion) {
-    const texto = String(descripcion || "").trim();
+    const div = document.createElement("div");
+    div.innerHTML = String(descripcion || "");
+    const texto = (div.textContent || "").trim();
     if (!texto) return "Este nodo todavía no tiene una descripción.";
     return texto.length > 150 ? `${texto.substring(0, 150).trim()}...` : texto;
+}
+
+function mostrarProhibido() {
+    let toast = document.getElementById("prohibido-toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "prohibido-toast";
+        toast.className = "prohibido-toast";
+        toast.setAttribute("role", "status");
+        toast.innerHTML = '<span class="prohibido-ico">🚫</span><span class="prohibido-txt">Nodo bloqueado</span>';
+        document.body.appendChild(toast);
+    }
+    toast.classList.remove("show");
+    void toast.offsetWidth;
+    toast.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove("show"), 1400);
 }
 
 function abrirVisorMultimedia(id) {
@@ -365,7 +392,7 @@ function abrirVisorMultimedia(id) {
     nodoActivoId = id; 
     document.getElementById("visor-titulo").innerText = nodo.titulo || "Nodo sin título";
     document.getElementById("visor-autor").innerHTML = nodo.autor ? `<span style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);"><span style="color:var(--teal);">👤</span> ${escaparHTML(nodo.autor)}</span>` : "";
-    document.getElementById("visor-desc-texto").innerHTML = nodo.descripcion ? escaparHTML(nodo.descripcion).replace(/\n/g, '<br>') : "<i>Este nodo todavía no tiene una descripción.</i>";
+    document.getElementById("visor-desc-texto").innerHTML = nodo.descripcion ? (String(nodo.id) === NODO_INICIAL_ID ? nodo.descripcion : escaparHTML(nodo.descripcion).replace(/\n/g, '<br>')) : "<i>Este nodo todavía no tiene una descripción.</i>";
     
     const mediaContainer = document.getElementById("visor-media"); mediaContainer.innerHTML = ""; mediaContainer.style.display = "block";
 
@@ -401,9 +428,10 @@ function abrirVisorMultimedia(id) {
             if(nodoDest) {
                 const bloqueado = String(nodoDest.estado || "unlocked").trim().toLowerCase() === "locked";
                 const esApertura = String(nodoDest.id) === NODO_APERTURA_ID;
-                const accion = bloqueado ? (esApertura ? "btn-sin-acceso" : "btn-abrir-desbloqueo") : "btn-abrir-visor";
+                const accion = bloqueado ? "btn-bloqueado" : "btn-abrir-visor";
                 const etiqueta = bloqueado ? `🔒 ${nodoDest.titulo}${esApertura ? " · " + META_AUDIOS + " audios" : ""}` : nodoDest.titulo;
-                conHTML += `<button class="btn-ghost ${accion}" data-id="${escaparHTML(conId)}" style="padding: 0.5rem 0.9rem; font-size: 0.8rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); cursor: pointer; text-align: left; transition: all 0.2s;">${escaparHTML(etiqueta)}</button>`;
+                const tip = bloqueado ? `title="Nodo bloqueado"` : "";
+                conHTML += `<button class="btn-ghost ${accion}" data-id="${escaparHTML(conId)}" ${tip} style="padding: 0.6rem 0.95rem; font-size: 0.85rem; min-height: 2.8rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); cursor: pointer; text-align: left; transition: all 0.2s;">${escaparHTML(etiqueta)}</button>`;
             }
         });
         conHTML += `</div>`;
@@ -591,6 +619,12 @@ function configurarEventos() {
             document.getElementById("decoder-modal").classList.remove("gone"); 
             document.getElementById("transmedia-key").value = "";
             document.getElementById("modal-error").classList.add("gone");
+        }
+
+        const btnBloq = e.target.closest(".btn-bloqueado");
+        if (btnBloq) {
+            e.preventDefault();
+            mostrarProhibido();
         }
     });
 

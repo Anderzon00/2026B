@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
-<body style="background-image: linear-gradient(rgba(10,12,16,0.75), rgba(10,12,16,0.90)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+<body style="background-image: linear-gradient(rgba(10,12,16,0.78), rgba(10,12,16,0.92)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
 
     <header class="topbar">
         <div class="shell topbar-inner">
@@ -16,45 +16,65 @@
                 <h1>MAPA RIZOMÁTICO</h1>
                 <span class="logo-status unlocked subtitle">CONEXIONES TRANSVERSALES DEL CONOCIMIENTO</span>
             </div>
+            <div class="map-actions" aria-label="Controles del mapa">
+                <div class="mdd" data-mdd>
+                    <select id="filtro-mapa" hidden>
+                        <option value="todos">Todo</option>
+                        <option value="nodos">Nodos</option>
+                        <option value="aportes">Aportes</option>
+                    </select>
+                    <button class="map-action mdd-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" title="Filtrar elementos">
+                        <span class="ma-ic">◉</span>
+                        <span class="mdd-label" data-mdd-label>Todo</span>
+                        <span class="mdd-caret" aria-hidden="true"></span>
+                    </button>
+                    <ul class="mdd-menu" role="listbox" aria-label="Opciones de filtro">
+                        <li class="mdd-opt is-active" role="option" aria-selected="true" data-mdd-value="todos">
+                            <span class="mdd-opt-ic">●</span>Todo
+                            <span class="mdd-check">✓</span>
+                        </li>
+                        <li class="mdd-opt" role="option" aria-selected="false" data-mdd-value="nodos">
+                            <span class="mdd-opt-ic">⬢</span>Nodos
+                            <span class="mdd-check">✓</span>
+                        </li>
+                        <li class="mdd-opt" role="option" aria-selected="false" data-mdd-value="aportes">
+                            <span class="mdd-opt-ic">✚</span>Aportes
+                            <span class="mdd-check">✓</span>
+                        </li>
+                    </ul>
+                </div>
+                <button id="btn-ajustar-mapa" class="map-action" type="button" title="Centrar la vista">
+                    <span class="ma-ic">⌖</span><span class="ma-t">Centrar</span>
+                </button>
+                <button id="btn-activar-conexion" class="map-action ma-prime" type="button" title="Dibujar una conexión nueva">
+                    <span class="ma-ic">⛓</span><span class="ma-t">Nueva conexión</span>
+                </button>
+                <a href="index.html" class="map-action ma-back" title="Volver al inicio">
+                    <span class="ma-ic">‹</span><span class="ma-t">Volver</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="shell">
-        <div class="map-bar">
-            <div>
-                <span class="section-kicker" style="font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--coral); display: block; margin-bottom: 0.2rem;">Laboratorio de conocimiento colectivo</span>
-                <h2>Explora las relaciones del territorio</h2>
-                <p>Selecciona cualquier elemento para consultar su ficha, sus vínculos y las reflexiones que lo atraviesan.</p>
+    <main class="map-page">
+        <!-- Barra de estadísticas + leyenda -->
+        <div class="map-stats-strip">
+            <div class="map-stats-group">
+                <div class="map-stat">
+                    <span>Nodos</span>
+                    <strong id="total-nodos">0</strong>
+                </div>
+                <div class="map-stat">
+                    <span>Reflexiones</span>
+                    <strong id="total-aportes">0</strong>
+                </div>
+                <div class="map-stat">
+                    <span>Conexiones</span>
+                    <strong id="total-conexiones">0</strong>
+                </div>
             </div>
-            <div class="map-controls">
-                <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; color: var(--ink-300);">Mostrar
-                    <select id="filtro-mapa" class="input" style="width: auto; min-width: 120px; padding: 0.4rem 0.6rem; font-size: 0.72rem;">
-                        <option value="todos">Todo el mapa</option>
-                        <option value="nodos">Solo nodos</option>
-                        <option value="aportes">Solo aportes</option>
-                    </select>
-                </label>
-                <a href="index.html" class="pill">⬅ Volver</a>
-                <button id="btn-ajustar-mapa" class="pill">Centrar mapa</button>
-                <button id="btn-activar-conexion" class="pill fill">Trazar conexión</button>
-                <span id="estado-conexion" class="connection-status" style="display:none; color: var(--teal); font-size: 0.7rem; font-weight: 700;">Modo conexión activo</span>
-            </div>
-        </div>
-
-        <div class="map-stats-bar">
-            <div class="map-stat-card">
-                <span>Nodos de investigación</span>
-                <strong id="total-nodos">0</strong>
-            </div>
-            <div class="map-stat-card">
-                <span>Reflexiones</span>
-                <strong id="total-aportes">0</strong>
-            </div>
-            <div class="map-stat-card">
-                <span>Conexiones transversales</span>
-                <strong id="total-conexiones">0</strong>
-            </div>
-            <div class="map-legend-card">
+            <div class="map-strip-sep" aria-hidden="true"></div>
+            <div class="map-legend">
                 <span><i class="legend-dot-m c-teal"></i> Nodo base</span>
                 <span><i class="legend-dot-m c-amber"></i> Subnodo</span>
                 <span><i class="legend-dot-m c-amber-sq"></i> Aporte</span>
@@ -62,25 +82,72 @@
             </div>
         </div>
 
-        <div class="map-layout">
+        <!-- Cuerpo: grafo protagonista + ficha lateral -->
+        <div class="map-body">
             <section class="map-canvas-wrap">
                 <h3 id="loading-text" class="map-loading">Cargando cartografía desde la base de datos...</h3>
                 <div id="mynetwork"></div>
                 <div id="mapa-bloqueado" class="map-lock gone">
                     <span class="map-lock-icon">🔐</span>
                     <strong>Red bloqueada</strong>
-                    <p>El mapa está disponible, pero la lectura detallada de los nodos se libera después de ver el video inicial y subir los 2 audios a Frecuencia Emancipada.</p>
+                    <p>El mapa está disponible, pero la lectura detallada se libera después de ver el video inicial y subir los 2 audios a Frecuencia Emancipada.</p>
                 </div>
             </section>
 
             <aside id="detalle-mapa" class="map-sidebar empty-state" aria-live="polite">
                 <div class="sidebar-empty-icon">+</div>
                 <h3>Selecciona un elemento</h3>
-                <p>La ficha detallada del nodo o aporte aparecerá aquí para facilitar la lectura y el análisis.</p>
+                <p>La ficha detallada del nodo o aporte aparecerá aquí.</p>
             </aside>
         </div>
     </main>
 
     <script src="mapa.js"></script>
+    <script>
+      (function () {
+        var wrappers = document.querySelectorAll("[data-mdd]");
+        wrappers.forEach(function (mdd) {
+          var trigger = mdd.querySelector(".mdd-trigger");
+          var menu = mdd.querySelector(".mdd-menu");
+          var select = mdd.querySelector("select");
+          var label = mdd.querySelector("[data-mdd-label]");
+          var opts = mdd.querySelectorAll(".mdd-opt");
+
+          function close() {
+            mdd.classList.remove("is-open");
+            trigger.setAttribute("aria-expanded", "false");
+          }
+          function setActive(value) {
+            select.value = value;
+            select.dispatchEvent(new Event("change"));
+            opts.forEach(function (o) {
+              var active = o.getAttribute("data-mdd-value") === value;
+              o.classList.toggle("is-active", active);
+              o.setAttribute("aria-selected", active ? "true" : "false");
+            });
+            var sel = mdd.querySelector(".mdd-opt.is-active");
+            label.textContent = sel ? sel.textContent.trim().replace("✓", "").trim() : value;
+            close();
+          }
+
+          trigger.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var open = mdd.classList.toggle("is-open");
+            trigger.setAttribute("aria-expanded", open ? "true" : "false");
+          });
+          opts.forEach(function (o) {
+            o.addEventListener("click", function () {
+              setActive(o.getAttribute("data-mdd-value"));
+            });
+          });
+          document.addEventListener("click", function (e) {
+            if (!mdd.contains(e.target)) close();
+          });
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") close();
+          });
+        });
+      })();
+    </script>
 </body>
 </html>
