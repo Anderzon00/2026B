@@ -14,20 +14,16 @@ const MEMORIA_VIDEO = "archivoVideoInicialVisto";
 
 const COMENTARIO_TARJETA_1 = `
 <div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 15px;">
-    <p>La digitalización ha sumido a la educación en una Infocracia, donde la reflexión es reemplazada por el dato puro. El currículo oficial oculta la verdad territorial.</p>
+    <p>Paso 1: Acceder al enlace Dirígete a la dirección "Abrir Enlace Transmedia" .</p>
 
-    <p><span style="color: #d9534f; font-weight: bold;">Busca en la página el único número de distinto color.</span></p>
-
-    <p>En 'Conocimiento e interés', Habermas advierte sobre el poder técnico que domina. El aprendizaje debe ser un acto de pura emancipación.</p>
-
+    <p><span style="color: #d9534f; font-weight: bold;">Busca en esa página el único número de distinto color.</span></p>
+ 
     <p><span style="color: #d9534f; font-weight: bold;">Suma 36 al número encontrado.</span></p>
+ 
+    <p><span style="color: #d9534f; font-weight: bold;">Restar los dígitos: Toma el resultado de tu suma y resta el segundo dígito del primero. Por ejemplo, si la suma te dio 85, la operación matemática que debes hacer es 8 - 5 = 3. 
+  vuelve al enlace  y busca la tarjeta que corresponda al resultado, el texto resaltado es la clave.</span></p>
 
-    <p>Pierre Lévy postula que lo digital no se opone a lo real. La inteligencia colectiva nos convierte en habitantes de un planeta nómada.</p>
-
-    <p><span style="color: #d9534f; font-weight: bold;">Por último, resta los dígitos de tu resultado entre sí (por ejemplo, si es 63, el resultado es 6 - 3). Abre la tarjeta correspondiente al número final.</span></p>
-
-    <p>El maestro ignorante de Ranciére nos exige usar nuestra propia capacidad frente a la máquina. Todo conocimiento es una potencia latente.</p>
-
+ 
 </div>`;
 
 function escaparHTML(valor) {
