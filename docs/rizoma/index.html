@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartografía e-MEV | Red Rizomática</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body style="background-image: linear-gradient(rgba(10,12,16,0.7), rgba(10,12,16,0.88)), url('bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+
+    <header class="topbar">
+        <div class="shell topbar-inner">
+            <div class="logo">
+                <span class="logo-eyebrow">Plataforma transmedia de investigación</span>
+                <h1>EL ARCHIVO <em>DEL MAÑANA</em></h1>
+                <span class="logo-status locked" id="estado-red-sub" style="display:none;">RED BLOQUEADA · INICIANDO</span>
+            </div>
+            <div class="topbar-actions">
+                <div class="search-pill">
+                    <input type="text" id="input-buscar-nodo" placeholder="Buscar ID o nombre...">
+                    <button id="btn-buscar-nodo-nav" title="Buscar nodo">🔍</button>
+                </div>
+                <a href="#rhizome-canvas" class="pill fill">⬇ Explorar</a>
+                <a href="mapa.html" class="pill">Mapa</a>
+                <a href="ruta.html" class="pill">Ayuda</a>
+                <button id="btn-info-creditos" class="pill">Créditos</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="shell">
+        <section class="hero">
+            <div class="hero-chip phase-1" id="fase-red">Fase 01 · Red iniciando — completa las fases para liberar el rizoma</div>
+            <h2 id="hero-titulo">La historia no está completa.</h2>
+            <p id="hero-desc" class="hero-desc">
+                <strong>El currículo oficial tiene vacíos y nos han entregado una versión procesada de la realidad.</strong>
+                Este rizoma es una cartografía transmedia viva donde la comunidad reconstruye el conocimiento que el archivo dejó fuera.
+                Cada aporte sonoro, audiovisual o escrito que sumas al territorio crea nuevas conexiones de pensamiento.
+                Explora los nodos, descubre las claves ocultas y ayúdanos a romper la estructura lineal del sistema pedagógico.
+            </p>
+            <div class="ribbon">
+                <div class="ribbon-step active">
+                    <span class="step-num">01</span>
+                    <span class="step-label">El umbral</span>
+                </div>
+                <div class="ribbon-step">
+                    <span class="step-num">02</span>
+                    <span class="step-label">Frecuencia sonora</span>
+                </div>
+                <div class="ribbon-step">
+                    <span class="step-num">03</span>
+                    <span class="step-label">Pedagogía crítica</span>
+                </div>
+                <div class="ribbon-stats">
+                    <div class="stat-cell">
+                        <span class="stat-val" id="contador-aportes">0/2</span>
+                        <span class="stat-lbl">Audios</span>
+                    </div>
+                    <div class="stat-cell">
+                        <span class="stat-val" id="contador-videos">0/3</span>
+                        <span class="stat-lbl">Videos</span>
+                    </div>
+                    <div class="stat-cell">
+                        <span class="stat-val" id="contador-nodos" style="color: var(--ink-100);">3</span>
+                        <span class="stat-lbl">Nodos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="rhizome-canvas" class="node-grid"></div>
+    </main>
+
+    <button id="btn-fab-crear" class="fab">✚ Ramificar Rizoma</button>
+
+    <!-- Decoder modal -->
+    <div id="decoder-modal" class="overlay gone">
+        <div class="dialog">
+            <h2 class="dialog-title" style="color: var(--amber);">🔐 Nodo Bloqueado</h2>
+            <p class="dialog-body">
+                <strong>Alma:</strong> "El sistema oficial ha restringido el acceso a este nodo. Beto, Cora y yo estamos intentando una ruta alternativa. Para abrirlo, necesitas la clave que la comunidad fue dejando en las pistas del territorio."
+            </p>
+            <p class="dialog-muted">Ingresa la palabra clave descubierta en las pistas para desencriptar el acceso a este nodo.</p>
+            <input type="text" id="transmedia-key" class="input" placeholder="Escribe la palabra clave (Ej: PRAXIS)">
+            <div class="dialog-row">
+                <button class="pill close-btn">Cancelar</button>
+                <button id="btn-unlock" class="pill fill">Desencriptar Nodo</button>
+            </div>
+            <p id="modal-error" class="error-box hidden" style="margin-top: 0.8rem;">Clave incorrecta. Revisa las pistas que la comunidad ha dejado en los nodos anteriores.</p>
+        </div>
+    </div>
+
+    <!-- Create node modal -->
+    <div id="crear-nodo-modal" class="overlay gone">
+        <div class="dialog" style="max-width: 520px;">
+            <h2 class="dialog-title">Expandir el Rizoma Transmedia</h2>
+            <p class="dialog-muted" style="margin-bottom: 1rem;">La comunidad puede añadir un formato transmedia a la cartografía colectiva.</p>
+
+            <div class="field">
+                <label class="accent">Título (* Obligatorio)</label>
+                <input type="text" id="nuevo-titulo" class="input" placeholder="Ej: Análisis visual del modelo pedagógico" required>
+            </div>
+            <div class="field">
+                <label>Autor (Opcional)</label>
+                <input type="text" id="nuevo-autor" class="input" placeholder="Ej: Estudiantes Udenar">
+            </div>
+            <div class="field">
+                <label>Formato Transmedia</label>
+                <select id="nuevo-tipo" class="input">
+                    <option value="Artículo">1. Texto / Artículo Web</option>
+                    <option value="Imagen">2. Imagen / Infografía</option>
+                    <option value="Podcast">3. Audio / Podcast</option>
+                    <option value="Web">4. Enlace web / Recurso externo</option>
+                </select>
+            </div>
+            <p id="alerta-video-nodo" class="error-box" style="display:none; margin-bottom: 0.5rem;"></p>
+
+            <div class="field">
+                <label>Estructura y Color del Nodo:</label>
+                <p id="alerta-tema-bloqueado" class="error-box" style="display:none; margin: 0.2rem 0;">⚠️ Sistema Central: Fundar nuevas raíces libres requiere llegar a 3 elementos comunitarios.</p>
+                <select id="nuevo-nivel" class="input" style="margin-top: 0.2rem;">
+                    <option value="BASE">Tema Base (Nueva Raíz Principal)</option>
+                    <option value="SUB">Sub-nodo (Hereda de un Tema Existente)</option>
+                </select>
+            </div>
+
+            <div id="caja-base" style="display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.5rem;">
+                <input type="color" id="color-base" value="#10b981" title="Clic para elegir color" style="margin:0; width: 44px; height: 38px; cursor: pointer; border: 1px solid var(--line-strong); background: transparent; padding: 2px; border-radius: var(--r-xs);">
+                <input type="text" id="nombre-tema-base" class="input" placeholder="Nombre de este nuevo Tema Base..." style="margin:0;">
+            </div>
+            <div id="caja-sub" style="display: none;">
+                <div class="field">
+                    <label>Heredar de raíz predefinida:</label>
+                    <select id="tema-padre" class="input"></select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="accent">Enlace del Material Transmedia (* Obligatorio)</label>
+                <input type="text" id="nuevo-url" class="input" placeholder="Pegar aquí el enlace del archivo transmedia" required>
+            </div>
+            <div class="field">
+                <label>Descripción (Opcional)</label>
+                <textarea id="nuevo-desc" rows="2" class="input" placeholder="Descripción general de la investigación comunitaria..."></textarea>
+            </div>
+
+            <div class="dialog-row" style="position: sticky; bottom: 0; background: linear-gradient(to top, var(--surface-1) 60%, transparent); padding-top: 1rem; margin-top: 0.5rem;">
+                <button class="pill close-btn">Cancelar</button>
+                <button id="btn-save-nodo" class="pill fill">Crear Nodo Libre</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Node Visor modal -->
+    <div id="visor-modal" class="overlay gone">
+        <div class="visor">
+            <button class="visor-close close-btn" aria-label="Cerrar ventana">✖</button>
+            <div class="visor-scroll">
+                <div class="v-section">
+                    <span class="v-kicker">Explorando Archivo</span>
+                    <h2 id="visor-titulo" class="v-title">...</h2>
+                    <div id="visor-autor" class="v-author"></div>
+                    <div id="visor-media" class="v-media"></div>
+                    <div id="visor-desc-texto" class="v-description"></div>
+                    <div id="visor-conexiones" style="margin-top: 1rem;"></div>
+                </div>
+
+                <div class="v-form-zone">
+                    <div class="v-form-header">
+                        <h4>Suma tu perspectiva al rizoma</h4>
+                        <p>El conocimiento se construye en red. Tu análisis crítico es fundamental.</p>
+                    </div>
+
+                    <div id="caja-comentario" class="v-form-body">
+                        <div class="form-step">
+                            <span class="step-badge"><span class="num">1</span> Formato de tu aporte</span>
+                            <div id="aporte-tipo-chips" class="chip-group" role="group"></div>
+                            <select id="aporte-tipo" style="display:none;">
+                                <option value="texto">Solo Texto</option>
+                                <option value="imagen">Texto + Imagen</option>
+                                <option value="audio">Texto + Audio</option>
+                                <option value="video">Texto + Video</option>
+                                <option value="web">Texto + Enlace</option>
+                            </select>
+                        </div>
+
+                        <div id="progreso-aporte" class="progress-bar"></div>
+
+                        <div id="contenedor-enlace" class="url-field-box">
+                            <label id="label-aporte-url" for="aporte-url" class="optional-label" style="font-size: 0.68rem; font-weight: 700; color: var(--ink-400); margin-bottom: 0.3rem; display: block;">
+                                <span class="num alt" style="width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink-400); color: var(--ink); font-size: 0.6rem; font-weight: 800; margin-right: 0.3rem;">🔗</span>
+                                Enlace de referencia (Opcional)
+                            </label>
+                            <input type="url" id="aporte-url" class="input" placeholder="Pega el link aquí (Ej: https://...)">
+                            <p id="alerta-video-aporte" style="font-size: 0.7rem; color: var(--ink-400); margin-top: 0.25rem; display: none;"></p>
+                        </div>
+
+                        <div class="form-step">
+                            <span class="step-badge"><span class="num">2</span> Tu análisis crítico <span style="color: var(--amber);">*</span></span>
+                            <textarea id="aporte-texto" rows="4" class="input" placeholder="Desarrolla tu análisis, ideas o reflexiones sobre este material..." required></textarea>
+                            <div class="textarea-meta">
+                                <span>Ojo: Este texto será público en la red.</span>
+                                <span id="contador-caracteres-aporte" class="count">0 / 1000</span>
+                            </div>
+                        </div>
+
+                        <details style="margin-top: 0.3rem;">
+                            <summary style="font-size: 0.72rem; color: var(--coral); cursor: pointer; padding: 0.5rem 0; font-weight: 600;">▸ Mostrar tu Identidad y Ubicación (Opcional)</summary>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; padding: 0.5rem 0 0.3rem;">
+                                <input type="text" id="aporte-autor" class="input" placeholder="👤 Tu Nombre o Alias">
+                                <input type="text" id="aporte-ubicacion" class="input" placeholder="📍 Ubicación (Ej. Túquerres)">
+                            </div>
+                        </details>
+
+                        <p id="aporte-error-inline" class="error-box hidden"></p>
+
+                        <div class="v-submit-row">
+                            <button id="btn-enviar-aporte" class="submit-btn">✦ Publicar en la red</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="v-wall-zone">
+                    <div class="v-wall-header">
+                        <h3>Voces del Rizoma</h3>
+                        <span id="contador-aportes-nodo" class="wall-badge">0 reflexiones</span>
+                    </div>
+                    <div id="muro-aportes" class="wall-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restricted modal -->
+    <div id="restriccion-modal" class="overlay gone">
+        <div class="dialog" style="text-align: center;">
+            <h2 class="dialog-title" style="color: var(--danger);">🔒 RED BLOQUEADA</h2>
+            <p class="dialog-body">Para abrir Pedagogía crítica virtual se necesitan 2 audios comunitarios en Frecuencia Emancipada.</p>
+            <div style="background: var(--surface-0); border: 1px solid var(--line); padding: 0.8rem; border-radius: var(--r-sm); margin-bottom: 0.6rem;">
+                <span style="font-size: 0.82rem; color: var(--ink-400);">Progreso actual:</span>
+                <h3 style="color: var(--danger); font-size: 1.3rem; margin-top: 0.3rem;"><span id="restriccion-contador">0</span> / <span id="restriccion-meta">2</span></h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--coral); margin-bottom: 1.2rem;">Graba una evidencia sonora de máximo 30 segundos sobre una problemática educativa y-compártela en Frecuencia Emancipada.</p>
+            <div class="dialog-row center">
+                <button class="pill fill close-btn">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty reflection modal -->
+    <div id="reflexion-vacia-modal" class="overlay gone">
+        <div class="dialog" style="text-align: center;">
+            <h2 class="dialog-title" style="color: var(--amber);">⚠️ La red exige praxis, no solo datos</h2>
+            <p class="dialog-body">
+                En esta cartografía <strong>no basta con compartir información sin más</strong>. Romper con el modelo tradicional requiere que aportemos una mirada crítica sobre nuestro entorno educativo.
+            </p>
+            <p class="dialog-muted" style="font-style: italic;">El rizoma se nutre de ideas, no de vacíos. Tu reflexión comunitaria es el puente que transforma este recurso aislado en verdadero conocimiento colectivo.</p>
+            <div class="dialog-row center">
+                <button class="pill fill close-btn">Volver y redactar mi análisis</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission modal -->
+    <div id="mision-modal" class="overlay gone">
+        <div class="dialog" style="max-width: 620px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--line);">
+                <div>
+                    <span style="font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--coral); display: block; margin-bottom: 0.2rem;">Ruta de integración · Fase 01</span>
+                    <h2 class="dialog-title">Misión: infiltrar el sistema</h2>
+                </div>
+                <button class="close-btn pill" style="font-size: 0.8rem;">✖</button>
+            </div>
+            <p class="dialog-body">El archivo oficial tiene vacíos que la comunidad debe infiltrar. Tu primera tarea es entrar en la historia, observar con atención y encontrar la clave que abre la siguiente frecuencia del sistema.</p>
+            <div style="display: grid; gap: 0.5rem; margin: 1rem 0;">
+                <div style="display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.6rem; padding: 0.7rem; background: var(--surface-0); border: 1px solid var(--line); border-radius: var(--r-sm);"><strong style="color: var(--amber); font-size: 0.75rem;">01</strong><span style="font-size: 0.8rem; color: var(--ink-300); line-height: 1.5;">Abre la tarjeta <em>El umbral del archivo</em>, observa el video completo y busca coordenadas y textos ocultos.</span></div>
+                <div style="display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.6rem; padding: 0.7rem; background: var(--surface-0); border: 1px solid var(--line); border-radius: var(--r-sm);"><strong style="color: var(--amber); font-size: 0.75rem;">02</strong><span style="font-size: 0.8rem; color: var(--ink-300); line-height: 1.5;">En los diálogos, imágenes y códigos de la historia encontrarás la palabra clave del primer umbral.</span></div>
+                <div style="display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.6rem; padding: 0.7rem; background: var(--surface-0); border: 1px solid var(--line); border-radius: var(--r-sm);"><strong style="color: var(--amber); font-size: 0.75rem;">03</strong><span style="font-size: 0.8rem; color: var(--ink-300); line-height: 1.5;">Ingresa la clave para desencriptar <em>Frecuencia Emancipada</em> y acceder a la fase de audios.</span></div>
+            </div>
+            <div style="padding: 0.75rem; background: var(--teal-dim); border-left: 3px solid var(--teal); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-size: 0.78rem; color: var(--ink-100); line-height: 1.5;"><strong style="color: var(--teal);">Resultado esperado:</strong> Frecuencia Emancipada desbloqueada — la red se abre parcialmente y la fase de audios comienza.</div>
+            <div class="dialog-row" style="margin-top: 1.25rem;">
+                <button class="pill close-btn">Volver</button>
+                <button id="btn-ir-a-red" class="pill fill">Explorar la red</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding modal -->
+    <div id="onboarding-modal" class="overlay">
+        <div class="dialog onboard-dialog">
+            <h2 class="onboard-title">El Archivo del Mañana</h2>
+            <div class="onboard-img">
+                <img src="tarjeta.png" alt="Tarjeta de inicio del rizoma" style="display: none;" onload="this.style.display='block'; this.parentElement.style.border='none';">
+            </div>
+            <p class="onboard-quote">
+                <strong>Gera:</strong> "El currículo oficial tiene vacíos. Nos están dando la versión procesada de la realidad. Si queremos entender nuestro contexto, tenemos que construir nuestro propio mapa."
+            </p>
+            <div class="onboard-instructions">
+                <p class="onboard-instructions-label"><strong>Mecánica del Sistema:</strong></p>
+                <ul>
+                    <li>La comunidad observa el video completo, busca coordenadas, descifra texto del umbral del archivo y encuentra la clave para abrir Frecuencia Emancipada.</li>
+                    <li>La red reúne <strong>2 audios</strong> para abrir Pedagogía crítica virtual y luego <strong>3 elementos (texto o video)</strong> para liberar la creación de nodos.</li>
+                </ul>
+            </div>
+            <div class="dialog-row center">
+                <button id="btn-iniciar-experiencia" class="pill fill btn-big">Acceder a la Red</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credits modal -->
+    <div id="creditos-modal" class="overlay gone">
+        <div class="dialog credits-dialog">
+            <div class="credits-head">
+                <h2>Créditos del Proyecto</h2>
+                <button class="credits-close close-btn">✖</button>
+            </div>
+            <div class="credits-grid">
+                <div>
+                    <span class="credits-label">Acerca del Sistema</span>
+                    Universidad de Nariño<br>
+                    Facultad de Educación<br>
+                    Maestría en Educación Virtual e-MEV<br>
+                    <span class="credits-badge">Actividad 4 - Cartografía del ser profesor en la virtualidad.</span>
+                </div>
+                <div>
+                    <span class="credits-label">AUTORES</span>
+                    Anderson Ariel Salazar Salazar<br>
+                    Julihet Stefany Buesaquillo Tulcan<br>
+                    Gerardo Gonzalo Lara Jiménez
+                </div>
+                <div>
+                    <span class="credits-label">Dirección Cartográfica</span>
+                    Docente Titular:<br>
+                    <strong>Dr. Carlos Guazmayan Ruiz</strong><br><br>
+                    Docente Asistente:<br>
+                    <strong>Mg. Mónica Cerón</strong>
+                </div>
+            </div>
+            <div class="credits-footer">
+                ✦ Plataforma web creada con asistencia de Inteligencia Artificial (Gemini).<br>
+                Código depurado y corregido por el autor <strong>Anderson Salazar</strong>.
+            </div>
+            <div class="dialog-row center" style="margin-top: 1rem;">
+                <button class="pill fill close-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const onboardingModal = document.getElementById("onboarding-modal");
+            const btnIniciar = document.getElementById("btn-iniciar-experiencia");
+            if (onboardingModal) {
+                if (localStorage.getItem("onboardingCompletado") === "true") {
+                    onboardingModal.style.display = "none";
+                    onboardingModal.classList.add("gone");
+                }
+                if (btnIniciar) {
+                    btnIniciar.addEventListener("click", function() {
+                        localStorage.setItem("onboardingCompletado", "true");
+                        onboardingModal.style.display = "none";
+                        onboardingModal.classList.add("gone");
+                    });
+                }
+            }
+            const btnInfo = document.getElementById("btn-info-creditos");
+            const modalCreditos = document.getElementById("creditos-modal");
+            if (btnInfo && modalCreditos) {
+                btnInfo.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    modalCreditos.style.display = "flex";
+                    modalCreditos.classList.remove("gone");
+                });
+            }
+        });
+    </script>
+</body>
+</html>
