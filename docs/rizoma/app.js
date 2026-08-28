@@ -14,7 +14,7 @@ const MEMORIA_VIDEO = "archivoVideoInicialVisto";
 
 const COMENTARIO_TARJETA_1 = `
 <div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 15px;">
-    <p>Paso 1: Acceder al enlace Dirígete a la dirección "Abrir Enlace Transmedia" .</p>
+    <p>Paso 1: Acceder al enlace "Abrir Enlace Transmedia" ubicado en la parte de arriba.</p>
 
     <p><span style="color: #d9534f; font-weight: bold;">Busca en esa página el único número de distinto color.</span></p>
  
