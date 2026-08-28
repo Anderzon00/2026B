@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escenarios de las Comunidades Educativas — Escuela Rizomática</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #faf9f6;
+  --surface: #ffffff;
+  --ink: #1c2333;
+  --ink-2: #4a5266;
+  --ink-3: #8b93a7;
+  --line: #e7e4dc;
+  --line-strong: #dcd8cd;
+  --accent: #2456ea;
+  --accent-soft: #edf1ff;
+  --radius: 18px;
+  --radius-lg: 24px;
+  --radius-sm: 12px;
+  --shadow-1: 0 1px 2px rgba(28,35,51,.05), 0 1px 3px rgba(28,35,51,.06);
+  --shadow-2: 0 6px 18px -6px rgba(28,35,51,.12);
+  --shadow-3: 0 24px 60px -20px rgba(28,35,51,.2);
+  --font: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(120% 120% at 80% -10%, #f3f6ff 0%, transparent 55%),
+    radial-gradient(120% 120% at 10% 110%, #f2f8f4 0%, transparent 55%),
+    linear-gradient(180deg, #fbfaf7, #f6f5f0);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 22px; }
+
+/* ── Encabezado ── */
+.pagehead {
+  position: relative;
+  padding: 26px 0 18px;
+  flex: none;
+}
+.pagehead::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--line) 32%, var(--line) 100%);
+}
+.eyebrow {
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 700 10.5px 'Inter', Arial, sans-serif;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow::before {
+  content: '';
+  width: 34px;
+  height: 1.5px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.pagehead h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(30px, 4.4vw, 48px);
+  line-height: 1.04;
+  letter-spacing: -1.6px;
+  max-width: 15em;
+}
+.pagehead h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
+.pagehead .lede {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+.pagehead .lede strong { color: var(--ink); font-weight: 700; }
+
+/* ── Visor / Magazine con zoom ── */
+.stage { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 24px; }
+.viewer {
+  position: relative;
+  overflow: hidden;
+  margin-top: 14px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 30px 70px -24px rgba(28,35,51,.28), var(--shadow-2);
+  cursor: zoom-in;
+}
+#book { background: transparent; }
+#book .page,
+#book .turn-page { background: #fff; }
+#book .page img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.status {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 40;
+  pointer-events: none;
+  font: 600 11px 'Inter', Arial, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.92);
+  background: rgba(28,35,51,.58);
+  padding: 7px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(28,35,51,.25);
+}
+#pageno b { color: #fff; font-weight: 800; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 16px auto 12px;
+  background: rgba(255,255,255,.94);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px;
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.toolbar button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background .16s ease, color .16s ease, box-shadow .16s ease, transform .1s ease;
+}
+.toolbar button svg { width: 17px; height: 17px; display: block; }
+.toolbar button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px rgba(36,86,234,.25);
+}
+.toolbar button:active { transform: scale(.92); }
+.toolbar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toolbar .tsep { width: 1px; height: 24px; background: var(--line-strong); margin: 0 4px; }
+.toolbar .tinfo {
+  font: 500 12px 'Inter', Arial, sans-serif;
+  letter-spacing: .01em;
+  color: var(--ink-3);
+  padding: 0 10px;
+  white-space: nowrap;
+}
+.toolbar .tinfo b { color: var(--ink-2); font-weight: 600; }
+.toolbar button .ic-compress { display: none; }
+.toolbar button.fs-on .ic-expand { display: none; }
+.toolbar button.fs-on .ic-compress { display: block; }
+
+/* Pantalla completa */
+body.fs .wrap { display: none; }
+body.fs .stage { justify-content: center; padding: 18px 30px; }
+body.fs .viewer { margin-top: 0; }
+body.fs .toolbar { margin: 14px auto 6px; }
+
+@media (max-height: 720px) {
+  .pagehead { padding: 14px 0 12px; }
+  .pagehead h1 { font-size: clamp(24px, 4vw, 34px); }
+  .pagehead .eyebrow { display: none; }
+  .pagehead .lede { display: none; }
+  .viewer { margin-top: 8px; }
+  .toolbar { margin-top: 12px; }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 14px; }
+  .toolbar .tinfo { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="pagehead">
+    <p class="eyebrow">Escuela Rizomática</p>
+    <h1>Escenarios de las <em>Comunidades Educativas</em></h1>
+    <p class="lede">Un recorrido por los territorios compartidos donde el aprendizaje se multiplica en todas direcciones: <strong>siete escenarios</strong> para pasar, detenerse y acercar.</p>
+  </header>
+</div>
+
+<div class="stage">
+  <div class="viewer" id="viewer">
+    <div class="status"><span id="pageno">Hoja 1 de 7</span></div>
+    <div id="book">
+      <div class="page"><img src="src/portada.jpg" alt="Portada"></div>
+      <div class="page"><img src="src/001.png" alt="Página 2"></div>
+      <div class="page"><img src="src/002.png" alt="Página 3"></div>
+      <div class="page"><img src="src/003.png" alt="Página 4"></div>
+      <div class="page"><img src="src/004.png" alt="Página 5"></div>
+      <div class="page"><img src="src/contraportada.jpg" alt="Contraportada"></div>
+    </div>
+  </div>
+
+  <div class="toolbar" role="toolbar" aria-label="Controles del visor">
+    <button type="button" id="btnPrev" aria-label="Hoja anterior" title="Hoja anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" id="btnNext" aria-label="Hoja siguiente" title="Hoja siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <span class="tsep"></span>
+    <button type="button" id="btnZoomOut" aria-label="Alejar" title="Alejar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+    </button>
+    <button type="button" id="btnZoomIn" aria-label="Acercar" title="Acercar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button type="button" id="btnClose" aria-label="Salir del zoom" title="Salir del zoom">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <span class="tsep"></span>
+    <span class="tinfo"><b>Clic</b> en una página para acercar · <b>doble clic</b> o <b>✕</b> para volver · <b>Esc</b> sale del zoom</span>
+    <span class="tsep"></span>
+    <button type="button" id="btnFullscreen" aria-label="Pantalla completa" title="Pantalla completa">
+      <svg class="ic-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      <svg class="ic-compress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15h-6v6M3 9h6V3M15 9l6-6M9 15l-6 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<script type="text/javascript" src="./js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="./js/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="./lib/turn.js"></script>
+<script type="text/javascript" src="./lib/zoom.js"></script>
+<script type="text/javascript" src="./extras/jgestures.min.js"></script>
+<script>
+$(function () {
+  var $viewer = $('#viewer').first();
+  var $book = $('#book').first();
+  var pageCount = $book.find('.page').length;
+
+  $book.turn({
+    width: 960,
+    height: 640,
+    display: 'single',
+    autoCenter: true,
+    duration: 500
+  });
+
+  $viewer.zoom({
+    flipbook: $book,
+    max: 3.2
+  });
+
+  function updatePage() {
+    var p = $book.turn('page');
+    $('#pageno').html('Hoja <b>' + p + '</b> de ' + pageCount);
+  }
+  updatePage();
+  $book.bind('turned', updatePage);
+
+  function sizeBook() {
+    var availW = Math.max(360, window.innerWidth - 80);
+    var availH = Math.max(280, (window.innerHeight - 210) * 1.04);
+    var ratio = 1200 / 880;
+    var w = Math.min(availW, availH * ratio);
+    var h = w / ratio;
+    $viewer.css({ width: w, height: h });
+    $book.turn('size', w, h);
+  }
+  sizeBook();
+  $(window).on('resize', sizeBook);
+  $(window).on('load', sizeBook);
+
+  $viewer.on('zoom.tap', function (e) {
+    if ($viewer.zoom('value') === 1) {
+      $viewer.zoom('zoomIn', e);
+    }
+  });
+  $viewer.on('zoom.doubleTap', function () {
+    if ($viewer.zoom('value') !== 1) {
+      $viewer.zoom('zoomOut');
+    }
+  });
+
+  $('#btnPrev').on('click', function () { $book.turn('previous'); });
+  $('#btnNext').on('click', function () { $book.turn('next'); });
+  $('#btnZoomIn').on('click', function () { $viewer.zoom('zoomIn'); });
+  $('#btnZoomOut').on('click', function () { $viewer.zoom('zoomOut'); });
+  $('#btnClose').on('click', function () { $viewer.zoom('zoomOut', 200); });
+
+  function isFullscreen() {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement ||
+      document.mozFullScreenElement || document.msFullscreenElement);
+  }
+  $('#btnFullscreen').on('click', function () {
+    if (isFullscreen()) {
+      if (document.exitFullscreen) { document.exitFullscreen(); }
+      else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+    } else {
+      var el = document.documentElement;
+      if (el.requestFullscreen) { el.requestFullscreen(); }
+      else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+    }
+  });
+  $(document).on('fullscreenchange webkitfullscreenchange', function () {
+    var on = isFullscreen();
+    document.body.classList.toggle('fs', on);
+    $('#btnFullscreen').toggleClass('fs-on', on);
+    sizeBook();
+  });
+
+  $(document).on('keydown', function (e) {
+    if (e.key === 'Escape') { $viewer.zoom('zoomOut'); }
+    if (e.key === 'ArrowLeft') { $book.turn('previous'); }
+    if (e.key === 'ArrowRight') { $book.turn('next'); }
+  });
+
+  if (jQuery.hasGestures) {
+    $viewer
+      .on('pinchopen', function () { $viewer.zoom('zoomIn'); })
+      .on('pinchclose', function () { $viewer.zoom('zoomOut'); });
+  }
+});
+</script>
+</body>
+</html>
