@@ -13,11 +13,26 @@ const MEMORIA_INICIO = "archivoExperienciaIniciada";
 const MEMORIA_VIDEO = "archivoVideoInicialVisto";
 
 const COMENTARIO_TARJETA_1 = `
-<div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 15px;">
-    <p>Paso 1: Acceder al enlace "Abrir Enlace Transmedia" ubicado en la parte de arriba.</p>
-    <p><span style="color: #d9534f; font-weight: bold;">Busca en esa página el único número de distinto color.</span></p>
-    <p><span style="color: #d9534f; font-weight: bold;">Suma 36 al número encontrado.</span></p>
-    <p><span style="color: #d9534f; font-weight: bold;">Restar los dígitos: Toma el resultado de tu suma y resta el segundo dígito del primero. Por ejemplo, si la suma te dio 85, la operación matemática que debes hacer es 8 - 5 = 3.<br>Vuelve al enlace y busca la tarjeta que corresponda al resultado, el texto resaltado es la clave para ingresar a la siguiente tarjeta "Voces del territorio".</span></p>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #1a1a1a; border-left: 4px solid #e74c3c; padding: 15px 20px; border-radius: 6px; color: #ecf0f1; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <h4 style="margin: 0 0 15px 0; color: #e74c3c; text-transform: uppercase; letter-spacing: 1px; font-size: 13px;">Misión: Descifrar la Clave</h4>
+    <ol style="margin: 0; padding-left: 20px; line-height: 1.7;">
+        <li style="margin-bottom: 12px;">
+            <strong>Explora:</strong> Accede al botón <em>"Abrir Enlace Transmedia"</em> (ubicado en la parte de arriba).
+        </li>
+        <li style="margin-bottom: 12px;">
+            <strong>Identifica:</strong> Busca en esa página el <strong>único número</strong> que tiene un color diferente al resto.
+        </li>
+        <li style="margin-bottom: 12px;">
+            <strong>Suma:</strong> A ese número que encontraste, súmale <strong>36</strong>.
+        </li>
+        <li style="margin-bottom: 12px;">
+            <strong>Resta sus dígitos:</strong> Toma el resultado de tu suma y resta el segundo dígito del primero. <br>
+            <span style="background-color: #2c3e50; color: #f1c40f; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 13px; display: inline-block; margin-top: 5px;">Ejemplo: Si la suma da 85 ➔ 8 - 5 = 3</span>
+        </li>
+        <li>
+            <strong>Desbloquea:</strong> Vuelve al enlace y busca tu número final en la tabla. El <span style="color: #f1c40f; font-weight: bold;">texto resaltado</span> es la clave para ingresar a "Voces del territorio".
+        </li>
+    </ol>
 </div>`;
 
 function escaparHTML(valor) {
