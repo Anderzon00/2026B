@@ -3,122 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruta de experiencia | El Archivo del Mañana</title>
+    <title>Manual de uso | El Archivo del Mañana</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+    <style>
+        body { background: var(--ink); }
+
+        .manual {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 2rem clamp(1rem, 3vw, 2rem) 4rem;
+            line-height: 1.65;
+        }
+
+        .manual .intro {
+            margin-bottom: 2.5rem;
+        }
+
+        .manual .intro h1 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--ink-100);
+            margin-bottom: 0.5rem;
+        }
+
+        .manual .intro p,
+        .manual p {
+            font-size: 0.95rem;
+            color: var(--ink-200);
+            margin-bottom: 0.9rem;
+        }
+
+        .manual .intro strong,
+        .manual p strong {
+            color: var(--ink-100);
+        }
+
+        /* ── Secciones ── */
+        .manual section {
+            margin-bottom: 2.2rem;
+        }
+
+        .manual section > h2 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--ink-100);
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--line-strong);
+            margin-bottom: 1rem;
+        }
+
+        /* ── Paso a paso ── */
+        .pasos {
+            counter-reset: paso;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pasos > li {
+            position: relative;
+            padding: 0.2rem 0 1.1rem 2.6rem;
+        }
+
+        .pasos > li::before {
+            counter-increment: paso;
+            content: counter(paso);
+            position: absolute;
+            left: 0;
+            top: 0.1rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            background: var(--surface-3);
+            border: 1px solid var(--line-strong);
+            color: var(--coral);
+            font-weight: 800;
+            font-size: 0.95rem;
+            display: grid;
+            place-items: center;
+        }
+
+        .pasos h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--ink-100);
+            margin-bottom: 0.35rem;
+        }
+
+        .pasos p {
+            font-size: 0.92rem;
+            color: var(--ink-300);
+            margin-bottom: 0.4rem;
+        }
+
+        .pasos .nota {
+            font-size: 0.92rem;
+            color: var(--ink-200);
+            background: var(--surface-1);
+            border-left: 3px solid var(--coral);
+            padding: 0.6rem 0.8rem;
+            border-radius: 0 var(--r-sm) var(--r-sm) 0;
+            margin: 0.4rem 0 0.6rem;
+        }
+
+        .pasos .meta {
+            font-size: 0.88rem;
+            color: var(--teal);
+            font-weight: 600;
+        }
+
+        /* ── Listas simples ── */
+        .lista {
+            margin: 0 0 0.6rem 1.1rem;
+            font-size: 0.92rem;
+            color: var(--ink-200);
+        }
+        .lista li { margin-bottom: 0.35rem; }
+
+        /* ── Cajas de datos ── */
+        .cajas-tipo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        .caja-tipo {
+            background: var(--surface-1);
+            border: 1px solid var(--line);
+            border-radius: var(--r-sm);
+            padding: 0.75rem 0.9rem;
+        }
+        .caja-tipo strong {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--ink-100);
+            margin-bottom: 0.2rem;
+        }
+        .caja-tipo span {
+            font-size: 0.85rem;
+            color: var(--ink-300);
+            line-height: 1.5;
+        }
+
+        /* ── Resaltado ── */
+        .aviso {
+            background: var(--amber-dim);
+            border: 1px solid rgba(240, 180, 73, 0.25);
+            border-radius: var(--r-sm);
+            padding: 0.7rem 0.9rem;
+            font-size: 0.9rem;
+            color: var(--ink-100);
+            margin: 0.8rem 0;
+        }
+        .aviso b { color: var(--amber); }
+
+        /* ── Cierre ── */
+        .cierre {
+            margin-top: 2.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--line-strong);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .cierre p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--ink-200);
+        }
+
+        @media (max-width: 560px) {
+            .cajas-tipo { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
-<body style="background-image: linear-gradient(rgba(10,12,16,0.72), rgba(10,12,16,0.88)), url('Gemini_Generated_Image_lshcwqlshcwqlshc.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+<body>
 
     <header class="topbar">
         <div class="shell topbar-inner">
             <div class="logo">
                 <h1>EL ARCHIVO DEL MAÑANA</h1>
-                <span class="logo-status unlocked">RUTA DE EXPERIENCIA TRANSMEDIA</span>
+                <span class="logo-status unlocked">MANUAL DE USO</span>
             </div>
             <div class="topbar-actions">
-                <a href="index.html" class="pill fill">⬅ Volver al rizoma</a>
+                <a href="index.html" class="pill">Rizoma</a>
+                <a href="mapa.html" class="pill">Mapa</a>
+                <a href="index.html" class="pill fill">Iniciar experiencia</a>
             </div>
         </div>
     </header>
 
-    <main class="shell">
-        <section class="route-hero">
-            <span style="font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--coral); display: block; margin-bottom: 0.3rem;">Instrucciones del archivo</span>
-            <h2>El rizoma está restringido.</h2>
-            <p>La experiencia comienza con una historia, hay que buscar claves dentro del recurso para liberar el rizoma. Completa cada tarea para abrir la siguiente tarjeta y ayudar a la comunidad a recuperar la red.</p>
+    <main class="manual">
+
+        <section class="intro">
+            <h1>Qué es y por qué está bloqueado</h1>
+            <p>
+                <strong>El Archivo del Mañana</strong> es un espacio donde el conocimiento se construye entre todos. Los temas están organizados en <strong>nodos</strong> que se conectan entre sí.
+            </p>
+            <p>
+                Al entrar verás la red <strong>bloqueada</strong>. Ese bloqueo representa la forma de la escuela tradicional: un <strong>árbol</strong> con una sola raíz y un único camino, que no te deja salirte. Para liberar el conocimiento debes ir <strong>rompiendo cada bloqueo</strong> hasta llegar al <strong>rizoma</strong>: una red abierta donde cada idea puede conectarse con cualquier otra, sin orden obligatorio.
+            </p>
         </section>
 
-        <section class="timeline" aria-label="Fases de la experiencia">
-            <article class="timeline-item">
-                <div class="timeline-card">
-                    <span class="timeline-phase p1">Tarjeta 01 · Mundo real</span>
-                    <h3>Evadir el sistema y encontrar las claves</h3>
-                    <p>Alma, Beto y Gera han burlado la seguridad y ocultado datos clasificados. Sigue estas instrucciones:</p>
-                    <p><strong style="color: var(--ink-100);">Fase 1:</strong> Accede a la tarjeta enlazada en "El umbral". Su visualización es obligatoria para que el sistema libere la tarjeta "Voces del Territorio".</p>
-                    <p><strong style="color: var(--ink-100);">Fase 2:</strong> Realiza la operación y obten el resultado.</p>
-                    <p><strong style="color: var(--ink-100);">Objetivo final:</strong> Descifrar la clave definitiva.</p>
-                    <div class="timeline-task">
-                        <strong>Tarea</strong>
-                        <span>Sobrevive a la restricción, encuentra las pistas y descifra la palabra clave.</span>
+        <section>
+            <h2>Tu misión: abrir 3 tarjetas en orden</h2>
+            <p>Las tarjetas están bloqueadas de una en una y <strong>no puedes saltarte ninguna</strong>. Al cumplir cada paso tu progreso se guarda solo, así que puedes continuar cuando quieras.</p>
+
+            <ol class="pasos">
+                <li>
+                    <h3>Tarjeta 01 · El umbral del archivo</h3>
+                    <p>No es un video: solo abre la tarjeta y lee su texto con atención, porque esconde una pista numérica.</p>
+                    <div class="nota">
+                        <strong>Cómo hacerlo:</strong><br>
+                        1) Abre la tarjeta "El umbral del archivo".<br>
+                        2) Busca el <strong>único número de distinto color</strong> en su texto.<br>
+                        3) <strong>Súmale 36</strong>.<br>
+                        4) <strong>Resta los dígitos</strong> del resultado entre sí (si da 63 → 6 − 3 = 3).<br>
+                        5) Abre la tarjeta que corresponde a ese número final: ahí está la palabra clave.
                     </div>
-                    <div class="timeline-result"><b>Al completar:</b> se desbloquea Voces del Territorio.</div>
-                </div>
-            </article>
+                    <p class="meta">Resultado: consigues la palabra clave y desbloqueas "Frecuencia sonora".</p>
+                </li>
 
-            <article class="timeline-item">
-                <div class="timeline-card">
-                    <span class="timeline-phase p2">Tarjeta 02 · Voces del Territorio</span>
-                    <h3>Reunir dos audios del territorio</h3>
-                    <p>Voces del Territorio solo recibe audios. Graba una evidencia de máximo 30 segundos sobre una problemática educativa cercana y acompáñala con una reflexión escrita.</p>
-                    <div class="timeline-task">
-                        <strong>Tarea</strong>
-                        <span>Publica un enlace de audio válido. La comunidad debe reunir 2 audios.</span>
+                <li>
+                    <h3>Tarjeta 02 · Frecuencia sonora</h3>
+                    <p>Esta tarjeta <strong>solo recibe audios</strong> de máximo 30 segundos. Graba una problemática educativa que conozcas, súbela a tu servicio preferido y pega su enlace.</p>
+                    <div class="nota">
+                        <strong>Cómo hacerlo:</strong><br>
+                        Publica el audio junto a una reflexión escrita breve. La meta es reunir <strong>2 audios</strong> (lo ves en el contador 0/2 de la barra superior).
                     </div>
-                    <div class="timeline-result"><b>Al completar:</b> la tercera tarjeta queda desbloqueada.</div>
-                </div>
-            </article>
+                    <p class="meta">Resultado: con 2 audios se desbloquea "Pedagogía crítica virtual".</p>
+                </li>
 
-            <article class="timeline-item">
-                <div class="timeline-card">
-                    <span class="timeline-phase p3">Tarjeta 03 · Sobrecarga Visual</span>
-                    <h3>Sobrecarga Visual</h3>
-                    <p>Al completar los 2 audios se abre este espacio. Aquí puedes aportar texto limpio o video. La red conserva una última restricción: necesita 3 elementos (texto o video) para liberarse totalmente.</p>
-                    <div class="timeline-task">
-                        <strong>Tarea</strong>
-                        <span>Comparte 3 elementos (texto o video) relacionados con las problemáticas del proyecto.</span>
+                <li>
+                    <h3>Tarjeta 03 · Pedagogía crítica</h3>
+                    <p>Esta tarjeta <strong>solo acepta texto limpio o video</strong> (no audio, imagen ni enlace suelto). Es el último bloqueo.</p>
+                    <div class="nota">
+                        <strong>Cómo hacerlo:</strong><br>
+                        Comparte <strong>3 elementos</strong> (texto o video) relacionados con el proyecto.
                     </div>
-                    <div class="timeline-result"><b>Al completar:</b> se habilita la creación de nodos libres.</div>
-                </div>
-            </article>
+                    <p class="meta">Resultado: el rizoma queda libre. Ya puedes crear nodos y conectar ideas.</p>
+                </li>
+            </ol>
         </section>
 
-        <section class="route-completion" style="background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); padding: 1.2rem 1.4rem; margin-bottom: 1.5rem;">
-            <span style="font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--coral); display: block; margin-bottom: 0.3rem;">Cómo leer tu avance</span>
-            <h3 style="font-family: 'Source Serif 4', serif; font-size: 1.3rem; margin-bottom: 0.4rem;">Identifica el estado de la red y tu misión.</h3>
-            <p style="font-size: 0.82rem; color: var(--ink-200); line-height: 1.55; margin-bottom: 0.8rem;">El sistema conserva los aportes siguiendo un orden estricto. <strong style="color: var(--ink-100);">Si notas que una tarjeta está bloqueada, necesitamos tu ayuda para cumplir la meta de esa fase.</strong></p>
-            <div class="completion-bar">
-                <span class="completion-node done"><b>Fase 1:</b> Descifrar claves</span>
-                <span class="completion-arrow"></span>
-                <span class="completion-node done"><b>Fase 2:</b> Reunir 2 audios</span>
-                <span class="completion-arrow"></span>
-                <span class="completion-node done"><b>Fase 3:</b> Aportar 3 elementos</span>
-                <span class="completion-arrow"></span>
-                <span class="completion-node" style="border-color: var(--teal); color: var(--teal); background: var(--teal-dim);"><b>Fase 4:</b> Rizoma libre</span>
-            </div>
+        <section>
+            <h2>El mapa</h2>
+            <p>
+                En la pestaña <strong>Mapa</strong> se dibujan todos los nodos y las conexiones. Mientras haya tarjetas bloqueadas, partes del mapa aparecen ocultas o encriptadas (igual que el árbol). Cuando liberas el rizoma, el mapa se completa.
+            </p>
+            <p>En el mapa puedes:</p>
+            <ul class="lista">
+                <li><strong>Ver y seleccionar</strong> cualquier nodo o aporte: a la derecha aparece su ficha completa.</li>
+                <li><strong>Filtrar</strong> la vista con el botón "◉ Todo": ver todo, solo nodos, o solo los aportes.</li>
+                <li><strong>Conectar ideas</strong> con el botón violeta "⛓ Nueva conexión". Solo se activa cuando el rizoma está libre.</li>
+            </ul>
+            <p>Los <strong>círculos</strong> son nodos (los grandes, temas base; los pequeños, sub-nodos). Las <strong>cajas</strong> son aportes. Las <strong>líneas</strong> unen nodos con sus temas y aportes con sus nodos.</p>
         </section>
 
-        <section class="principles-section">
-            <div>
-                <span style="font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--coral); display: block; margin-bottom: 0.3rem;">Marco de lectura</span>
-                <h3>Del consumo de información a la praxis</h3>
+        <section>
+            <h2>Tipos de nodos</h2>
+            <p>Un <strong>nodo</strong> es una pieza de conocimiento (un texto, una imagen, un audio, un video o una página web) con su título, autor y descripción.</p>
+            <div class="cajas-tipo">
+                <div class="caja-tipo">
+                    <strong>Tema Base</strong>
+                    <span>Un tema nuevo con su propio nombre y color. En el mapa es un círculo grande.</span>
+                </div>
+                <div class="caja-tipo">
+                    <strong>Sub-nodo</strong>
+                    <span>Pertenece a un Tema Base (hereda su nombre y color). En el mapa es un círculo pequeño.</span>
+                </div>
             </div>
-            <div class="principles-grid">
-                <div class="principle-card">
-                    <strong>Cartografía</strong>
-                    <span>Construye tu propia ruta de sentido entre medios y experiencias.</span>
-                </div>
-                <div class="principle-card">
-                    <strong>Rizoma</strong>
-                    <span>Conecta ideas sin depender de una secuencia obligatoria.</span>
-                </div>
-                <div class="principle-card">
-                    <strong>Mundos posibles</strong>
-                    <span>Ensaya alternativas para imaginar una educación diferente.</span>
-                </div>
-                <div class="principle-card">
-                    <strong>Praxis</strong>
-                    <span>Transforma la reflexión en una intervención documentada.</span>
-                </div>
+            <p><strong>Los 3 nodos iniciales</strong> son las tarjetas bloqueadas: la clave, los 2 audios y los 3 elementos.</p>
+            <div class="aviso">
+                Con el rizoma libre puedes crear un nodo nuevo con el botón <b>✚ Ramificar Rizoma</b>.
             </div>
         </section>
 
-        <section class="cta-row">
-            <div>
-                <span style="font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--coral); display: block; margin-bottom: 0.2rem;">Siguiente coordenada</span>
-                <h3>Vuelve al territorio y continúa la investigación.</h3>
-            </div>
+        <div class="cierre">
+            <p><strong>Listo para empezar:</strong> vuelve al rizoma y rompe el primer bloqueo.</p>
             <a href="index.html" class="pill fill">Volver al rizoma</a>
-        </section>
+        </div>
+
     </main>
 </body>
 </html>
