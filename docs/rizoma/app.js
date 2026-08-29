@@ -30,11 +30,10 @@ const COMENTARIO_TARJETA_1 = `
             <span style="background-color: #2c3e50; color: #f1c40f; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 13px; display: inline-block; margin-top: 5px;">Ejemplo: Si la suma da 85 ➔ 8 - 5 = 3</span>
         </li>
         <li>
-            <strong>Desbloquea:</strong> Vuelve al enlace y busca tu número final en la tabla. El <span style="color: #f1c40f; font-weight: bold;">texto resaltado</span> es la clave para ingresar a "Voces del territorio".
+            <strong>Desbloquea:</strong> Regresa a la historieta y busca la <strong>viñeta (cuadro)</strong> que tenga tu resultado numérico en la esquina. Lee los diálogos dentro de esa imagen; la palabra que está <span style="color: #f1c40f; font-weight: bold;">resaltada en amarillo</span> es tu clave exacta para abrir "Voces del territorio".
         </li>
     </ol>
 </div>`;
-
 function escaparHTML(valor) {
     return String(valor ?? "").replace(/[&<>'"]/g, caracter => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
