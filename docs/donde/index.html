@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maestría en Educación Virtual — ¿Dónde vivo? — Anderson Ariel Salazar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']},colors:{ink:'#0b1e2e'}}}}</script>
+<style>
+  body{background:#0b1e2e;color:#e2e8f0;overflow-x:hidden}
+  /* HERO aurora */
+  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#0b1e2e}
+  .aurora .g1{position:absolute;width:900px;height:900px;left:-200px;top:-300px;background:radial-gradient(circle at 40% 40%, rgba(14,165,233,.22), transparent 62%);filter:blur(40px)}
+  .aurora .g2{position:absolute;width:800px;height:800px;right:-200px;top:-120px;background:radial-gradient(circle at 60% 40%, rgba(168,85,247,.18), transparent 62%);filter:blur(40px)}
+  .aurora .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);background-size:48px 48px;mask-image:radial-gradient(900px circle at 50% 0%, black 30%, transparent 70%)}
+  /* TIMELINE — línea protagonista */
+  .track-wrap{overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:8px 0 28px;margin:0 12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;backdrop-filter:blur(6px)}
+  .track-wrap::-webkit-scrollbar{height:5px}
+  .track-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:999px;margin:0 12px}
+  .track-wrap::-webkit-scrollbar-thumb{background:rgba(14,165,233,.80);border-radius:999px}
+  .track{position:relative;display:flex;gap:14px;min-width:1440px;padding:64px 32px 64px 32px;align-items:center;justify-content:center}
+  /* continuous looping line - SVG behind */
+  .loop-svg{position:absolute;left:32px;right:32px;top:50%;transform:translateY(-50%);height:240px;width:calc(100% - 64px);pointer-events:none;overflow:visible}
+  .step{position:relative;flex:0 0 228px;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center}
+  .step.top{padding-bottom:132px}
+  .step.bottom{padding-top:132px}
+  /* year pill */
+  .pill{font-size:13px;font-weight:800;letter-spacing:.02em;padding:7px 16px;border-radius:999px;color:white;box-shadow:0 8px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);border:1.5px solid rgba(255,255,255,.22)}
+  /* circle */
+  .circle{width:100px;height:100px;border-radius:999px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 14px 34px rgba(0,0,0,.48), inset 0 2px 0 rgba(255,255,255,.38), 0 0 0 6px rgba(255,255,255,.04);border:3px solid rgba(255,255,255,.98);cursor:pointer;transition:transform .35s cubic-bezier(.23,1,.32,1), box-shadow .35s}
+  .circle:hover{transform:scale(1.07) translateY(-3px);box-shadow:0 20px 44px rgba(0,0,0,.52), 0 0 0 8px rgba(255,255,255,.05)}
+  .circle svg{width:44px;height:44px;color:white;filter:drop-shadow(0 1px 2px rgba(0,0,0,.28))}
+  .circle::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1.5px solid currentColor;opacity:.18;pointer-events:none}
+  /* vertical stem */
+  .stem{width:2.5px;height:44px;opacity:.95;border-radius:999px}
+  /* text blocks */
+  .tblock{width:200px;text-align:center}
+  .tblock h3{font-size:13.5px;letter-spacing:.10em;font-weight:800;text-transform:uppercase;line-height:1.2}
+  .tblock p{font-size:11.5px;line-height:1.45;margin-top:6px;color:#cbd5e1;font-weight:400}
+  .tblock .line{height:2.5px;width:48px;margin:10px auto 0;border-radius:999px;opacity:.95}
+  /* loop arms (the U shapes) */
+  .arm{position:absolute;left:50%;width:220px;height:120px;pointer-events:none;border:2.5px solid;opacity:.95}
+  .step.top .arm{top:50%;transform:translate(-50%,-50%);border-bottom:none;border-radius:110px 110px 0 0}
+  .step.bottom .arm{top:50%;transform:translate(-50%,-50%);border-top:none;border-radius:0 0 110px 110px}
+  .step:last-child .arm{display:none}
+  .dot{width:10px;height:10px;border-radius:999px;background:white;box-shadow:0 0 0 4px #0b1e2e, 0 2px 8px rgba(0,0,0,.4);position:absolute;left:50%;transform:translateX(-50%);z-index:2}
+  .step.top .dot{top:calc(50% - 5px)}
+  .step.bottom .dot{top:calc(50% - 5px)}
+  /* detail card under/over — distribución pro */
+  .mini{position:absolute;left:50%;transform:translateX(-50%);width:216px;background:rgba(255,255,255,.98);backdrop-filter:blur(12px);border-radius:16px;padding:11px;box-shadow:0 18px 42px rgba(0,0,0,.42);border:1.5px solid rgba(255,255,255,.7);opacity:0;pointer-events:none;transition:all .38s cubic-bezier(.23,1,.32,1)}
+  .step:hover .mini{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+  .step.top .mini{bottom:12px;transform:translateX(-50%) translateY(8px)}
+  .step.bottom .mini{top:12px;transform:translateX(-50%) translateY(-8px)}
+  .mini img{width:100%;height:76px;object-fit:cover;border-radius:10px}
+  .mini .btn{font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;width:100%}
+
+  /* popup */
+  #proModal{backdrop-filter:blur(0px);transition:backdrop-filter .3s}
+  #proModal.open{backdrop-filter:blur(14px)}
+  #proModal .panel{transform:scale(.96) translateY(14px);opacity:0;transition:all .4s cubic-bezier(.23,1,.32,1)}
+  #proModal.open .panel{transform:scale(1) translateY(0);opacity:1}
+  .preserve-3d{transform-style:preserve-3d}
+</style>
+</head>
+<body class="font-sans antialiased selection:bg-sky-500 selection:text-white">
+
+<div class="aurora"><div class="g1"></div><div class="g2"></div><div class="grid"></div></div>
+
+<header class="relative text-center px-6 pt-7 pb-4 max-w-3xl mx-auto" data-aos="fade-down">
+  <p class="text-[10px] tracking-[0.32em] font-bold text-sky-300/90 uppercase">Maestría en Educación Virtual</p>
+  <p class="text-sky-200/55 text-[11px] font-light tracking-[0.10em] uppercase mt-2">Antropología del espacio virtual</p>
+  <h1 class="font-serif text-[30px] md:text-[34px] font-bold text-white leading-none tracking-tight mt-2">¿Dónde vivo?</h1>
+  <p class="mt-1.5 text-[12px] tracking-[0.16em] font-semibold text-white/70 uppercase">Anderson Ariel Salazar</p>
+</header>
+
+
+
+<!-- TIMELINE PREMIUM -->
+<div class="max-w-[1420px] mx-auto">
+<div id="trackWrap" class="track-wrap">
+  <div class="track" id="track">
+
+    <!-- Loop SVG background (continuous colored segments) -->
+    <svg class="loop-svg" viewBox="0 0 1320 240" preserveAspectRatio="none">
+      <path d="M 110 120 C 110 20, 330 20, 330 120 C 330 220, 550 220, 550 120 C 550 20, 770 20, 770 120 C 770 220, 990 220, 990 120 C 990 20, 1210 20, 1210 120" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="3" stroke-linecap="round"/>
+      <!-- colored overlays per segment -->
+      <path d="M 110 120 C 110 20, 330 20, 330 120" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 330 120 C 330 220, 550 220, 550 120" fill="none" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 550 120 C 550 20, 770 20, 770 120" fill="none" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 770 120 C 770 220, 990 220, 990 120" fill="none" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 990 120 C 990 20, 1210 20, 1210 120" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+
+    <!-- STEP 1 - 2017 / bottom (like ref) -->
+    <div class="step bottom" data-aos="zoom-in" data-aos-delay="0">
+      <div class="dot" style="background:#0ba106"></div>
+      <div class="arm" style="border-color:#22c55e"></div>
+      <div class="circle" style="background:#22c55e;color:#0ba106" onclick="openPopup(0,0)">
+        <!-- lupa -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M15.5 15.5 L20 20"/><path d="M8 11 a3 3 0 0 1 6 0" opacity=".85"/><circle cx="11" cy="11" r="2.3" opacity=".95"/></svg>
+      </div>
+      <div class="stem" style="background:#0ba106"></div>
+      <div class="tblock">
+        <h3 style="color:#86efac">Oralidades</h3>
+        <div class="line" style="background:#22c55e"></div>
+      </div>
+      <div class="mini">
+        <img src="hablar1.png" alt="">
+        <div class="flex gap-1.5 mt-2">
+          <img src="hablar.jpeg" class="w-1/2 h-[42px] object-cover rounded-lg">
+          <img src="escribir.jpeg" class="w-1/2 h-[42px] object-cover rounded-lg">
+        </div>
+        <button onclick="openPopup(0,0)" class="btn mt-2 bg-[#22c55e] text-white">Abrir</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 - 2018 top -->
+    <div class="step top" data-aos="zoom-in" data-aos-delay="80">
+      <div class="tblock">
+        <h3 style="color:#fed7aa">Escrituras</h3>
+        <div class="line" style="background:#f97316"></div>
+      </div>
+      <div class="stem" style="background:#f97316"></div>
+      <div class="circle" style="background:#f97316;color:#f97316" onclick="openPopup(1,0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.7"><rect x="7" y="4" width="10" height="14" rx="1.5"/><path d="M9.2 8.5 h5.6 M9.2 11.2 h5.6 M9.2 13.9 h3.8"/></svg>
+      </div>
+      <div class="dot" style="background:#f97316"></div>
+      <div class="arm" style="border-color:#f97316"></div>
+      <div class="mini" style="bottom:auto;top:12px">
+        <img src="revista.jpg" alt="">
+        <div class="flex gap-1.5 mt-2"><img src="jardin.jpg" class="w-1/2 h-[42px] object-cover rounded-lg"><img src="letra.jpg" class="w-1/2 h-[42px] object-cover rounded-lg"></div>
+        <button onclick="openPopup(1,0)" class="btn mt-2 bg-[#f97316] text-white">Abrir</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 - 2019 bottom -->
+    <div class="step bottom" data-aos="zoom-in" data-aos-delay="140">
+      <div class="dot" style="background:#ec4899"></div>
+      <div class="arm" style="border-color:#ec4899"></div>
+      <div class="circle" style="background:#ec4899;color:#ec4899" onclick="openPopup(2,0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><circle cx="12" cy="12" r="7.2"/><ellipse cx="12" cy="12" rx="3.2" ry="7.2"/><path d="M5.1 12 h13.8"/><path d="M6.3 8.2 h11.4"/><path d="M6.3 15.8 h11.4"/></svg>
+      </div>
+      <div class="stem" style="background:#ec4899"></div>
+      <div class="tblock">
+        <h3 style="color:#fbcfe8">Tecno mediado</h3>
+        <div class="line" style="background:#ec4899"></div>
+      </div>
+      <div class="mini">
+        <img src="tv.webp" alt="">
+        <div class="flex gap-1.5 mt-2"><img src="carro.webp" class="w-1/2 h-[42px] object-cover rounded-lg"><img src="maquina.jpeg" class="w-1/2 h-[42px] object-cover rounded-lg"></div>
+        <button onclick="openPopup(2,0)" class="btn mt-2 bg-[#ec4899] text-white">Abrir</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 - 2020 top -->
+    <div class="step top" data-aos="zoom-in" data-aos-delay="200">
+      <div class="tblock">
+        <h3 style="color:#e9d5ff">Era digital</h3>
+        <div class="line" style="background:#a855f7"></div>
+      </div>
+      <div class="stem" style="background:#a855f7"></div>
+      <div class="circle" style="background:#a855f7;color:#a855f7" onclick="openPopup(3,0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.7"><circle cx="12" cy="8.2" r="3.2"/><path d="M7 18.5 a5 5 0 0 1 10 0"/><path d="M9 16.2 h6"/></svg>
+      </div>
+      <div class="dot" style="background:#a855f7"></div>
+      <div class="arm" style="border-color:#a855f7"></div>
+      <div class="mini" style="bottom:auto;top:12px">
+        <img src="seguredes.jpg" alt="">
+        <div class="flex gap-1.5 mt-2"><img src="computador.jpeg" class="w-1/2 h-[42px] object-cover rounded-lg"><img src="catedra.jpg" class="w-1/2 h-[42px] object-cover rounded-lg"></div>
+        <button onclick="openPopup(3,0)" class="btn mt-2 bg-[#a855f7] text-white">Abrir </button>
+      </div>
+    </div>
+
+    <!-- STEP 5 - 2021 bottom (like ref) -->
+    <div class="step bottom" data-aos="zoom-in" data-aos-delay="260">
+      <div class="dot" style="background:#0ea5e9"></div>
+      <div class="arm" style="border-color:#0ea5e9"></div>
+      <div class="circle" style="background:#0ea5e9;color:#0ea5e9" onclick="openPopup(4,0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><circle cx="12" cy="12" r="7"/><path d="M12 8.5 A3.2 3.2 0 0 1 15 11"/><path d="M7.6 16.8 L16.4 7"/><path d="M16.4 16.8 L7.6 7"/></svg>
+      </div>
+      <div class="stem" style="background:#0ea5e9"></div>
+      <div class="tblock">
+        <h3 style="color:#bae6fd">Era sociodigital</h3>
+        <div class="line" style="background:#0ea5e9"></div>
+      </div>
+      <div class="mini">
+        <img src="video.jpg" alt="">
+        <div class="flex gap-1.5 mt-2"><img src="hi5.png" class="w-1/2 h-[42px] object-cover rounded-lg"><img src="video.jpg" class="w-1/2 h-[42px] object-cover rounded-lg"></div>
+        <button onclick="openPopup(4,0)" class="btn mt-2 bg-[#0ea5e9] text-white">Abrir</button>
+      </div>
+    </div>
+
+    <!-- STEP 6 - extra top for IA (extends line) -->
+    <div class="step top" data-aos="zoom-in" data-aos-delay="320">
+      <div class="tblock">
+        <h3 style="color:#6ee7b7">Era de la IA</h3>
+        <div class="line" style="background:#10b981"></div>
+      </div>
+      <div class="stem" style="background:#10b981"></div>
+      <div class="circle" style="background:#10b981;color:#10b981" onclick="openPopup(5,0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><path d="M12 3.5 l2.2 4.6 5 .7 -3.6 3.5 .85 5 -4.45-2.34 -4.45 2.34 .85-5 -3.6-3.5 5-.7z"/><circle cx="12" cy="12" r="2.1" fill="white" stroke="none"/></svg>
+      </div>
+      <div class="dot" style="background:#10b981;display:none"></div>
+      <div class="mini" style="bottom:auto;top:12px">
+        <img src="descarga.png" alt="">
+        <div class="flex gap-1.5 mt-2"><img src="tt.jpeg" class="w-1/2 h-[42px] object-cover rounded-lg">
+            <img src="bot.jpg" class="w-1/2 h-[42px] object-cover rounded-lg"></div>
+        <button onclick="openPopup(5,0)" class="btn mt-2 bg-[#10b981] text-white">Abrir</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+ </div>
+
+<!-- TEXTO INTEGRADO EN POPUPS — sin fichas separadas -->
+
+<footer class="mt-6 mb-6 text-center px-6">
+  <p class="text-[10px] tracking-[0.12em] text-slate-500/70">Elaborado con apoyo de IA · OpenCode</p>
+</footer>
+
+<!-- POPUP PRO DARK -->
+<div id="proModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 md:p-8">
+  <div class="absolute inset-0 bg-[#0b1e2e]/70 backdrop-blur-sm" onclick="closePopup()"></div>
+  <div class="panel relative w-full max-w-5xl bg-white rounded-[20px] shadow-[0_25px_80px_rgba(0,0,0,.5)] overflow-hidden border border-white/20 h-[82vh] max-h-[640px] flex flex-col md:flex-row">
+    <button onclick="closePopup()" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-black">✕</button>
+    <div class="flex-[1.12] bg-slate-100 relative flex items-center justify-center p-4 md:p-6 min-h-[280px] overflow-hidden">
+      <img id="popupImg" src="" class="max-w-full max-h-[64vh] md:max-h-[58vh] w-auto h-auto object-contain rounded-xl shadow-lg">
+      <button id="popupPrev" onclick="popupStep(-1)" class="absolute left-3 w-10 h-10 rounded-full bg-white/90 border shadow flex items-center justify-center hover:bg-slate-900 hover:text-white transition">‹</button>
+      <button id="popupNext" onclick="popupStep(1)" class="absolute right-3 w-10 h-10 rounded-full bg-white border shadow flex items-center justify-center hover:bg-slate-900 hover:text-white transition">›</button>
+      <div id="popupDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/60 backdrop-blur px-3 py-1.5 rounded-full"></div>
+    </div>
+    <div class="w-full md:w-[46%] md:max-w-[440px] p-6 md:p-7 bg-white border-t md:border-t-0 md:border-l border-slate-100 flex flex-col overflow-hidden">
+      <h3 id="popupTitle" class="text-2xl font-serif font-bold leading-tight shrink-0"></h3>
+      <div id="popupText" class="mt-4 space-y-3 text-[13.5px] leading-relaxed text-slate-700 font-light overflow-y-auto flex-1 pr-2 border-t border-slate-100 pt-4"></div>
+      <div id="popupThumbs" class="mt-4 grid grid-cols-3 gap-2 shrink-0"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<script>
+AOS.init({duration:850,once:true,offset:40,easing:'ease-out-cubic'});
+const galleries=[
+  ["hablar1.png","hablar.jpeg","escribir.jpeg"],
+  ["jardin.jpg","revista.jpg","letra.jpg"],
+  ["carro.webp","tv.webp" ,"maquina.jpeg"],
+  ["seguredes.jpg","computador.jpeg","catedra.jpg"],
+  ["video.jpg","hi5.png","video.jpg"],
+  ["bot.jpg","tt.jpeg","descarga.png"]
+];
+const titles=["Oralidades","Escrituras","Tecno mediado / mundo mecánico / electrónico","Era digital","Era socio digital / redes","Era de la IA"];
+const stationColors=["#22c55e","#f97316","#ec4899","#a855f7","#0ea5e9","#10b981"];
+const fullTexts=[
+  `<p><span class="font-bold" style="color:#22c55e">Mi primer momento</span> fue cuando empecé a decir mamá y papá. Mi mamá cuenta que también empecé a decir “dada” cuando quería que me dieran una cuchara; ella comenta que le costó saber a qué me refería cuando balbuceaba esa palabra.</p><p><span class="font-bold" style="color:#22c55e">Oralidad en mi momento más alto:</span> Mi oralidad en el momento más alto fue cuando aprendí a hablar, porque lo hice cantando la canción "Vuela, vuela" de... Hubo algo con la relación entre la música y la oralidad que me ayudó a aprender a hablar rápido. Por otra parte, en mi infancia, en la escuela descubrieron mi habilidad para recitar y hacer sainetes. Pero lo que más recuerdo fue una obra que tuvimos que presentar prácticamente frente a todo el pueblo; repasamos tanto con mis compañeros que nos fue muy bien y logramos sacar muchas sonrisas al público.</p><p><span class="font-bold" style="color:#22c55e">Mi momento más difícil</span> fue cuando era niño: salimos a jugar con mis primos y se hizo tarde. Entre todos quedamos en decir que algo nos había pasado, pero al final ellos dijeron la verdad, quedando yo en ridículo frente a toda mi familia que se encontraba reunida en la casa de mi abuela. Ese día fue muy difícil porque no sabía a dónde esconderme y fui obligado a explicar lo que había pasado.</p>`,
+  `<p><span class="font-bold" style="color:#f97316">Cuando aprendí</span> a escribir fue en el jardín. Cuenta mi mamá que aprendí a hacer bolitas y palitos, y cuando fui al jardín aprendí a realizar las vocales de una manera más fácil porque ya tenía desarrollada la motricidad fina.</p><p><span class="font-bold" style="color:#f97316">Mi momento culmen</span> fue en la universidad. Recuerdo que tenía muy mala ortografía, pero gracias a una materia del profesor José Luis Romo aprendí a escribir de manera correcta. Tuve que esforzarme mucho por aprender a colocar las tildes y también los signos de puntuación, porque no se aceptaban errores de puntuación; es así que mi artículo fue publicado en la primera edición y no tuve correcciones.</p><p><span class="font-bold" style="color:#f97316">Mi momento más difícil</span> fue en el colegio, porque mi letra era y sigue siendo fea. Recuerdo que la profesora de español me hizo quedar mal frente a todos mis compañeros porque me recalcó que, para colmo, la letra de mis otros hermanos era fea. Ahora escribo diferente e intento mejorar, ya sea en la universidad.</p>`,
+  `<p><span class="font-bold" style="color:#ec4899">Mi primer encuentro</span> con la tecnología fue en mi infancia. Mi papá nos había comprado unos juguetes que emitían un sonido particular. Recuerdo haber usado un martillo para romper el juguete y ver por qué emitía ese sonido; fui castigado, por supuesto. Recuerdo también los momentos de felicidad que me daba el poder hablar por teléfono con mi papá, que se encontraba lejos por situaciones de trabajo; le contaba mis ocurrencias y todo lo que había realizado durante la semana.</p><p><span class="font-bold" style="color:#ec4899">Mi momento más difícil</span> con la tecnología fue cuando estaba en grado sexto. En la casa solo había una máquina de escribir y teníamos que turnarnos con mis hermanos para realizar los trabajos. Después de todo, logramos que un familiar nos prestara otra máquina de escribir, pero realizar los trabajos igual fue difícil porque era muy pesada para nuestra edad y teníamos que caminar mucho para regresar a devolverla.</p><p><span class="font-bold" style="color:#ec4899">Mi mejor momento</span> fue cuando mi papá compró un televisor. Recuerdo que visitábamos la casa de mi abuelo para poder mirar la televisión, y no teníamos permiso de ver dibujos animados, especialmente Dragon Ball Z. Mi abuelo decía que “esas cosas eran del diablo”. Cuando llegó el primer televisor a nuestro hogar, por fin logramos mirar los dibujos animados que nos gustaban sin restricciones.</p>`,
+  `<p><span class="font-bold" style="color:#a855f7">Mi primer encuentro</span> se dio en mi colegio, donde empezamos a usar computadores. Recuerdo que teníamos que llevar un disquete para guardar los trabajos que se realizaban en computadores con Windows 95.</p><p><span class="font-bold" style="color:#a855f7">Mi momento culmen</span> en la era digital fue realizando el trabajo de grado: me correspondía realizar la programación del sitio web y, por esa situación, tuve que aprender cosas que no se enseñaban en la universidad. Gracias al trabajo junto a mis compañeros logramos obtener como resultado un trabajo de grado laureado.</p><p><span class="font-bold" style="color:#a855f7">Mi momento más difícil</span> fue en una cátedra de formación humanística en la universidad. Ya que, por mis conocimientos obtenidos en semestres de la carrera, hice un buen ejercicio en la entrega de un trabajo, pero el profesor me puso cero porque no creía que yo había realizado la edición de un video. Recuerdo que me tocó volver a realizar el trabajo frente a él para convencerlo de que yo era el autor de la edición. Fue un momento muy frustrante porque me había esforzado.</p>`,
+  `<p><span class="font-bold" style="color:#0ea5e9">Mi primer encuentro</span> se dio en una sala de internet en mi pueblo, con la creación de mi perfil de Hi5. Fue un momento especial porque hice amistad con una amiga que vive en Ecuador y aún mantenemos contacto después de mucho tiempo y a pesar de la distancia.</p><p><span class="font-bold" style="color:#0ea5e9">Mi mejor momento</span> se dio cuando, por la situación de la pandemia, tuve que dictar clases durante mis prácticas docentes. Hice lo posible para mantener atentos a mis estudiantes, e inclusive, para hacer más atractivas las clases, ellos tuvieron que aprender a editar videos y presentarlos durante la clase. Fue muy satisfactorio porque fue bonito ver cómo explicaban sus tareas y, en muchas ocasiones, eran ayudados por sus papás. Me gustó mucho la experiencia; incluso hice un artículo sobre esos momentos.</p><p> </p>`,
+  `<p><span class="font-bold" style="color:#10b981">Mi primer momento</span> en la era de la IA fue cuando empecé a descubrir lo referente a chatbots. Siempre me ha apasionado la informática y por eso consultaba sobre esos temas; recuerdo haber realizado un chatbot sencillo con lenguaje de marcado, con preguntas sencillas.</p><p><span class="font-bold" style="color:#10b981">Mi momento más bajo</span> fue cuando aprendí a manejar modelos de inteligencia artificial. Siempre sentí curiosidad por aprender cómo funciona la inteligencia artificial. Hice un curso de inteligencia artificial nivel básico y la última entrega fue muy frustrante, porque pasé una semana sin poder resolver un inconveniente y no lograba que mi código funcionara de manera correcta.</p><p><span class="font-bold" style="color:#10b981">Creo que estoy viviendo mi momento más alto</span> porque estoy aprendiendo a usar plataformas de manera correcta y cada vez adquiero mayor experiencia en lo referente a la ingeniería de prompts. Mi intención es aprender cada vez más habilidades sobre el uso de inteligencia artificial en el ámbito educativo y así poder aprovechar estas nuevas herramientas. PD: Este trabajo fue realizado con inteligencia artificial en su implementación.</p>`
+];
+const trackWrap=document.getElementById('trackWrap');
+let isDown=false,sx,sl;
+trackWrap.addEventListener('mousedown',e=>{isDown=true;trackWrap.style.cursor='grabbing';sx=e.pageX-trackWrap.offsetLeft;sl=trackWrap.scrollLeft});
+window.addEventListener('mouseup',()=>{isDown=false;trackWrap.style.cursor='grab'});
+trackWrap.addEventListener('mouseleave',()=>isDown=false);
+trackWrap.addEventListener('mousemove',e=>{if(!isDown) return; e.preventDefault(); const x=e.pageX-trackWrap.offsetLeft; trackWrap.scrollLeft=sl-(x-sx)*1.3});
+trackWrap.style.cursor='grab';
+window.addEventListener('keydown',e=>{
+  if(modal.classList.contains('open')){
+    if(e.key==='Escape') closePopup();
+    if(e.key==='ArrowRight') popupStep(1);
+    if(e.key==='ArrowLeft') popupStep(-1);
+  }
+});
+// popup — solo X para cerrar
+const modal=document.getElementById('proModal'), popupImg=document.getElementById('popupImg'), popupTitle=document.getElementById('popupTitle'), popupText=document.getElementById('popupText'), popupDots=document.getElementById('popupDots'), popupThumbs=document.getElementById('popupThumbs');
+let state={g:0,i:0};
+function openPopup(g,i){ state={g,i}; render(); modal.classList.remove('hidden'); modal.classList.add('flex'); requestAnimationFrame(()=>modal.classList.add('open')); document.body.style.overflow='hidden';}
+function closePopup(){ modal.classList.remove('open'); setTimeout(()=>{modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow='';},250)}
+function popupStep(d){ let n=state.i+d; const L=galleries[state.g].length; n=(n+L)%L; state.i=n; render(); }
+function render(){
+  const g=state.g,i=state.i;
+  const col=stationColors[g];
+  popupImg.src=galleries[g][i];
+  popupTitle.textContent=titles[g];
+  popupTitle.style.color=col;
+  popupText.innerHTML=fullTexts[g];
+  const nextBtn=document.getElementById('popupNext');
+  const prevBtn=document.getElementById('popupPrev');
+  if(nextBtn){ nextBtn.style.background=col; nextBtn.style.color='white'; nextBtn.style.borderColor=col; }
+  if(prevBtn){ prevBtn.style.borderColor=col; prevBtn.style.color=col; }
+  if(popupDots) popupDots.innerHTML=galleries[g].map((_,k)=>'<button onclick="state.i='+k+';render()" class="'+(k===i?'w-6':'w-1.5')+' h-1.5 rounded-full transition" style="background:'+(k===i?col:'rgba(255,255,255,.55)')+'"></button>').join('');
+  if(popupThumbs) popupThumbs.innerHTML=galleries[g].map((s,k)=>'<button onclick="state.i='+k+';render()" class="overflow-hidden rounded-lg h-[64px] border-2 '+(k===i?'shadow':'opacity-70 hover:opacity-100')+'" style="border-color:'+(k===i?col:'transparent')+'"><img src="'+s+'" class="w-full h-full object-cover"></button>').join('');
+}
+</script>
+</body>
+</html>
