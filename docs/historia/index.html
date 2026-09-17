@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reseña Histórica UDENAR Túquerres</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <header class="page-header">
+    <h1>Reseña Histórica</h1>
+    <img class="fiel-franja" src="img/Recurso-2.png" alt="Universidad de Nariño - Sede Túquerres" />
+  </header>
+
+  <!-- WRAPPER PRINCIPAL -->
+  <div class="app-wrapper">
+    
+    <!-- BLOQUE 1: DESCRIPCIÓN + TIMELINE -->
+    <div class="block-timeline">
+      <div class="description-container">
+        <h3>Universidad de Nariño Sede Regional Túquerres <br> 29 años al servicio de la región</h3>
+        <p>La Universidad de Nariño hace presencia en la subregión de la Sabana hace 29 años; su área de influencia se ha
+          extendido progresivamente a un total de tres subregiones: Subregión de la Sabana, Subregión de Abades y Subregión
+          del Piedemonte Costero; que representan más de 11 municipios y se consolida, de acuerdo al proyecto general de
+          regionalización plasmado en el plan de desarrollo institucional "Pensar La Universidad Región 2021-2032", con la
+          conformación de la subregión académica de incidencia campesina, étnica, cultural, ambiental y económica hacia otros
+          municipios.</p>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-container">
+        <div class="arrow" onclick="moveTimeline(-1)" aria-label="Evento anterior"><i class="fas fa-chevron-left"></i></div>
+        <div class="timeline">
+          <div class="timeline-line"></div>
+          <div class="timeline-events" id="timelineEvents">
+            <div class="event active" onclick="selectEvent(0)">
+              <div class="circle"></div><span class="event-year">1996</span>
+              <div class="event-title">Inicio de Actividades</div>
+            </div>
+            <div class="event" onclick="selectEvent(1)">
+              <div class="circle"></div><span class="event-year">1999</span>
+              <div class="event-title">Apertura de Programas</div>
+            </div>
+            <div class="event" onclick="selectEvent(2)">
+              <div class="circle"></div><span class="event-year">2010</span>
+              <div class="event-title">Cruce de Cuentas</div>
+            </div>
+            <div class="event" onclick="selectEvent(3)">
+              <div class="circle"></div><span class="event-year">2011</span>
+              <div class="event-title">Construcción Bloque 2</div>
+            </div>
+            <div class="event" onclick="selectEvent(4)">
+              <div class="circle"></div><span class="event-year">2012</span>
+              <div class="event-title">Construcción Bloque 3</div>
+            </div>
+            <div class="event" onclick="selectEvent(5)">
+              <div class="circle"></div><span class="event-year">2015</span>
+              <div class="event-title">Matrículas</div>
+            </div>
+            <div class="event" onclick="selectEvent(6)">
+              <div class="circle"></div><span class="event-year">2016</span>
+              <div class="event-title">Registros Calificados</div>
+            </div>
+            <div class="event" onclick="selectEvent(7)">
+              <div class="circle"></div><span class="event-year">2018</span>
+              <div class="event-title">Mejoramiento obras interiores</div>
+            </div>
+            <div class="event" onclick="selectEvent(8)">
+              <div class="circle"></div><span class="event-year">2020</span>
+              <div class="event-title">Dotación Laboratorios</div>
+            </div>
+            <div class="event" onclick="selectEvent(9)">
+              <div class="circle"></div><span class="event-year">2021</span>
+              <div class="event-title">Obras complementarias</div>
+            </div>
+            <div class="event" onclick="selectEvent(10)">
+              <div class="circle"></div><span class="event-year">2022</span>
+              <div class="event-title">Donación</div>
+            </div>
+            <div class="event" onclick="selectEvent(11)">
+              <div class="circle"></div><span class="event-year">2023</span>
+              <div class="event-title">Formalización donación</div>
+            </div>
+            <div class="event" onclick="selectEvent(12)">
+              <div class="circle"></div><span class="event-year">2024</span>
+              <div class="event-title">Renovación Registro Calificado</div>
+            </div>
+            <div class="event" onclick="selectEvent(13)">
+              <div class="circle"></div><span class="event-year">2025</span>
+              <div class="event-title">Nuevos programas</div>
+            </div>
+            <div class="event" onclick="selectEvent(14)">
+              <div class="circle"></div><span class="event-year">2026</span>
+              <div class="event-title">Lanzamiento Maestría</div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow" onclick="moveTimeline(1)" aria-label="Siguiente evento"><i class="fas fa-chevron-right"></i></div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 2: CARDS DE AÑOS - CON AÑO SIN TAPAR -->
+    <div class="block-cards" id="cardStage">
+      <div class="cards-container">
+        <!-- Card 1996 -->
+        
+    <section class="card" id="card-0" data-year="1996">
+      <span class="card-year">1996</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Inicio de Actividades</h3>
+          <p>La Universidad de Nariño inició actividades académicas en Túquerres durante el Periodo B de 1996, tras la
+            firma de un acuerdo de voluntades con el municipio. En esta primera etapa se ofertaron los programas de
+            Ingeniería de Sistemas (1 cohorte) y Licenciatura en Educación Básica con Énfasis en Ciencias Naturales y
+            Medio Ambiente (2 cohortes); con más de cien estudiantes matriculados, estos programas fueron terminales en
+            la Sede Regional Túquerres.</p>
+          <p>El 16 de septiembre se firma el primer Convenio Interadministrativo entre la Universidad de Nariño y la
+            alcaldía municipal, siendo sus representantes legales el doctor Edgar Osejo Rosero en calidad de Rector (E)
+            y el señor Héctor Oviedo Rosero (Q.E.P.D.) Alcalde municipal.</p>
+          <p>Ese mismo año, se firma un contrato de comodato por 20 años donde se hace entrega a la Universidad de
+            Nariño las antiguas instalaciones del distrito de carreteras, infraestructura que tenía habilitada una casa
+            en moderadas condiciones con 5 aulas de clase para que allí funcione la Sede.</p>
+        </div>
+
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/1996.png" alt="1996 - Imagen 1" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/19962.jpg" alt="1996 - Imagen 2" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/19963.jpg" alt="1996 - Imagen 3" loading="lazy"></div>
+            </div>
+
+            <div class="media-controls">
+              <div class="left">
+                <button class="btn" data-action="prev">◀</button>
+                <button class="btn" data-action="toggle">Pausar</button>
+                <button class="btn" data-action="next">▶</button>
+              </div>
+              <div class="right">
+                <div class="counter" data-counter>1/3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="card" id="card-1" data-year="1999" hidden>
+      <span class="card-year">1999</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Apertura de Programas</h3>
+          <p>Para el semestre B de 1999 se abre el programa de Ingeniería Civil con 50 estudiantes matriculados. A
+            partir de este año y en periodos posteriores se ofertaron programas de pregrado como Administración de
+            Empresas, Ingeniería Agronómica, Ingeniería Electrónica, Ingeniería Agroindustrial y Economía.</p>
+          <p>De igual forma, se implementaron programas de posgrado, entre ellos las especializaciones en Pedagogía de
+            la Creatividad, Docencia Universitaria y Gerencia en Salud. Además, se desarrollaron cursos de Inglés y
+            cursos preuniversitarios, ambos dirigidos al público en general. </p>
+        </div>
+
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/1999.jpg" alt="1999 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/19992.jpeg" alt="1999 - Imagen 2" loading="lazy"></div>
+            </div>
+
+            <div class="media-controls">
+              <div class="left">
+                <button class="btn" data-action="prev">◀</button>
+                <button class="btn" data-action="toggle">Pausar</button>
+                <button class="btn" data-action="next">▶</button>
+              </div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="card" id="card-2" data-year="2010" hidden>
+      <span class="card-year">2010</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Acta de Acuerdo de Cruce de Cuentas</h3>
+          <p>El 17 de diciembre de 2010 se firma el "Acta de Acuerdo de Cruce de Cuentas y Dación de Pago entre la
+            Alcaldía Municipal de Túquerres y la Universidad de Nariño", acuerdo al que se llega después de que el
+            municipio de Túquerres hubiera dejado de cumplir los acuerdos de aportes a la universidad en las vigencias
+            2001-2009 por valor de $406.070.000. Acta firmada el 17 de diciembre del año 2010 por el doctor Silvio
+            Sánchez Fajardo (Q.E.P.D.) Rector de la Universidad de Nariño, con esta acta las instalaciones pasan a ser
+            propiedad de la Universidad de Nariño permitiendo realizar inversiones en su infraestructura.</p>
+        </div>
+
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2010.jpg" alt="2010 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20102.jpg" alt="2010 - Imagen 2" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20101.jpg" alt="2010 - Imagen 3" loading="lazy"></div>
+            </div>
+
+            <div class="media-controls">
+              <div class="left">
+                <button class="btn" data-action="prev">◀</button>
+                <button class="btn" data-action="toggle">Pausar</button>
+                <button class="btn" data-action="next">▶</button>
+              </div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-3" data-year="2011" hidden>
+      <span class="card-year">2011</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Proyecto de Infraestructura Bloque 2</h3>
+          <p>En el año 2011 la Universidad de Nariño en coordinación con el Movimiento Estudiantil presentan un proyecto
+            de ampliación de infraestructura ante la Gobernación de Nariño en la estrategia adelantada por el gobernador
+            de la época Antonio Navarro Wolff denominada "Cabildos Abiertos" que permitía, mediante el respaldo popular,
+            priorizar iniciativas de impacto regional, en donde la Universidad de Nariño logró obtener el apoyo y fue
+            materializado en contrato interadministrativo No. 286-11 para la unión de esfuerzos en la construcción de un
+            nuevo bloque de aulas en el municipio de Túquerres, el cual se proyecta para 150 estudiantes. Los aportes
+            adquiridos por Cabildo fueron de $170.131.153 y el aporte de la Universidad de $102.000.000. Valor total de
+            inversión $272.131.153, recursos invertidos en la construcción del Bloque Dos.</p>
+          <p> Para el año 2011 la sede de la Universidad de Nariño logra por primera vez en su historia obtener registro
+            calificado para el programa de Ingeniería Civil mediante Resolución MEN: 9847 DE 21 DE AGOSTO DE 2011. Que
+            fue renovada mediante Resolución MEN: 28114 DE 13 DE DICIEMBRE DE 2017.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2011.jpg" alt="2011 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20112.jpg" alt="2011 - Imagen 2" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-4" data-year="2012" hidden>
+      <span class="card-year">2012</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Proyecto de Infraestructura Bloque 3</h3>
+          <p>En el año 2012, a través del Sistema General de Regalías se aprobó el proyecto de infraestructura
+            "Ampliación de la cobertura educativa, investigativa y de proyección social con pertinencia y calidad
+            educativa en la Extensión de Túquerres de la Universidad de Nariño" por valor de $2.154.590.891, Este
+            proyecto tuvo reconocimiento a nivel nacional en la premiación "La Noche de los Mejores" por la Dirección
+            Nacional de Planeación - DNP en la categoría de regalías mejor invertidas de participación de la sociedad
+            civil.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2012.jpg" alt="2012 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20122.jpg" alt="2012 - Imagen 2" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20123.jpg" alt="2012 - Imagen 3" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20124.jpg" alt="2012 - Imagen 4" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-5" data-year="2015" hidden>
+      <span class="card-year">2015</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Unificación de la tabla de matrículas</h3>
+          <p>En el año 2015 se unifica la tabla de matrículas en las sedes regionales de la Universidad de Nariño,
+            permitiendo que los jóvenes que ingresan a las sedes regionales gocen de una matrícula que se calcula según
+            su situación socioeconómica anulando así el desigual e injusto criterio 'del punto de equilibrio' que era
+            utilizado para calcular las matrículas en los municipios y que obligaban a los estudiantes a pagar
+            matrículas costosas de 1.5 SMLV para estudiantes foráneos y 1 SMLV para los de la subregión. Un hecho
+            relevante producto de esta determinación universitaria es que en el municipio de Túquerres se pague una de
+            las matrículas más económicas de la universidad, mejorando la permanencia y acceso a la formación superior.
+            En la actualidad se aplica la política de gratuidad o matricula cero. </p>
+          <p> Para este año la sede de la Universidad de Nariño logra por primera vez en su historia obtener registro
+            calificado para el programa de Economía mediante Res: 16120 del 30 de septiembre de 2015, programa y
+            registro que permiten ofrecer la carrera de manera terminal en el municipio de Túquerres.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2015.jpg" alt="2015 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20153.jpg" alt="2015 - Imagen 3" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20151.jpg" alt="2015 - Imagen 2" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-6" data-year="2016" hidden>
+      <span class="card-year">2016</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Obtención de registros calificados</h3>
+          <p> En el año 2016 la sede de la Universidad de Nariño logra por primera vez en su historia obtener registro
+            calificado para el programa de Administración de Empresas mediante Resolución MEN: 9837 DEL 18 de mayo de
+            2016, programa y registro que está habilitado para ofrecerse de manera terminal en el municipio de
+            Túquerres. Con Resolución MEN 010190 del 21 de Junio de 2024 se realiza la renovación del registro
+            calificado para el programa por 7 años. </p>
+          <p> En este mismo año la sede de la Universidad de Nariño logra por primera vez en su historia obtener
+            registro calificado para el programa de Ingeniería Agronómica, mediante Resolución MEN: 16919 del 22 de
+            agosto de 2016, programa y registro que está habilitado para ofrecerse de manera terminal en el municipio de
+            Túquerres.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2016.jpg" alt="2016 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20161.jpg" alt="2016 - Imagen 2" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-7" data-year="2018" hidden>
+      <span class="card-year">2018</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Mejoramiento de obras interiores</h3>
+          <p>Se suscribió un convenio de aportes entre el municipio de Túquerres y la Universidad de Nariño, mediante el
+            cual se asignaron recursos presupuestales destinados al mejoramiento de las obras interiores de la
+            universidad en el municipio de Túquerres.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2018.jpg" alt="2018 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20182.jpg" alt="2018 - Imagen 2" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20183.jpg" alt="2018 - Imagen 3" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20184.jpg" alt="2018 - Imagen 4" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-8" data-year="2020" hidden>
+      <span class="card-year">2020</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Dotación de equipos de laboratorio</h3>
+          <p> En 2020, con recursos del Plan de Fomento a la Calidad, se ejecutó el proyecto "Dotación de equipos de
+            laboratorio al municipio de Túquerres - Extensión Universidad de Nariño", con una inversión de $760
+            millones. Gracias a esta iniciativa se puso en funcionamiento los laboratorios de Química, Biología y
+            Física, beneficiando a estudiantes de los programas de Ingeniería Agronómica, Ambiental, Civil y de Sistemas
+            de las sedes de Túquerres, Tumaco e Ipiales.</p>
+          <p>Como una acción importante, en el marco de la ejecución del nuevo "Plan de Desarrollo Pensar la
+            universidad-Región", se ejecutó el proyecto "Fortalecimiento de la Estrategia de Regionalización de la
+            Universidad de Nariño" mediante el estudio de Pertinencia Educativa en los municipios de Ipiales, Tumaco y
+            Túquerres - I Fase. Por un valor de 150 millones de pesos que permitió la producción de 8 libros de
+            caracterización: libro de entornos sede regional Túquerres, Ipiales y Tumaco, estudio de información
+            primaria, estudio de oferta y demanda, libro "semana pedagógica", libro de cabildos abiertos que
+            permitieron, mediante participación ciudadana y técnica investigativa, determinar mejores estrategias para
+            la creación de la seccional de la Sabana en el municipio de Túquerres.</p>
+
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2020.jpg" alt="2020 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20201.jpg" alt="2020 - Imagen 2" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20202.png" alt="2020 - Imagen 3" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20203.jpg" alt="2020 - Imagen 4" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-9" data-year="2021" hidden>
+      <span class="card-year">2021</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Construcción de obras complementarias</h3>
+          <p> En el año 2021 se aprobó el proyecto financiado por el Sistema General de Regalías (SGR) "Construcción
+            obras complementarias en espacios exteriores de la universidad de Nariño municipio de Túquerres" por un
+            valor de $266.490.082, que permitirá tener mejores condiciones de bienestar en infraestructura en la Sede
+            Regional.</p>
+          <p> Durante el mismo año por iniciativa del Movimiento Estudiantil y por el crecimiento en la demanda
+            académica se tramitó ante el Municipio de Túquerres la donación de un lote para la construcción de un Eco
+            Campus Universitario.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2021.jpg" alt="2021 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20212.jpg" alt="2021 - Imagen 2" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20213.jpg" alt="2021 - Imagen 3" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-10" data-year="2022" hidden>
+      <span class="card-year">2022</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Donación de inmueble</h3>
+          <p>En el año 2022 la Universidad de Nariño Sede Regional Túquerres recibe en donación un predio en el centro
+            del área urbana del municipio de Túquerres denominado "Escuela Alfonso López" donde funcionaba antiguamente
+            el preescolar de la Institución Educativa San Luis Gonzaga, mediante Acuerdo del Consejo municipal No. 05
+            del 08 de junio de 2022 "Por medio del cual se autoriza al alcalde del municipio de Túquerres para que
+            transfiera a título de donación un bien inmueble a favor de la Universidad de Nariño y se dictan otras
+            disposiciones"; con un área aproximada de 4000 metros cuadrados para la construcción de una nueva sede
+            universitaria.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2022.jpg" alt="2022 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20222.jpg" alt="2022 - Imagen 3" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20223.jpg" alt="2022 - Imagen 4" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-11" data-year="2023" hidden>
+      <span class="card-year">2023</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Formalización de donación</h3>
+          <p>En el año 2023 después de un arduo trabajo de unidad del Movimiento Estudiantil, el Consejo de
+            Administración y la Coordinación de la Sede Túquerres, se logra que el Municipio entregue a título de
+            donación bajo escritura pública No. 1164 a la Universidad de Nariño un predio en el centro del área urbana
+            del municipio de Túquerres denominado "Escuela Alfonso López", con un área aproximada de 4000 metros
+            cuadrados y un estimado de $4.593.221.000 millones de pesos, en donde se pretende la construcción del nuevo
+            Eco Campus Universitario.</p>
+          <p> En función de la expansión de infraestructura universitaria en el municipio de Túquerres para mejorar las
+            condiciones de calidad, ampliar la cobertura en la región occidente del departamento, se contrató la
+            "Consultoría de diseño arquitectónico, estudios técnicos y coordinación de especialidades de la nueva Sede
+            Túquerres de la Universidad de Nariño en el municipio de Túquerres, departamento de Nariño" por un Valor:
+            $400.000.000 (Cuatrocientos millones de pesos).</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/20234.jpg" alt="2021 - Imagen 1" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/2023.jpg" alt="2023 - Imagen 2" loading="lazy"></div>
+              <div class="media-item active" data-type="img"><img src="img/20231.jpg" alt="2023 - Imagen 3" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-12" data-year="2024" hidden>
+      <span class="card-year">2024</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Renovación de registro calificado</h3>
+          <p>Mediante Resolución No. 010190 del 21 de junio de 2024, el Ministerio de Educación Nacional renovó el
+            registro calificado del programa de Administración de Empresas de la Universidad de Nariño, ofrecido en
+            modalidad presencial en el municipio de Túquerres. Esta decisión garantiza la continuidad académica del
+            programa por siete años, consolidando su calidad y proyección regional.</p>
+          <p>En este mismo año, y en el marco del fortalecimiento administrativo de la institución, el Consejo Superior
+            Universitario, mediante Acuerdo 053 del 27 de octubre de 2023, aprobó crear en la Planta Administrativa
+            de la Universidad de Nariño, bajo la naturaleza de Libre Nombramiento y Remoción el cargo de Profesional
+            Universitario Secretario Académico, adscrito al Municipio de Túquerres.</p>
+
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2024a.jpg" alt="2024 - Imagen 1" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/2024b.jpg" alt="2024 - Imagen 2" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/2024c.JPG" alt="2024 - Imagen 3" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/2024d.JPG" alt="2024 - Imagen 2" loading="lazy"></div>
+            </div>
+
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-13" data-year="2025" hidden>
+      <span class="card-year">2025</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Apertura de nuevos programas</h3>
+          <p> La Universidad de Nariño entrega un bus institucional a la Sede Regional Túquerres, destinado a prácticas
+            académicas y salidas de campo, facilitando el desplazamiento de estudiantes y docentes.</p>
+          <p>Mediante las Resoluciones MEN No. 009484 del 12 de mayo y No. 010472 del 27 de junio de 2024, los programas
+            de Ingeniería Ambiental y Contaduría Pública renovaron y obtuvieron sus Registros Calificados como Únicos,
+            permitiendo la apertura de sus primeras cohortes en la Sede Regional Túquerres durante el semestre 2025B y
+            fortaleciendo la oferta académica institucional en la región.</p>
+          <p>Para ese mismo año, la Universidad de Nariño celebra un importante logro académico con la obtención del
+            Registro Calificado Único para su programa de Maestría en Educación Ambiental (Resolución 002546 del 14 de
+            febrero de 2025), logro que permitió su apertura en la Sede Regional Túquerres.</p>
+        </div>
+        <div class="media-box" data-autoplay="true">
+
+          <div class="video-area">
+            <video controls preload="metadata" poster="poster.jpg">
+              <source src="2010.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2025.jpg" alt="2025 - Imagen 1" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/20252.jpg" alt="2025 - Imagen 2" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/20253.jpg" alt="2025 - Imagen 2" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="card-14" data-year="2026" hidden>
+      <span class="card-year">2026</span>
+      <div class="card-body">
+        <div class="card-content">
+          <h3>Maestría en Interculturalidad, Desarrollo y Paz Territorial</h3>
+          <p>En 2026 se llevó a cabo en la Sede Regional Túquerres de la Universidad de Nariño el lanzamiento oficial de
+            la Maestría en Interculturalidad, Desarrollo y Paz Territorial, un programa académico que representa una
+            apuesta estratégica por la descentralización del conocimiento y el fortalecimiento de la autonomía regional
+            en el departamento de Nariño.</p>
+          <p> El nuevo posgrado surge de la alianza entre la Universidad de Nariño, la Pontificia Universidad Javeriana de
+            Cali y la Gobernación de Nariño, articulado a la estrategia Nariño Superior, orientada a promover el acceso
+            equitativo a la educación superior en territorios rurales y periféricos.</p>
+
+        </div>
+        <div class="media-box" data-autoplay="true">
+          <div class="image-carousel">
+            <div class="media-viewport">
+              <div class="media-item active" data-type="img"><img src="img/2026.jpg" alt="2026 - Imagen 1" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/20261.jpg" alt="2026 - Imagen 2" loading="lazy"></div>
+              <div class="media-item" data-type="img"><img src="img/20262.jpg" alt="2026 - Imagen 3" loading="lazy"></div>
+            </div>
+            <div class="media-controls">
+              <div class="left"><button class="btn" data-action="prev">◀</button><button class="btn"
+                  data-action="toggle">Pausar</button><button class="btn" data-action="next">▶</button></div>
+              <div class="right">
+                <div class="counter" data-counter>1/1</div>
+              </div>
+            </div>
+
+          </div>
+          </div>
+        </div>
+    </section> 
+        
+        <!-- Fin de las cards de la línea de tiempo -->
+
+      </div>
+    </div>
+
+    <!-- BLOQUE 3: COORDINADORES -->
+    <div class="block-coordinators" id="coordinatorsBlock">
+      <div class="coordinators-card">
+        <h3>Coordinadores de la Sede</h3>
+        <ul class="coordinators-grid">
+          <li class="coordinator-item">
+            <img src="img/coordinador/coordinador.png" alt="Coordinador" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">Sergio Rodríguez Ponce</div>
+            <div class="coordinator-year">1997-1998</div>
+          </li>
+          <li class="coordinator-item">
+            <img src="img/coordinador/franco.jpeg" alt="Franco Manolo Villota" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">Franco Manolo Villota</div>
+            <div class="coordinator-year">1998-1999</div>
+          </li>
+          <li class="coordinator-item">
+            <img src="img/coordinador/homero.jpg" alt="Homero Paredes Vallejo" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">Homero Paredes Vallejo (Q.E.P.D)</div>
+            <div class="coordinator-year">1999-2006</div>
+          </li>
+          <li class="coordinator-item">
+            <img src="img/coordinador/david.jpeg" alt="David Jimmy Delgado Guerrero" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">David Jimmy Delgado Guerrero</div>
+            <div class="coordinator-year">2006-2007</div>
+          </li>
+          <li class="coordinator-item">
+            <img src="img/coordinador/monica.jpeg" alt="Mónica Adelaida Benítez Córdoba" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">Mónica Adelaida Benítez Córdoba</div>
+            <div class="coordinator-year">2008-2009</div>
+          </li>
+          <li class="coordinator-item">
+            <img src="img/coordinador/aida.jpg" alt="Aida Milena Chávez Morillo" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">Aida Milena Chávez Morillo</div>
+            <div class="coordinator-year">2009-2010</div>
+          </li>
+          <li class="coordinator-item">
+            <img src="img/coordinador/alejandro.jpeg" alt="Alejandro Marcelo Rodríguez Eraso" class="coordinator-image" loading="lazy">
+            <div class="coordinator-name">Alejandro Marcelo Rodríguez Eraso</div>
+            <div class="coordinator-year">2010-Actualidad</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+    Fuente de información: Mg. Alejandro Marcelo Rodríguez Eraso, Director Sede Regional Túquerres.
+    </div>
+  </div>
+
+</body>
+
+</html>
